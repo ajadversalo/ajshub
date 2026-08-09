@@ -97,25 +97,27 @@ function Arrow() {
 }
 
 export default function Home() {
-  const scrollToExperience = (event: MouseEvent<HTMLAnchorElement>) => {
+  const scrollToSection = (event: MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
-    const target = document.getElementById("experience-archive");
+    const targetId = event.currentTarget.getAttribute("href")?.replace("#", "");
+    if (!targetId) return;
+    const target = document.getElementById(targetId);
     if (!target) return;
     target.scrollIntoView({ behavior: "smooth", block: "start" });
-    window.history.replaceState(null, "", "#experience-archive");
+    window.history.replaceState(null, "", `#${targetId}`);
   };
 
   return (
     <main>
       <header className="nav shell">
-        <a className="monogram" href="#top" aria-label="AJ Adversalo, home">
+        <a className="monogram" href="#top" onClick={scrollToSection} aria-label="AJ Adversalo, home">
           AJ<span>®</span>
         </a>
         <nav aria-label="Primary navigation">
-          <a href="#work">Work</a>
-          <a href="#experience-archive" onClick={scrollToExperience}>Experience</a>
-          <a href="#about">About</a>
-          <a href="#contact">Contact</a>
+          <a href="#work" onClick={scrollToSection}>Work</a>
+          <a href="#experience-archive" onClick={scrollToSection}>Experience</a>
+          <a href="#about" onClick={scrollToSection}>About</a>
+          <a href="#contact" onClick={scrollToSection}>Contact</a>
         </nav>
         <a
           className="availability"
@@ -142,7 +144,7 @@ export default function Home() {
             Hey, I’m AJ — a product-minded developer turning complex systems
             into simple, useful experiences.
           </p>
-          <a className="round-link" href="#work" aria-label="Explore selected work">
+          <a className="round-link" href="#work" onClick={scrollToSection} aria-label="Explore selected work">
             <span>Explore</span>
             <b aria-hidden="true">↓</b>
           </a>
@@ -292,7 +294,7 @@ export default function Home() {
           </div>
           <footer>
             <span>© {new Date().getFullYear()} AJ Adversalo</span>
-            <a href="#top">Back to top ↑</a>
+            <a href="#top" onClick={scrollToSection}>Back to top ↑</a>
           </footer>
         </div>
       </section>
