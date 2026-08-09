@@ -116,6 +116,7 @@ export default function Home() {
         <nav aria-label="Primary navigation">
           <a href="#work" onClick={scrollToSection}>Work</a>
           <a href="#experience-archive" onClick={scrollToSection}>Experience</a>
+          <a href="/resume">Résumé</a>
           <a href="#about" onClick={scrollToSection}>About</a>
           <a href="#contact" onClick={scrollToSection}>Contact</a>
         </nav>
