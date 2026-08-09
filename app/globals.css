@@ -68,6 +68,27 @@ section[id] { scroll-margin-top: 24px; }
 .project-copy li { border: 1px solid #353532; border-radius: 100px; padding: 7px 11px; font: 500 10px var(--font-mono), monospace; text-transform: uppercase; color: #aaa; }
 .project-cta { font: 500 12px var(--font-mono), monospace; text-transform: uppercase; border-bottom: 1px solid #767672; padding-bottom: 7px; }
 .project-cta span { margin-left: 8px; }
+.experience { padding: 140px 0 170px; border-top: 1px solid var(--line); }
+.experience-heading { display: grid; grid-template-columns: 1fr 2fr 1fr; align-items: end; margin-bottom: 110px; }
+.experience-heading h2 { margin: 0; font-size: clamp(54px, 7vw, 104px); line-height: .9; letter-spacing: -.065em; font-weight: 550; }
+.experience-heading h2 em { color: #a7ef56; font-family: Georgia, serif; font-weight: 400; }
+.experience-heading > p:last-child { color: var(--muted); font-size: 14px; line-height: 1.55; max-width: 270px; margin: 0 0 7px 40px; }
+.experience-list { border-top: 1px solid var(--line); }
+.experience-chapter { display: grid; grid-template-columns: minmax(280px, .75fr) minmax(0, 1.25fr); gap: clamp(50px, 9vw, 150px); padding: 70px 0 100px; border-bottom: 1px solid var(--line); align-items: start; }
+.company-context { position: sticky; top: 32px; }
+.company-index { display: block; margin-bottom: 45px; color: #686864; font: 500 10px var(--font-mono), monospace; }
+.company-context h3 { margin: 25px 0 12px; max-width: 540px; font-size: clamp(36px, 5vw, 70px); line-height: .95; letter-spacing: -.06em; font-weight: 550; }
+.company-context strong { color: #a7ef56; font: 500 10px var(--font-mono), monospace; text-transform: uppercase; letter-spacing: .1em; }
+.company-context > p:last-child { color: #aaa9a4; max-width: 490px; margin: 32px 0 0; font-size: 16px; line-height: 1.6; }
+.product-records { display: grid; gap: 16px; }
+.product-record { min-height: 300px; padding: 26px 28px 30px; background: #151515; border: 1px solid #292929; display: flex; flex-direction: column; transition: border-color .25s ease, transform .35s cubic-bezier(.2,.8,.2,1); }
+.product-record:hover { border-color: #a7ef56; transform: translateX(-7px); }
+.record-meta { display: grid; grid-template-columns: 1fr 1fr auto; color: #777; font: 500 9px var(--font-mono), monospace; text-transform: uppercase; letter-spacing: .1em; }
+.record-meta span:nth-child(2) { text-align: center; }.record-meta > span:last-child { font-size: 16px; }
+.product-record h4 { margin: auto 0 18px; font-size: clamp(30px, 3.5vw, 48px); line-height: 1; letter-spacing: -.05em; font-weight: 550; }
+.product-record > p { color: #aaa9a4; max-width: 570px; margin: 0 0 26px; font-size: 14px; line-height: 1.55; }
+.product-record ul { display: flex; flex-wrap: wrap; gap: 7px; padding: 0; margin: 0; list-style: none; }
+.product-record li { padding: 6px 9px; border: 1px solid #393936; border-radius: 100px; color: #898984; font: 500 9px var(--font-mono), monospace; text-transform: uppercase; }
 .about { border-top: 1px solid var(--line); padding: 140px 0 170px; display: grid; grid-template-columns: 1.5fr 1fr; gap: 12vw; }
 .about-lede { font-size: clamp(44px, 6vw, 88px); line-height: 1.02; letter-spacing: -.065em; margin: 36px 0 0; }
 .about-lede span { color: #a7ef56; font-family: Georgia, serif; font-style: italic; }
@@ -89,13 +110,13 @@ section[id] { scroll-margin-top: 24px; }
 @media (max-width: 900px) {
   .shell { width: min(100% - 36px, 1400px); }.nav { grid-template-columns: 1fr auto; }.nav nav { display: none; }
   .hero { min-height: 760px; padding-top: 90px; }.hero h1 { margin-top: 25px; }.hero-bottom > p { width: 70%; }
-  .section-heading { grid-template-columns: 1fr; gap: 25px; }.section-note { margin-left: 0; }.project { grid-template-columns: 1fr; }.project-visual { min-height: 380px; }.project-copy { padding-top: 35px; }.about { grid-template-columns: 1fr; gap: 55px; }
+  .section-heading, .experience-heading { grid-template-columns: 1fr; gap: 25px; }.section-note, .experience-heading > p:last-child { margin-left: 0; }.project { grid-template-columns: 1fr; }.project-visual { min-height: 380px; }.project-copy { padding-top: 35px; }.experience-chapter { grid-template-columns: 1fr; gap: 50px; }.company-context { position: static; }.about { grid-template-columns: 1fr; gap: 55px; }
 }
 @media (max-width: 560px) {
   .ticker { grid-template-columns: 82px minmax(0, 1fr); }.ticker-label { padding: 16px 12px; }.ticker-label span { font-size: 16px; }.ticker-label i { font-size: 7px; line-height: 1.25; }.ticker-window { padding: 12px 0; }.ticker-track span { font-size: 17px; padding-right: 28px; }.ticker-track + .ticker-track { margin-top: 10px; }
   .nav { height: 74px; }.availability { font-size: 10px; }.hero { min-height: calc(100svh - 74px); padding: 75px 0 30px; }
   .hero h1 { font-size: clamp(53px, 17vw, 80px); line-height: .9; }.hero-bottom { align-items: center; }.hero-bottom > p { width: calc(100% - 82px); font-size: 16px; }.round-link { width: 72px; height: 72px; font-size: 9px; }.round-link b { display: none; }
-  .work { padding: 90px 0 100px; }.project { padding: 25px 0 40px; }.project-top { grid-template-columns: auto 1fr auto; gap: 20px; }.project-top span:nth-child(2) { text-align: right; }.project-visual { min-height: 250px; }.project-visual:after { width: 180px; height: 180px; }.visual-orbit { width: 250px; height: 110px; }.project-copy ul { margin-bottom: 35px; }
+  .work { padding: 90px 0 100px; }.project { padding: 25px 0 40px; }.project-top { grid-template-columns: auto 1fr auto; gap: 20px; }.project-top span:nth-child(2) { text-align: right; }.project-visual { min-height: 250px; }.project-visual:after { width: 180px; height: 180px; }.visual-orbit { width: 250px; height: 110px; }.project-copy ul { margin-bottom: 35px; }.experience { padding: 90px 0 110px; }.experience-heading { margin-bottom: 70px; }.experience-chapter { padding: 48px 0 70px; }.company-index { margin-bottom: 30px; }.product-record { min-height: 260px; padding: 22px; }
   .about { padding: 90px 0 110px; }.contact-inner { padding-top: 85px; }.contact h2 { margin: 42px 0 80px; }.contact-links { align-items: flex-start; flex-direction: column; gap: 55px; }.contact-links > div { width: 100%; justify-content: space-between; }
 }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; }.ticker-track, .rain i { animation: none; } * { transition-duration: .01ms !important; } }

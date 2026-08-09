@@ -60,6 +60,38 @@ const concepts = [
   "Prototyping",
 ];
 
+const experience = [
+  {
+    company: "GenXys Health Care Systems",
+    discipline: "Product engineering",
+    marker: "Current chapter",
+    intro: "Clinical products that turn complex pharmacogenomic information into useful decisions for healthcare teams.",
+    products: [
+      { name: "Clinical software platform", type: "Healthcare application", note: "Reliable, decision-focused product experiences for clinical teams.", tools: ["React", "TypeScript", ".NET", "Azure"] },
+      { name: "Shared product systems", type: "Platform foundations", note: "Reusable interface patterns and resilient services supporting the wider product.", tools: ["UI Systems", "APIs", "Cloud"] },
+    ],
+  },
+  {
+    company: "Centra Windows",
+    discipline: "Digital platform",
+    marker: "Company chapter",
+    intro: "Customer-facing experiences and internal tools for one of Western Canada’s leading window manufacturers.",
+    products: [
+      { name: "Customer experience", type: "Public-facing platform", note: "Digital touchpoints designed to make a complex buying journey easier to navigate.", tools: ["React", "C#", "Cloud"] },
+      { name: "Internal operations tools", type: "Business software", note: "Practical tools connecting internal workflows, teams, and company data.", tools: ["C#", "SQL", "APIs"] },
+    ],
+  },
+  {
+    company: "AI Jabber",
+    discipline: "Founder project",
+    marker: "Independent",
+    intro: "A focused, approachable place to think, ask, and create with modern language models.",
+    products: [
+      { name: "AI Jabber", type: "AI product", note: "An end-to-end independent product spanning interface, model integration, data, and deployment.", tools: ["Next.js", "OpenAI", "Supabase", "Vercel"] },
+    ],
+  },
+];
+
 function Arrow() {
   return <span aria-hidden="true">↗</span>;
 }
@@ -73,6 +105,7 @@ export default function Home() {
         </a>
         <nav aria-label="Primary navigation">
           <a href="#work">Work</a>
+          <a href="#experience">Experience</a>
           <a href="#about">About</a>
           <a href="#contact">Contact</a>
         </nav>
@@ -168,6 +201,44 @@ export default function Home() {
                 <span className="project-cta">{project.label} <Arrow /></span>
               </div>
             </a>
+          ))}
+        </div>
+      </section>
+
+      <section className="experience shell" id="experience">
+        <div className="experience-heading">
+          <p className="eyebrow">Experience archive · Selected chapters</p>
+          <h2>Where the work<br /><em>lived.</em></h2>
+          <p>Companies provide the context. The products show the contribution.</p>
+        </div>
+
+        <div className="experience-list">
+          {experience.map((chapter, chapterIndex) => (
+            <article className="experience-chapter" key={chapter.company}>
+              <div className="company-context">
+                <span className="company-index">0{chapterIndex + 1}</span>
+                <p className="eyebrow">{chapter.marker}</p>
+                <h3>{chapter.company}</h3>
+                <strong>{chapter.discipline}</strong>
+                <p>{chapter.intro}</p>
+              </div>
+              <div className="product-records">
+                {chapter.products.map((product, productIndex) => (
+                  <div className="product-record" key={product.name}>
+                    <div className="record-meta">
+                      <span>0{productIndex + 1}</span>
+                      <span>{product.type}</span>
+                      <Arrow />
+                    </div>
+                    <h4>{product.name}</h4>
+                    <p>{product.note}</p>
+                    <ul aria-label="Areas and technologies">
+                      {product.tools.map((tool) => <li key={tool}>{tool}</li>)}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            </article>
           ))}
         </div>
       </section>
