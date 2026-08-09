@@ -41,7 +41,7 @@ const concepts = [
 const experience = [
   {
     company: "Centra Construction Group",
-    discipline: "Software Developer · Langley, BC",
+    discipline: "Senior Software Developer · Langley, BC",
     marker: "June 2023 — Present",
     intro: "Modernizing enterprise applications, digitizing shop-floor workflows, and exploring AI-driven planning across five Western Canadian branches.",
     products: [

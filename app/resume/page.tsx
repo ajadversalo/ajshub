@@ -3,7 +3,7 @@
 const roles = [
   {
     company: "Centra Construction Group",
-    role: "Software Developer · Langley, BC",
+    role: "Senior Software Developer · Langley, BC",
     period: "Jun 2023 — Present",
     summary: "Modernizing enterprise applications, digitizing operational workflows, and prototyping AI-driven planning tools across five Western Canadian branches.",
     projects: [
