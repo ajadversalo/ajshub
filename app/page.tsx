@@ -1,36 +1,14 @@
 const projects = [
   {
     number: "01",
-    type: "Product engineering",
-    title: "GenXys Health Care Systems",
+    type: "Personal project template",
+    title: "Project name",
     summary:
-      "Building reliable clinical software that helps turn complex pharmacogenomic data into useful decisions for health-care teams.",
-    tags: ["React", ".NET", "TypeScript", "Azure"],
-    href: "https://www.genxys.com",
-    label: "Visit GenXys",
+      "A concise explanation of what the project does, why it exists, and the problem or curiosity that inspired it.",
+    tags: ["Status", "Your role", "Core stack"],
+    href: "",
+    label: "Project link coming soon",
     accent: "lime",
-  },
-  {
-    number: "02",
-    type: "Digital platform",
-    title: "Centra Windows",
-    summary:
-      "Contributing to customer-facing experiences and internal tools for one of Western Canada’s leading window manufacturers.",
-    tags: ["C#", "SQL", "React", "Cloud"],
-    href: "https://www.centrawindows.com",
-    label: "Visit Centra",
-    accent: "blue",
-  },
-  {
-    number: "03",
-    type: "Founder project",
-    title: "AI Jabber",
-    summary:
-      "A personal AI assistant designed as a focused, approachable space to think, ask, and create with modern language models.",
-    tags: ["Next.js", "OpenAI", "Supabase", "Vercel"],
-    href: "https://aijabber.ca",
-    label: "Launch AI Jabber",
-    accent: "violet",
   },
 ];
 
@@ -187,10 +165,11 @@ export default function Home() {
         <div className="project-list">
           {projects.map((project) => (
             <a
-              className={`project ${project.accent}`}
-              href={project.href}
-              target="_blank"
-              rel="noreferrer"
+              className={`project ${project.accent} ${!project.href ? "project-template" : ""}`}
+              href={project.href || undefined}
+              target={project.href ? "_blank" : undefined}
+              rel={project.href ? "noreferrer" : undefined}
+              aria-disabled={!project.href}
               key={project.title}
             >
               <div className="project-top">

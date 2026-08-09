@@ -56,6 +56,7 @@ section[id] { scroll-margin-top: 24px; }
 .project-top span:nth-child(2) { text-align: center; }.project-top > span:last-child { font-size: 20px; }
 .project-visual { min-height: 430px; border-radius: 2px; position: relative; overflow: hidden; display: grid; place-items: center; color: #0b0b0b; transition: transform .45s cubic-bezier(.2,.8,.2,1); }
 .project:hover .project-visual { transform: scale(.985); }
+.project-template { cursor: default; }.project-template:hover .project-visual { transform: none; }.project-template .project-visual { background: #a7ef56; }.project-template .project-cta { color: #777; border-color: #343431; }
 .project.lime .project-visual { background: #b8ea74; }.project.blue .project-visual { background: #79aef2; }.project.violet .project-visual { background: #b29bea; }
 .project-visual:after { content: ""; width: 280px; height: 280px; border: 1px solid #1117; border-radius: 50%; position: absolute; }
 .project-visual strong { font-size: clamp(54px, 7vw, 104px); letter-spacing: -.07em; z-index: 1; }
