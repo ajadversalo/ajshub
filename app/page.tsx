@@ -1,7 +1,3 @@
-"use client";
-
-import { useEffect, useState } from "react";
-
 const projects = [
   {
     number: "01",
@@ -55,62 +51,9 @@ function Arrow() {
   return <span aria-hidden="true">↗</span>;
 }
 
-const chapters = [
-  { id: "top", label: "Intro" },
-  { id: "work", label: "Work" },
-  { id: "about", label: "About" },
-  { id: "contact", label: "Contact" },
-];
-
 export default function Home() {
-  const [activeChapter, setActiveChapter] = useState("top");
-  const [progress, setProgress] = useState(0);
-
-  useEffect(() => {
-    const updateScroll = () => {
-      const available = document.documentElement.scrollHeight - window.innerHeight;
-      const nextProgress = available > 0 ? window.scrollY / available : 0;
-      setProgress(nextProgress);
-      document.documentElement.style.setProperty("--scroll", String(nextProgress));
-
-      const marker = window.innerHeight * 0.4;
-      let current = chapters[0].id;
-      for (const chapter of chapters) {
-        const section = document.getElementById(chapter.id);
-        if (section && section.getBoundingClientRect().top <= marker) current = chapter.id;
-      }
-      setActiveChapter(current);
-    };
-
-    const observer = new IntersectionObserver(
-      (entries) => entries.forEach((entry) => entry.isIntersecting && entry.target.classList.add("is-visible")),
-      { threshold: 0.12 }
-    );
-    document.querySelectorAll("[data-reveal]").forEach((element) => observer.observe(element));
-    updateScroll();
-    window.addEventListener("scroll", updateScroll, { passive: true });
-    return () => {
-      observer.disconnect();
-      window.removeEventListener("scroll", updateScroll);
-    };
-  }, []);
-
   return (
     <main>
-      <div className="scroll-progress" aria-hidden="true">
-        <span style={{ transform: `scaleX(${progress})` }} />
-      </div>
-      <aside className="chapter-nav" aria-label="Page sections">
-        <span className="chapter-count">0{chapters.findIndex((item) => item.id === activeChapter) + 1} / 04</span>
-        <div className="chapter-track" aria-hidden="true"><i style={{ height: `${progress * 100}%` }} /></div>
-        <nav>
-          {chapters.map((chapter) => (
-            <a key={chapter.id} href={`#${chapter.id}`} className={activeChapter === chapter.id ? "active" : ""} aria-current={activeChapter === chapter.id ? "location" : undefined}>
-              <span>{chapter.label}</span><i />
-            </a>
-          ))}
-        </nav>
-      </aside>
       <header className="nav shell">
         <a className="monogram" href="#top" aria-label="AJ Adversalo, home">
           AJ<span>®</span>
@@ -130,7 +73,7 @@ export default function Home() {
         </a>
       </header>
 
-      <section className="hero shell is-visible" id="top" data-reveal>
+      <section className="hero shell" id="top">
         <div className="rain" aria-hidden="true">
           <i /><i /><i /><i /><i />
         </div>
@@ -152,17 +95,29 @@ export default function Home() {
         </div>
       </section>
 
-      <div className="ticker" aria-label="Core technologies">
-        <div className="ticker-track">
-          {[...stack, ...stack].map((item, index) => (
-            <span key={`${item}-${index}`}>
-              {item} <i>✳</i>
-            </span>
-          ))}
+      <section className="ticker" aria-label="Core technologies">
+        <div className="ticker-label">
+          <span>Toolbox</span>
+          <i>Always learning</i>
         </div>
-      </div>
+        <div className="ticker-window">
+          <div className="ticker-track">
+            {[...stack, ...stack].map((item, index) => (
+              <span key={`${item}-${index}`}>
+                <b>{String((index % stack.length) + 1).padStart(2, "0")}</b>
+                {item}
+              </span>
+            ))}
+          </div>
+          <div className="ticker-track ticker-track-reverse" aria-hidden="true">
+            {[...stack.slice().reverse(), ...stack.slice().reverse()].map((item, index) => (
+              <span key={`reverse-${item}-${index}`}>{item}<i>↗</i></span>
+            ))}
+          </div>
+        </div>
+      </section>
 
-      <section className="work shell" id="work" data-reveal>
+      <section className="work shell" id="work">
         <div className="section-heading">
           <p className="eyebrow">Selected work · 2022—Now</p>
           <h2>Built with intent.</h2>
@@ -174,7 +129,7 @@ export default function Home() {
 
         <div className="project-list">
           {projects.map((project) => (
-            <a data-reveal
+            <a
               className={`project ${project.accent}`}
               href={project.href}
               target="_blank"
@@ -204,7 +159,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="about shell" id="about" data-reveal>
+      <section className="about shell" id="about">
         <div>
           <p className="eyebrow">A little about me</p>
           <p className="about-lede">
@@ -230,7 +185,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="contact" id="contact" data-reveal>
+      <section className="contact" id="contact">
         <div className="shell contact-inner">
           <p className="eyebrow">Have a project in mind?</p>
           <h2>Let’s make<br /><em>something good.</em></h2>
