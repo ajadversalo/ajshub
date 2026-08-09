@@ -97,6 +97,14 @@ function Arrow() {
 }
 
 export default function Home() {
+  const scrollToExperience = (event: MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+    const target = document.getElementById("experience-archive");
+    if (!target) return;
+    target.scrollIntoView({ behavior: "smooth", block: "start" });
+    window.history.replaceState(null, "", "#experience-archive");
+  };
+
   return (
     <main>
       <header className="nav shell">
@@ -105,7 +113,7 @@ export default function Home() {
         </a>
         <nav aria-label="Primary navigation">
           <a href="#work">Work</a>
-          <a href="#experience">Experience</a>
+          <a href="#experience-archive" onClick={scrollToExperience}>Experience</a>
           <a href="#about">About</a>
           <a href="#contact">Contact</a>
         </nav>
@@ -205,7 +213,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="experience shell" id="experience">
+      <section className="experience shell" id="experience-archive">
         <div className="experience-heading">
           <p className="eyebrow">Experience archive · Selected chapters</p>
           <h2>Where the work<br /><em>lived.</em></h2>
@@ -291,3 +299,6 @@ export default function Home() {
     </main>
   );
 }
+"use client";
+
+import type { MouseEvent } from "react";
