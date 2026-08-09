@@ -122,8 +122,9 @@ export default function Home() {
         </h1>
         <div className="hero-bottom">
           <p>
-            Hey, I’m AJ — a product-minded developer turning complex systems
-            into simple, useful experiences.
+            Hey, I’m AJ—a product-minded full-stack developer bringing useful
+            products from idea to production, with AI woven into how I explore,
+            build, and ship.
           </p>
           <a className="round-link" href="#work" onClick={scrollToSection} aria-label="Explore selected work">
             <span>Explore</span>
