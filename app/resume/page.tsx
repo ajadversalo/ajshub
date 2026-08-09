@@ -61,7 +61,7 @@ export default function ResumePage() {
               <h1>AJ<br />Adversalo<span>.</span></h1>
             </div>
             <div className="resume-contact">
-              <p>Product-minded developer turning complex systems into simple, useful experiences.</p>
+              <p>Full-stack developer bringing useful products from idea to production, using AI to accelerate how I explore, build, and ship.</p>
               <a href="https://www.linkedin.com/in/ajadversalo">LinkedIn ↗</a>
               <a href="https://github.com/ajadversalo">GitHub ↗</a>
               <a href="https://aijabber.ca">AI Jabber ↗</a>
