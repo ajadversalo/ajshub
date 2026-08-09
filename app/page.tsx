@@ -12,6 +12,8 @@ const projects = [
   },
 ];
 
+const hasPublishedProjects = projects.some((project) => Boolean(project.href));
+
 const stack = [
   "TypeScript",
   "React",
@@ -41,24 +43,35 @@ const concepts = [
 const experience = [
   {
     company: "Centra Construction Group",
+    logo: "/centra-logo.png",
     discipline: "Senior Software Developer · Langley, BC",
-    marker: "June 2023 — Present",
+    marker: "June 2023 – Present",
     intro: "Modernizing enterprise applications, digitizing shop-floor workflows, and exploring AI-driven planning across five Western Canadian branches.",
     products: [
-      { name: "CentraCalendar", type: "Scheduling platform", note: "Rebuilt a monolithic system as a modular Next.js client-server application, improving load performance by 50% and supporting scalable deployment across five branches.", tools: ["Next.js", "TypeScript", "C#", ".NET"] },
-      { name: "CentraManufacture", type: "Operations tracker", note: "Developed a mobile-first shop-floor application that digitized workflows and reduced manual logging time by 40% across Langley and Calgary facilities.", tools: ["Mobile-first UI", "Redux", "Node.js", "Playwright"] },
-      { name: "AI planning prototypes", type: "Applied AI", note: "Integrated OpenAI API prototypes for predictive scheduling and automated planning, alongside a unified Ant Design interface used as the baseline for later internal apps.", tools: ["OpenAI API", "Ant Design", "Flowfinity", "IIS"] },
+      { name: "CentraCalendar", type: "Scheduling platform", note: "A calendar-based system that coordinates manufacturing, installation, and shipping with real-time tracking and shared workflow visibility across departments.", tools: ["Scheduling", "Operations", "Real-time tracking"] },
+      { name: "CentraManufacture", type: "Manufacturing platform", note: "A production application that surfaces live manufacturing insights, supports workflow optimization, and helps teams identify bottlenecks while maintaining quality control.", tools: ["Manufacturing", "Live insights", "Workflow optimization"] },
+      { name: "CentraMetrics", type: "Performance dashboard", note: "A centralized dashboard for operational metrics across production, scheduling, and service, giving teams clearer data for day-to-day decisions.", tools: ["Analytics", "Dashboards", "Operational metrics"] },
+      { name: "CentraService", type: "Service management", note: "A post-installation workflow system for logging, scheduling, and resolving repairs, warranty claims, and ongoing maintenance requests.", tools: ["Service workflows", "Warranty claims", "Scheduling"] },
+      { name: "CentraRequest", type: "Internal operations", note: "A centralized platform for internal requests including share purchases, vacation forms, employee onboarding, and terminations.", tools: ["Request management", "Administration", "Workflow automation"] },
+      { name: "CentraCustomers", type: "Customer management", note: "A CRM system that maintains client records and interactions, providing teams across branches with a unified view of customer data.", tools: ["CRM", "Customer data", "Multi-branch"] },
+      { name: "CentraAccess", type: "Access management", note: "An internal permissions tool that manages user roles and security levels across Centra applications to support consistent authorization and data protection.", tools: ["Authorization", "User roles", "Security"] },
+      { name: "CentraWindows.com", type: "Company website", note: "Centra’s primary marketing and customer engagement website, combining product information and lead generation with backend quoting and service-request integrations.", tools: ["Marketing", "Lead generation", "Systems integration"] },
     ],
   },
   {
     company: "GenXys Healthcare Systems",
+    logo: "/genxys-logo-square.png",
     discipline: "Full-Stack Developer · Vancouver, BC",
-    marker: "July 2019 — June 2023",
+    marker: "July 2019 – June 2023",
     intro: "Modernized clinical SaaS products, built reusable UI foundations, and automated operational workflows across the GenXys product suite.",
     products: [
-      { name: "TreatGx", type: "SaaS prescribing platform", note: "Helped modernize the flagship product and transition subsequent applications from a monolithic codebase into modular, maintainable React experiences.", tools: ["React", "Redux", "C#", ".NET"] },
-      { name: "GenXys product suite", type: "Shared SaaS systems", note: "Developed reusable component libraries plus user management, dynamic reporting, and automated email modules used across multiple web applications.", tools: ["Material UI", "SendGrid", "i18next", "Azure DevOps"] },
-      { name: "Test-kit fulfillment", type: "Workflow automation", note: "Integrated the Canada Post API to automate shipping workflows, cutting manual data entry by 80% and improving turnaround efficiency.", tools: ["Canada Post API", "Entity Framework", "Selenium", "C#"] },
+      { name: "GenXys Portal", type: "Provider portal", note: "The Canadian and United States portal where healthcare providers purchase licenses and manage their accounts and preferences.", tools: ["Healthcare SaaS", "Licensing", "Account management"] },
+      { name: "TreatGx", type: "Precision prescribing", note: "A clinical decision-support product that combines a patient’s genetics, current clinical evidence, and entered health information to generate safer, more effective medication options.", tools: ["Pharmacogenetics", "Clinical evidence", "Decision support"] },
+      { name: "ReviewGx", type: "Medication review", note: "A medication therapy management tool that brings together evidence-based pharmacogenomics, deprescribing insights, and clinical laboratory data for comprehensive reviews.", tools: ["Medication therapy", "Pharmacogenomics", "Clinical data"] },
+      { name: "Alogogen", type: "Algorithm authoring", note: "An internal application used by algorithm developers to create and maintain complex pharmacogenetic algorithms.", tools: ["Internal tools", "Algorithms", "Pharmacogenetics"] },
+      { name: "TrackGx", type: "Patient tracking", note: "A mobile-first application that helps patients monitor and report the efficacy of their prescriptions over time.", tools: ["Mobile-first", "Patient experience", "Medication tracking"] },
+      { name: "LabGx", type: "Laboratory platform", note: "A laboratory application that supports uploading and processing genetic data from lab results.", tools: ["Laboratory workflows", "Genetic data", "Data upload"] },
+      { name: "Patient Dashboard", type: "Patient portal", note: "A patient-facing portal for securely viewing laboratory reports and medication reviews in one place.", tools: ["Patient portal", "Lab reports", "Medication reviews"] },
     ],
   },
   {
@@ -94,20 +107,23 @@ export default function Home() {
           AJ<span>®</span>
         </a>
         <nav aria-label="Primary navigation">
-          <a href="#work" onClick={scrollToSection}>Work</a>
+          {hasPublishedProjects && <a href="#work" onClick={scrollToSection}>Work</a>}
           <a href="#experience-archive" onClick={scrollToSection}>Experience</a>
-          <a href="/resume">Résumé</a>
+          <a className="nav-mobile-resume" href="/resume">Résumé</a>
           <a href="#about" onClick={scrollToSection}>About</a>
           <a href="#contact" onClick={scrollToSection}>Contact</a>
         </nav>
-        <a
-          className="availability"
-          href="https://www.linkedin.com/in/ajadversalo"
-          target="_blank"
-          rel="noreferrer"
-        >
-          <span /> Let’s connect
-        </a>
+        <div className="nav-actions">
+          <a className="nav-resume" href="/resume">Résumé ↗</a>
+          <a
+            className="availability"
+            href="https://www.linkedin.com/in/ajadversalo"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <span /> Let’s connect
+          </a>
+        </div>
       </header>
 
       <section className="hero shell" id="top">
@@ -116,9 +132,9 @@ export default function Home() {
         </div>
         <p className="eyebrow">Full-stack developer · Vancouver, BC</p>
         <h1>
-          I build digital
+          Useful by design.
           <br />
-          things that <em>work.</em>
+          <em>Reliable by default.</em>
         </h1>
         <div className="hero-bottom">
           <p>
@@ -126,7 +142,12 @@ export default function Home() {
             products from idea to production, with AI woven into how I explore,
             build, and ship.
           </p>
-          <a className="round-link" href="#work" onClick={scrollToSection} aria-label="Explore selected work">
+          <a
+            className="round-link"
+            href={hasPublishedProjects ? "#work" : "#experience-archive"}
+            onClick={scrollToSection}
+            aria-label={hasPublishedProjects ? "Explore selected work" : "Explore experience"}
+          >
             <span>Explore</span>
             <b aria-hidden="true">↓</b>
           </a>
@@ -155,7 +176,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="work shell" id="work">
+      {hasPublishedProjects && <section className="work shell" id="work">
         <div className="section-heading">
           <p className="eyebrow">Independent work · Ideas in motion</p>
           <h2>After hours.</h2>
@@ -196,20 +217,36 @@ export default function Home() {
             </a>
           ))}
         </div>
-      </section>
+      </section>}
 
       <section className="experience shell" id="experience-archive">
         <div className="experience-heading">
           <p className="eyebrow">Experience archive · Selected chapters</p>
-          <h2>Where the work<br /><em>lived.</em></h2>
-          <p>Companies provide the context. The products show the contribution.</p>
+          <h2>What I helped<br /><em>bring to life.</em></h2>
+          <p>
+            Some project details are intentionally kept high-level to respect
+            the confidential nature of the work.
+          </p>
         </div>
 
         <div className="experience-list">
           {experience.map((chapter, chapterIndex) => (
-            <article className="experience-chapter" key={chapter.company}>
+            <article
+              className={`experience-chapter company-${chapterIndex + 1}`}
+              key={chapter.company}
+            >
               <div className="company-context">
                 <span className="company-index">0{chapterIndex + 1}</span>
+                {chapter.logo && (
+                  <Image
+                    className="company-logo"
+                    src={chapter.logo}
+                    alt={`${chapter.company} logo`}
+                    width={96}
+                    height={96}
+                    unoptimized
+                  />
+                )}
                 <p className="eyebrow">{chapter.marker}</p>
                 <h3>{chapter.company}</h3>
                 <strong>{chapter.discipline}</strong>
@@ -217,7 +254,11 @@ export default function Home() {
               </div>
               <div className="product-records">
                 {chapter.products.map((product, productIndex) => (
-                  <div className="product-record" key={product.name}>
+                  <div
+                    className="product-record"
+                    data-index={String(productIndex + 1).padStart(2, "0")}
+                    key={product.name}
+                  >
                     <div className="record-meta">
                       <span>0{productIndex + 1}</span>
                       <span>{product.type}</span>
@@ -287,3 +328,4 @@ export default function Home() {
 "use client";
 
 import type { MouseEvent } from "react";
+import Image from "next/image";

@@ -43,13 +43,33 @@ const skills = [
 export default function ResumePage() {
   return (
     <main className="resume-page">
-      <header className="resume-toolbar">
-        <a href="/" className="resume-back">← Portfolio</a>
-        <span>AJ / Career document</span>
-        <button type="button" onClick={() => window.print()}>Export PDF ↗</button>
+      <header className="nav shell resume-nav">
+        <a className="monogram" href="/" aria-label="AJ Adversalo, home">
+          AJ<span>®</span>
+        </a>
+        <nav aria-label="Primary navigation">
+          <a href="/#experience-archive">Experience</a>
+          <a className="nav-mobile-resume" href="/resume" aria-current="page">Résumé</a>
+          <a href="/#about">About</a>
+          <a href="/#contact">Contact</a>
+        </nav>
+        <div className="nav-actions">
+          <a className="nav-resume" href="/resume" aria-current="page">Résumé ↗</a>
+          <a
+            className="availability"
+            href="https://www.linkedin.com/in/ajadversalo"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <span /> Let’s connect
+          </a>
+        </div>
       </header>
 
       <div className="resume-stage">
+        <button className="resume-export" type="button" onClick={() => window.print()}>
+          Export PDF ↗
+        </button>
         <aside className="resume-rail" aria-hidden="true">
           <span>01</span><i /><span>Résumé</span>
         </aside>
