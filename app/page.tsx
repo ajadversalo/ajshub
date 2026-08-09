@@ -176,11 +176,11 @@ export default function Home() {
 
       <section className="work shell" id="work">
         <div className="section-heading">
-          <p className="eyebrow">Selected work · 2022—Now</p>
-          <h2>Built with intent.</h2>
+          <p className="eyebrow">Independent work · Ideas in motion</p>
+          <h2>After hours.</h2>
           <p className="section-note">
-            A mix of health-tech, commerce, and independent products — each
-            shaped around a real problem.
+            Some of my ideas, deployed. Built from curiosity and shaped into
+            something real.
           </p>
         </div>
 
