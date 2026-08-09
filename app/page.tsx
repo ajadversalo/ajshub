@@ -47,6 +47,19 @@ const stack = [
   "Playwright",
 ];
 
+const concepts = [
+  "UI Systems",
+  "AI Tools",
+  "Product Thinking",
+  "API Design",
+  "Accessibility",
+  "Cloud Architecture",
+  "Performance",
+  "Automation",
+  "Developer Experience",
+  "Prototyping",
+];
+
 function Arrow() {
   return <span aria-hidden="true">↗</span>;
 }
@@ -110,7 +123,7 @@ export default function Home() {
             ))}
           </div>
           <div className="ticker-track ticker-track-reverse" aria-hidden="true">
-            {[...stack.slice().reverse(), ...stack.slice().reverse()].map((item, index) => (
+            {[...concepts, ...concepts].map((item, index) => (
               <span key={`reverse-${item}-${index}`}>{item}<i>↗</i></span>
             ))}
           </div>
