@@ -40,32 +40,34 @@ const concepts = [
 
 const experience = [
   {
-    company: "GenXys Health Care Systems",
-    discipline: "Product engineering",
-    marker: "Current chapter",
-    intro: "Clinical products that turn complex pharmacogenomic information into useful decisions for healthcare teams.",
+    company: "Centra Construction Group",
+    discipline: "Software Developer · Langley, BC",
+    marker: "June 2023 — Present",
+    intro: "Modernizing enterprise applications, digitizing shop-floor workflows, and exploring AI-driven planning across five Western Canadian branches.",
     products: [
-      { name: "Clinical software platform", type: "Healthcare application", note: "Reliable, decision-focused product experiences for clinical teams.", tools: ["React", "TypeScript", ".NET", "Azure"] },
-      { name: "Shared product systems", type: "Platform foundations", note: "Reusable interface patterns and resilient services supporting the wider product.", tools: ["UI Systems", "APIs", "Cloud"] },
+      { name: "CentraCalendar", type: "Scheduling platform", note: "Rebuilt a monolithic system as a modular Next.js client-server application, improving load performance by 50% and supporting scalable deployment across five branches.", tools: ["Next.js", "TypeScript", "C#", ".NET"] },
+      { name: "CentraManufacture", type: "Operations tracker", note: "Developed a mobile-first shop-floor application that digitized workflows and reduced manual logging time by 40% across Langley and Calgary facilities.", tools: ["Mobile-first UI", "Redux", "Node.js", "Playwright"] },
+      { name: "AI planning prototypes", type: "Applied AI", note: "Integrated OpenAI API prototypes for predictive scheduling and automated planning, alongside a unified Ant Design interface used as the baseline for later internal apps.", tools: ["OpenAI API", "Ant Design", "Flowfinity", "IIS"] },
     ],
   },
   {
-    company: "Centra Windows",
-    discipline: "Digital platform",
-    marker: "Company chapter",
-    intro: "Customer-facing experiences and internal tools for one of Western Canada’s leading window manufacturers.",
+    company: "GenXys Healthcare Systems",
+    discipline: "Full-Stack Developer · Vancouver, BC",
+    marker: "July 2019 — June 2023",
+    intro: "Modernized clinical SaaS products, built reusable UI foundations, and automated operational workflows across the GenXys product suite.",
     products: [
-      { name: "Customer experience", type: "Public-facing platform", note: "Digital touchpoints designed to make a complex buying journey easier to navigate.", tools: ["React", "C#", "Cloud"] },
-      { name: "Internal operations tools", type: "Business software", note: "Practical tools connecting internal workflows, teams, and company data.", tools: ["C#", "SQL", "APIs"] },
+      { name: "TreatGx", type: "SaaS prescribing platform", note: "Helped modernize the flagship product and transition subsequent applications from a monolithic codebase into modular, maintainable React experiences.", tools: ["React", "Redux", "C#", ".NET"] },
+      { name: "GenXys product suite", type: "Shared SaaS systems", note: "Developed reusable component libraries plus user management, dynamic reporting, and automated email modules used across multiple web applications.", tools: ["Material UI", "SendGrid", "i18next", "Azure DevOps"] },
+      { name: "Test-kit fulfillment", type: "Workflow automation", note: "Integrated the Canada Post API to automate shipping workflows, cutting manual data entry by 80% and improving turnaround efficiency.", tools: ["Canada Post API", "Entity Framework", "Selenium", "C#"] },
     ],
   },
   {
-    company: "AI Jabber",
-    discipline: "Founder project",
-    marker: "Independent",
-    intro: "A focused, approachable place to think, ask, and create with modern language models.",
+    company: "Earlier Technical Career",
+    discipline: "Application & Systems Administration",
+    marker: "2010 — 2017",
+    intro: "A foundation spanning systems, networks, application support, internal development, automation, and multi-site environments.",
     products: [
-      { name: "AI Jabber", type: "AI product", note: "An end-to-end independent product spanning interface, model integration, data, and deployment.", tools: ["Next.js", "OpenAI", "Supabase", "Vercel"] },
+      { name: "Internal tools & automation", type: "Technical operations", note: "Developed internal utilities and automation scripts while maintaining front-end components and supporting multi-site infrastructure.", tools: ["HTML", "CSS", "JavaScript", "Systems"] },
     ],
   },
 ];

@@ -2,42 +2,42 @@
 
 const roles = [
   {
-    company: "GenXys Health Care Systems",
-    role: "Product Engineering",
-    period: "Current",
-    summary: "Building reliable clinical software that helps turn complex pharmacogenomic data into useful decisions for healthcare teams.",
+    company: "Centra Construction Group",
+    role: "Software Developer · Langley, BC",
+    period: "Jun 2023 — Present",
+    summary: "Modernizing enterprise applications, digitizing operational workflows, and prototyping AI-driven planning tools across five Western Canadian branches.",
     projects: [
-      ["Clinical software platform", "Decision-focused product experiences for clinical teams."],
-      ["Shared product systems", "Reusable interface patterns and resilient services supporting the wider product."],
+      ["CentraCalendar", "Modular Next.js architecture that improved load performance by 50%."],
+      ["CentraManufacture", "Mobile-first operations tracking that reduced manual logging by 40%."],
     ],
-    stack: ["React", "TypeScript", ".NET", "Azure"],
+    stack: ["Next.js", "TypeScript", "C#", ".NET", "Redux", "Ant Design", "Playwright", "OpenAI API"],
   },
   {
-    company: "Centra Windows",
-    role: "Digital Platform",
-    period: "Previous",
-    summary: "Contributing to customer-facing experiences and internal tools for one of Western Canada’s leading window manufacturers.",
+    company: "GenXys Healthcare Systems",
+    role: "Full-Stack Developer · Vancouver, BC",
+    period: "Jul 2019 — Jun 2023",
+    summary: "Modernized clinical SaaS products, created shared UI foundations, and automated fulfillment and communication workflows across the GenXys suite.",
     projects: [
-      ["Customer experience", "Digital touchpoints designed to make a complex buying journey easier to navigate."],
-      ["Internal operations tools", "Practical software connecting internal workflows, teams, and company data."],
+      ["TreatGx", "Helped transition the flagship prescribing platform into modular React applications."],
+      ["Product suite foundations", "Reusable components, user management, reporting, notifications, and shipping automation."],
     ],
-    stack: ["C#", "SQL", "React", "Cloud"],
+    stack: ["React", "Redux", "C#", ".NET", "Azure DevOps", "Material UI", "SendGrid", "Selenium"],
   },
   {
-    company: "AI Jabber",
-    role: "Founder Project",
-    period: "Independent",
-    summary: "A focused, approachable place to think, ask, and create with modern language models.",
-    projects: [["AI Jabber", "An end-to-end product spanning interface, model integration, data, and deployment."]],
-    stack: ["Next.js", "OpenAI", "Supabase", "Vercel"],
+    company: "Earlier Technical Career",
+    role: "Application & Systems Administration",
+    period: "2010 — 2017",
+    summary: "Supported systems, networks, applications, and multi-site environments while developing internal tools, automation scripts, and front-end components.",
+    projects: [["Internal tools & automation", "Technical operations combined with practical software development and application support."]],
+    stack: ["HTML", "CSS", "JavaScript", "Systems", "Networks", "Automation"],
   },
 ];
 
 const skills = [
-  ["Interface", "React, Next.js, TypeScript, UI systems, accessibility"],
-  ["Backend", "C# / .NET, Node.js, PostgreSQL, SQL, API design"],
-  ["Platform", "Azure, AWS, Vercel, Supabase, cloud architecture"],
-  ["Practice", "Product thinking, AI tools, testing, automation, prototyping"],
+  ["Interface", "HTML, CSS, JavaScript, TypeScript, React, Next.js, Redux, Material UI, Ant Design, Tailwind CSS"],
+  ["Backend", "C# / .NET, Node.js, Python, Django, Entity Framework, Express, Dapper"],
+  ["Platform", "SQL Server, PostgreSQL, Azure DevOps, AWS, IIS, Apache, Netlify"],
+  ["Practice", "Selenium, Playwright, localization, SendGrid, Google Maps API, OpenAI API"],
 ];
 
 export default function ResumePage() {
