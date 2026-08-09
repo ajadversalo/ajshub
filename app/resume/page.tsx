@@ -68,13 +68,8 @@ export default function ResumePage() {
             </div>
           </header>
 
-          <section className="resume-block resume-profile">
-            <span className="resume-label">Profile / 01</span>
-            <p>I build thoughtful interfaces and resilient systems, with a focus on making complicated products feel clear, trustworthy, and effortless to use.</p>
-          </section>
-
           <section className="resume-block">
-            <span className="resume-label">Experience / 02</span>
+            <span className="resume-label">Experience / 01</span>
             <div className="resume-roles">
               {roles.map((item, index) => (
                 <article className="resume-role" key={item.company}>
@@ -96,7 +91,7 @@ export default function ResumePage() {
           </section>
 
           <section className="resume-block">
-            <span className="resume-label">Capabilities / 03</span>
+            <span className="resume-label">Capabilities / 02</span>
             <div className="resume-skills">
               {skills.map(([category, items]) => <div key={category}><strong>{category}</strong><p>{items}</p></div>)}
             </div>
