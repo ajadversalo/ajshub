@@ -88,6 +88,31 @@ const experience = [
   },
 ];
 
+const techIcons: Record<string, string> = {
+  "Next.js": "nextdotjs",
+  TypeScript: "typescript",
+  "C#": "csharp",
+  ".NET": "dotnet",
+  Redux: "redux",
+  "Ant Design": "antdesign",
+  Playwright: "playwright",
+  "OpenAI API": "openai",
+  React: "react",
+  "Azure DevOps": "azuredevops",
+  "Material UI": "mui",
+  SendGrid: "sendgrid",
+  Selenium: "selenium",
+  HTML: "html5",
+  CSS: "css",
+  JavaScript: "javascript",
+};
+
+const techFallbackIcons: Record<string, string> = {
+  Systems: "▣",
+  Networks: "⌁",
+  Automation: "↻",
+};
+
 function Arrow() {
   return <span aria-hidden="true">↗</span>;
 }
@@ -257,7 +282,22 @@ export default function Home() {
                 <div className="company-stack">
                   <span>Tech stack</span>
                   <ul aria-label={`${chapter.company} tech stack`}>
-                    {chapter.stack.map((tool) => <li key={tool}>{tool}</li>)}
+                    {chapter.stack.map((tool) => (
+                      <li key={tool}>
+                        {techIcons[tool] ? (
+                          <img
+                            src={`https://cdn.simpleicons.org/${techIcons[tool]}/b5b5af`}
+                            alt=""
+                            width="13"
+                            height="13"
+                            loading="lazy"
+                          />
+                        ) : (
+                          <i aria-hidden="true">{techFallbackIcons[tool] ?? "•"}</i>
+                        )}
+                        {tool}
+                      </li>
+                    ))}
                   </ul>
                 </div>
               </div>
