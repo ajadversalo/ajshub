@@ -47,6 +47,7 @@ const experience = [
     discipline: "Senior Software Developer · Langley, BC",
     marker: "June 2023 – Present",
     intro: "Modernizing enterprise applications, digitizing shop-floor workflows, and exploring AI-driven planning across five Western Canadian branches.",
+    stack: ["Next.js", "TypeScript", "C#", ".NET", "Redux", "Ant Design", "Playwright", "OpenAI API"],
     products: [
       { name: "CentraCalendar", type: "Scheduling platform", note: "A calendar-based system that coordinates manufacturing, installation, and shipping with real-time tracking and shared workflow visibility across departments.", tools: ["Scheduling", "Operations", "Real-time tracking"] },
       { name: "CentraManufacture", type: "Manufacturing platform", note: "A production application that surfaces live manufacturing insights, supports workflow optimization, and helps teams identify bottlenecks while maintaining quality control.", tools: ["Manufacturing", "Live insights", "Workflow optimization"] },
@@ -64,6 +65,7 @@ const experience = [
     discipline: "Full-Stack Developer · Vancouver, BC",
     marker: "July 2019 – June 2023",
     intro: "Modernized clinical SaaS products, built reusable UI foundations, and automated operational workflows across the GenXys product suite.",
+    stack: ["React", "Redux", "C#", ".NET", "Azure DevOps", "Material UI", "SendGrid", "Selenium"],
     products: [
       { name: "GenXys Portal", type: "Provider portal", note: "The Canadian and United States portal where healthcare providers purchase licenses and manage their accounts and preferences.", tools: ["Healthcare SaaS", "Licensing", "Account management"] },
       { name: "TreatGx", type: "Precision prescribing", note: "A clinical decision-support product that combines a patient’s genetics, current clinical evidence, and entered health information to generate safer, more effective medication options.", tools: ["Pharmacogenetics", "Clinical evidence", "Decision support"] },
@@ -79,6 +81,7 @@ const experience = [
     discipline: "Application & Systems Administration",
     marker: "2010 — 2017",
     intro: "A foundation spanning systems, networks, application support, internal development, automation, and multi-site environments.",
+    stack: ["HTML", "CSS", "JavaScript", "Systems", "Networks", "Automation"],
     products: [
       { name: "Internal tools & automation", type: "Technical operations", note: "Developed internal utilities and automation scripts while maintaining front-end components and supporting multi-site infrastructure.", tools: ["HTML", "CSS", "JavaScript", "Systems"] },
     ],
@@ -250,7 +253,13 @@ export default function Home() {
                 <p className="eyebrow">{chapter.marker}</p>
                 <h3>{chapter.company}</h3>
                 <strong>{chapter.discipline}</strong>
-                <p>{chapter.intro}</p>
+                <p className="company-intro">{chapter.intro}</p>
+                <div className="company-stack">
+                  <span>Tech stack</span>
+                  <ul aria-label={`${chapter.company} tech stack`}>
+                    {chapter.stack.map((tool) => <li key={tool}>{tool}</li>)}
+                  </ul>
+                </div>
               </div>
               <div className="product-records">
                 {chapter.products.map((product, productIndex) => (
