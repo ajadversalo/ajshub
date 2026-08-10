@@ -81,7 +81,7 @@ const experience = [
     discipline: "Application & Systems Administration",
     marker: "2010 — 2017",
     intro: "A foundation spanning systems, networks, application support, internal development, automation, and multi-site environments.",
-    stack: ["HTML", "CSS", "JavaScript"],
+    stack: ["HTML", "CSS", "JavaScript", "Systems", "Networks", "Automation"],
     products: [
       { name: "Internal tools & automation", type: "Technical operations", note: "Developed internal utilities and automation scripts while maintaining front-end components and supporting multi-site infrastructure.", tools: ["HTML", "CSS", "JavaScript", "Systems"] },
     ],
@@ -278,14 +278,16 @@ export default function Home() {
                   <ul aria-label={`${chapter.company} tech stack`}>
                     {chapter.stack.map((tool) => (
                       <li key={tool}>
-                        <img
-                          src={`https://cdn.simpleicons.org/${techIcons[tool]}`}
-                          className={tool === "Next.js" || tool === "OpenAI API" ? "tech-icon-light" : undefined}
-                          alt=""
-                          width="13"
-                          height="13"
-                          loading="lazy"
-                        />
+                        {techIcons[tool] && (
+                          <img
+                            src={`https://cdn.simpleicons.org/${techIcons[tool]}`}
+                            className={tool === "Next.js" || tool === "OpenAI API" ? "tech-icon-light" : undefined}
+                            alt=""
+                            width="13"
+                            height="13"
+                            loading="lazy"
+                          />
+                        )}
                         {tool}
                       </li>
                     ))}
