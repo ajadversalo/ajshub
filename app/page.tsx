@@ -1,7 +1,7 @@
 import { experience, techIcons } from "./data/experience";
 import { projects } from "./data/portfolio";
 import ThemeToggle from "./theme-toggle";
-import ToolboxTicker from "./toolbox-ticker";
+import ToolboxSection from "./toolbox-section";
 
 const hasPublishedProjects = projects.some((project) => Boolean(project.href));
 
@@ -31,6 +31,7 @@ export default function Home() {
         </div>
         <nav aria-label="Primary navigation">
           {hasPublishedProjects && <a href="#work" onClick={scrollToSection}>Work</a>}
+          <a href="#toolbox" onClick={scrollToSection}>Tools</a>
           <a href="#experience-archive" onClick={scrollToSection}>Experience</a>
           <a href="#about" onClick={scrollToSection}>About</a>
           <a href="#contact" onClick={scrollToSection}>Contact</a>
@@ -118,6 +119,8 @@ export default function Home() {
         </div>
       </section>}
 
+      <ToolboxSection />
+
       <section className="experience shell" id="experience-archive">
         <div className="experience-heading">
           <p className="eyebrow">Experience archive</p>
@@ -127,8 +130,6 @@ export default function Home() {
             the confidential nature of the work.
           </p>
         </div>
-
-        <ToolboxTicker />
 
         <div className="experience-list">
           {experience.map((chapter, chapterIndex) => (
