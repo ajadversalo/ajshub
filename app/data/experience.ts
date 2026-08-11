@@ -2,6 +2,7 @@ export const experience = [
   {
     company: "Centra Construction Group",
     logo: "/centra-logo.png",
+    website: "https://www.centrawindows.com",
     discipline: "Senior Software Developer · Langley, BC",
     marker: "June 2023 — Present",
     intro: "Modernizing enterprise applications, digitizing shop-floor workflows, and exploring AI-driven planning across five Western Canadian branches.",
@@ -20,6 +21,7 @@ export const experience = [
   {
     company: "GenXys Healthcare Systems",
     logo: "/genxys-logo-square.png",
+    website: "https://genxys.com",
     discipline: "Full-Stack Developer · Vancouver, BC",
     marker: "July 2019 — June 2023",
     intro: "Modernized clinical SaaS products, built reusable UI foundations, and automated operational workflows across the GenXys product suite.",
@@ -36,12 +38,12 @@ export const experience = [
   },
   {
     company: "Earlier Technical Career",
-    discipline: "Application & Systems Administration",
-    marker: "2010 — 2017",
-    intro: "A foundation spanning systems, networks, application support, internal development, automation, and multi-site environments.",
-    stack: ["HTML", "CSS", "JavaScript", "Systems", "Networks", "Automation"],
+    discipline: "Technical Support & Junior Systems Administration",
+    marker: "2010 — 2018",
+    intro: "Supported users, applications, and infrastructure across renewable energy, oil and gas, and manufacturing environments.",
+    stack: ["Desktop Support", "Networking", "Application Support", "Server Support", "Systems Administration", "Windows", "Active Directory", "Mail Server"],
     products: [
-      { name: "Internal tools & automation", type: "Technical operations", note: "Developed internal utilities and automation scripts while maintaining front-end components and supporting multi-site infrastructure.", tags: ["HTML", "CSS", "JavaScript", "Systems administration"] },
+      { name: "Technical support & systems administration", type: "IT operations", note: "Provided desktop, network, application, and server support across renewable energy, oil and gas, and manufacturing organizations.", tags: ["Desktop support", "Network support", "Application support", "Server support"] },
     ],
   },
 ];
@@ -50,5 +52,5 @@ export const techIcons: Record<string, string> = {
   "Next.js": "nextdotjs", TypeScript: "typescript", "C#": "csharp", ".NET": "dotnet",
   Redux: "redux", "Ant Design": "antdesign", Playwright: "playwright", "OpenAI API": "openai",
   React: "react", "Azure DevOps": "azuredevops", "Material UI": "mui", SendGrid: "sendgrid",
-  Selenium: "selenium", HTML: "html5", CSS: "css", JavaScript: "javascript",
+  Selenium: "selenium",
 };

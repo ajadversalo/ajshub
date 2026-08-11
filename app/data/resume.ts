@@ -23,11 +23,11 @@ export const roles = [
   },
   {
     company: "Earlier Technical Career",
-    role: "Application & Systems Administration",
-    period: "2010 — 2017",
-    summary: "Supported systems, networks, applications, and multi-site environments while developing internal tools, automation scripts, and front-end components.",
-    projects: [["Internal tools & automation", "Technical operations combined with practical software development and application support."]],
-    stack: ["HTML", "CSS", "JavaScript", "Systems", "Networks", "Automation"],
+    role: "Technical Support & Junior Systems Administration",
+    period: "2010 — 2018",
+    summary: "Provided desktop, network, application, and server support across renewable energy, oil and gas, and manufacturing organizations.",
+    projects: [["IT operations", "Supported users, business applications, networks, and server infrastructure across diverse technical environments."]],
+    stack: ["Desktop Support", "Networking", "Application Support", "Server Support", "Systems Administration", "Windows", "Active Directory", "Mail Server"],
   },
 ];
 

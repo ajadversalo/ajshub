@@ -1,22 +1,24 @@
 "use client";
 
 import { roles, skills } from "../data/resume";
+import ThemeToggle from "../theme-toggle";
 
 export default function ResumePage() {
   return (
     <main className="resume-page">
       <header className="nav shell resume-nav">
-        <a className="monogram" href="/" aria-label="AJ Adversalo, home">
-          AJ<span>®</span>
-        </a>
+        <div className="brand-actions">
+          <a className="monogram" href="/" aria-label="AJ Adversalo, home">
+            AJ<span>®</span>
+          </a>
+          <ThemeToggle />
+        </div>
         <nav aria-label="Primary navigation">
           <a href="/#experience-archive">Experience</a>
-          <a className="nav-mobile-resume" href="/resume" aria-current="page">Résumé</a>
           <a href="/#about">About</a>
           <a href="/#contact">Contact</a>
         </nav>
         <div className="nav-actions">
-          <a className="nav-resume" href="/resume" aria-current="page">Résumé ↗</a>
           <a
             className="availability"
             href="https://www.linkedin.com/in/ajadversalo"

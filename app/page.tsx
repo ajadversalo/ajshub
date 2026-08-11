@@ -1,5 +1,7 @@
 import { experience, techIcons } from "./data/experience";
-import { concepts, projects, stack } from "./data/portfolio";
+import { projects } from "./data/portfolio";
+import ThemeToggle from "./theme-toggle";
+import ToolboxTicker from "./toolbox-ticker";
 
 const hasPublishedProjects = projects.some((project) => Boolean(project.href));
 
@@ -21,18 +23,19 @@ export default function Home() {
   return (
     <main>
       <header className="nav shell">
-        <a className="monogram" href="#top" onClick={scrollToSection} aria-label="AJ Adversalo, home">
-          AJ<span>®</span>
-        </a>
+        <div className="brand-actions">
+          <a className="monogram" href="#top" onClick={scrollToSection} aria-label="AJ Adversalo, home">
+            AJ<span>®</span>
+          </a>
+          <ThemeToggle />
+        </div>
         <nav aria-label="Primary navigation">
           {hasPublishedProjects && <a href="#work" onClick={scrollToSection}>Work</a>}
           <a href="#experience-archive" onClick={scrollToSection}>Experience</a>
-          <a className="nav-mobile-resume" href="/resume">Résumé</a>
           <a href="#about" onClick={scrollToSection}>About</a>
           <a href="#contact" onClick={scrollToSection}>Contact</a>
         </nav>
         <div className="nav-actions">
-          <a className="nav-resume" href="/resume">Résumé ↗</a>
           <a
             className="availability"
             href="https://www.linkedin.com/in/ajadversalo"
@@ -69,28 +72,6 @@ export default function Home() {
             <span>Explore</span>
             <b aria-hidden="true">↓</b>
           </a>
-        </div>
-      </section>
-
-      <section className="ticker" aria-label="Core technologies">
-        <div className="ticker-label">
-          <span>Toolbox</span>
-          <i>Always learning</i>
-        </div>
-        <div className="ticker-window">
-          <div className="ticker-track">
-            {[...stack, ...stack].map((item, index) => (
-              <span key={`${item}-${index}`}>
-                <b>{String((index % stack.length) + 1).padStart(2, "0")}</b>
-                {item}
-              </span>
-            ))}
-          </div>
-          <div className="ticker-track ticker-track-reverse" aria-hidden="true">
-            {[...concepts, ...concepts].map((item, index) => (
-              <span key={`reverse-${item}-${index}`}>{item}<i>↗</i></span>
-            ))}
-          </div>
         </div>
       </section>
 
@@ -139,13 +120,15 @@ export default function Home() {
 
       <section className="experience shell" id="experience-archive">
         <div className="experience-heading">
-          <p className="eyebrow">Experience archive · Selected chapters</p>
+          <p className="eyebrow">Experience archive</p>
           <h2>What I helped<br /><em>bring to life.</em></h2>
           <p>
             Some project details are intentionally kept high-level to respect
             the confidential nature of the work.
           </p>
         </div>
+
+        <ToolboxTicker />
 
         <div className="experience-list">
           {experience.map((chapter, chapterIndex) => (
@@ -155,15 +138,24 @@ export default function Home() {
             >
               <div className="company-context">
                 <span className="company-index">0{chapterIndex + 1}</span>
-                {chapter.logo && (
-                  <Image
-                    className="company-logo"
-                    src={chapter.logo}
-                    alt={`${chapter.company} logo`}
-                    width={96}
-                    height={96}
-                    unoptimized
-                  />
+                {chapter.logo && chapter.website && (
+                  <a
+                    className="company-logo-link"
+                    href={chapter.website}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label={`Visit ${chapter.company} website`}
+                  >
+                    <Image
+                      className="company-logo"
+                      src={chapter.logo}
+                      alt={`${chapter.company} logo`}
+                      width={96}
+                      height={96}
+                      unoptimized
+                    />
+                    <span className="company-logo-label" aria-hidden="true">Visit site ↗</span>
+                  </a>
                 )}
                 <p className="eyebrow">{chapter.marker}</p>
                 <h3>{chapter.company}</h3>
@@ -219,8 +211,8 @@ export default function Home() {
         <div>
           <p className="eyebrow">A little about me</p>
           <p className="about-lede">
-            I’m at my best where <span>engineering</span>, product thinking,
-            and human curiosity meet.
+            I build best when <span>technical challenges</span>, product decisions,
+            and real human needs overlap.
           </p>
         </div>
         <div className="about-copy">
@@ -234,16 +226,16 @@ export default function Home() {
             side project, or looking for a better way to explain a complicated idea.
           </p>
           <div className="principles">
-            <div><span>01</span><strong>Make it useful.</strong></div>
-            <div><span>02</span><strong>Keep it clear.</strong></div>
-            <div><span>03</span><strong>Sweat the details.</strong></div>
+            <div><span>01</span><strong>Solve the right problem.</strong></div>
+            <div><span>02</span><strong>Make complexity feel simple.</strong></div>
+            <div><span>03</span><strong>Build with care.</strong></div>
           </div>
         </div>
       </section>
 
       <section className="contact" id="contact">
         <div className="shell contact-inner">
-          <p className="eyebrow">Have a project in mind?</p>
+          <p className="eyebrow">Open to the right opportunity.</p>
           <h2>Let’s make<br /><em>something good.</em></h2>
           <div className="contact-links">
             <a href="https://www.linkedin.com/in/ajadversalo" target="_blank" rel="noreferrer">
@@ -252,6 +244,7 @@ export default function Home() {
             <div>
               <a href="https://github.com/ajadversalo" target="_blank" rel="noreferrer">GitHub <Arrow /></a>
               <a href="https://www.linkedin.com/in/ajadversalo" target="_blank" rel="noreferrer">LinkedIn <Arrow /></a>
+              <a href="/resume">Résumé <Arrow /></a>
             </div>
           </div>
           <footer>
