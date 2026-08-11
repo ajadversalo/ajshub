@@ -1,9 +1,27 @@
 @import "tailwindcss";
 
-:root { --ink: #0a0a0a; --paper: #f1f0eb; --muted: #a2a29d; --line: #292929; }
+:root { --ink: #0a0a0a; --paper: #f1f0eb; --muted: #a2a29d; --line: #292929; color-scheme: dark; }
+:root[data-theme="light"] { --ink: #f2f1eb; --paper: #11120f; --muted: #64655f; --line: #cfcec6; color-scheme: light; }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body { margin: 0; background: var(--ink); color: var(--paper); font-family: var(--font-geist), Arial, sans-serif; }
+.theme-toggle { position: fixed; right: 24px; bottom: 24px; z-index: 50; display: flex; align-items: center; gap: 9px; padding: 7px 11px 7px 7px; border: 1px solid #ffffff24; border-radius: 100px; background: #181916e8; color: #f1f0eb; box-shadow: 0 8px 30px #0005; backdrop-filter: blur(14px); cursor: pointer; font: 600 9px var(--font-mono), monospace; text-transform: uppercase; letter-spacing: .08em; transition: background .25s, color .25s, border-color .25s, transform .2s; }
+.theme-toggle:hover { transform: translateY(-2px); }.theme-toggle:focus-visible { outline: 2px solid #a7ef56; outline-offset: 3px; }
+.theme-toggle-track { position: relative; width: 48px; height: 26px; border-radius: 100px; background: #30312d; display: flex; align-items: center; justify-content: space-around; font-size: 10px; }
+.theme-toggle-sun, .theme-toggle-moon { position: relative; z-index: 1; }.theme-toggle-sun { color: #11120f; }.theme-toggle-moon { color: #e8e8e2; font-size: 7px; }
+.theme-toggle-thumb { position: absolute; top: 3px; right: 3px; width: 20px; height: 20px; border-radius: 50%; background: #a7ef56; transition: transform .3s cubic-bezier(.2,.8,.2,1); }
+:root[data-theme="light"] .theme-toggle { background: #fffffff0; color: #171814; border-color: #11120f20; box-shadow: 0 8px 30px #34342d24; }
+:root[data-theme="light"] .theme-toggle-track { background: #deddd5; }:root[data-theme="light"] .theme-toggle-thumb { transform: translateX(-22px); }
+:root[data-theme="light"] .nav { background: #f2f1ebe8; }
+:root[data-theme="light"] .hero-bottom > p, :root[data-theme="light"] .project-copy p, :root[data-theme="light"] .company-intro, :root[data-theme="light"] .product-record > p, :root[data-theme="light"] .about-copy { color: #44453f; }
+:root[data-theme="light"] .round-link { border-color: #aaa9a1; }:root[data-theme="light"] .round-link:hover { background: #11120f; color: #f1f0eb; }
+:root[data-theme="light"] .rain i { background: linear-gradient(transparent, #4a4b45); }
+:root[data-theme="light"] .project-copy li, :root[data-theme="light"] .company-logo, :root[data-theme="light"] .company-stack li { border-color: #c3c2ba; color: #55564f; background: #11120f05; }
+:root[data-theme="light"] .company-stack li img.tech-icon-light { filter: none; }
+:root[data-theme="light"] .product-record { background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 15%, #e9e8e1) 0%, #e9e8e1 44%); border-color: #cecdc5; }
+:root[data-theme="light"] .principles strong { color: var(--paper); }
+:root[data-theme="light"] .contact { background: #11120f; color: #f1f0eb; }:root[data-theme="light"] .contact h2 em { color: #f1f0eb; }:root[data-theme="light"] .contact .eyebrow, :root[data-theme="light"] .contact footer { color: #aaa9a2; }:root[data-theme="light"] .contact-links { border-color: #484943; }
+:root[data-theme="light"] .resume-page { background: #e5e4dd; }
 a { color: inherit; text-decoration: none; }
 section[id] { scroll-margin-top: 24px; }
 .shell { width: min(1400px, calc(100% - 64px)); margin: 0 auto; }
