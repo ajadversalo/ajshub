@@ -18,8 +18,7 @@ export default function ToolboxSection() {
   return (
     <section className="toolbox shell" id="toolbox">
       <header className="toolbox-heading">
-        <p className="eyebrow">Technical toolkit</p>
-        <h2>Tools &amp; technologies.</h2>
+        <h2>My Technical Toolkit</h2>
         <p>The technologies I use to design, build, and ship products.</p>
       </header>
 
