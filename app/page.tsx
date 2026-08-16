@@ -123,8 +123,7 @@ export default function Home() {
 
       <section className="experience shell" id="experience-archive">
         <div className="experience-heading">
-          <p className="eyebrow">Experience archive</p>
-          <h2>What I helped<br /><em>bring to life.</em></h2>
+          <h2>What I helped bring to life</h2>
           <p>
             Some project details are intentionally kept high-level to respect
             the confidential nature of the work.
@@ -190,10 +189,19 @@ export default function Home() {
                     data-index={String(productIndex + 1).padStart(2, "0")}
                     key={product.name}
                   >
+                    {chapter.logo && (
+                      <Image
+                        className="product-record-watermark"
+                        src={chapter.logo}
+                        alt=""
+                        width={180}
+                        height={180}
+                        unoptimized
+                      />
+                    )}
                     <div className="record-meta">
                       <span>0{productIndex + 1}</span>
                       <span>{product.type}</span>
-                      <Arrow />
                     </div>
                     <h4>{product.name}</h4>
                     <p>{product.note}</p>

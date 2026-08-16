@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { toolboxGroups } from "./data/portfolio";
+import { techIcons } from "./data/experience";
 
 export default function ToolboxSection() {
   const [query, setQuery] = useState("");
@@ -42,13 +43,26 @@ export default function ToolboxSection() {
           const originalIndex = toolboxGroups.findIndex((item) => item.category === group.category);
           return (
           <article className="toolbox-group" data-index={`0${originalIndex + 1}`} key={group.category}>
-            <span className="toolbox-number">0{originalIndex + 1}</span>
             <div className="toolbox-group-heading">
               <h3>{group.category}</h3>
               <p>{group.description}</p>
             </div>
             <ul aria-label={`${group.category} technologies`}>
-              {group.tools.map((tool) => <li key={tool}>{tool}</li>)}
+              {group.tools.map((tool) => (
+                <li key={tool}>
+                  {techIcons[tool] && (
+                    <img
+                      src={`https://cdn.simpleicons.org/${techIcons[tool]}`}
+                      className={tool === "Next.js" || tool === "OpenAI API" ? "tech-icon-light" : undefined}
+                      alt=""
+                      width="15"
+                      height="15"
+                      loading="lazy"
+                    />
+                  )}
+                  {tool}
+                </li>
+              ))}
             </ul>
           </article>
           );

@@ -52,5 +52,7 @@ export const techIcons: Record<string, string> = {
   "Next.js": "nextdotjs", TypeScript: "typescript", "C#": "csharp", ".NET": "dotnet",
   Redux: "redux", "Ant Design": "antdesign", Playwright: "playwright", "OpenAI API": "openai",
   React: "react", "Azure DevOps": "azuredevops", "Material UI": "mui", SendGrid: "sendgrid",
-  Selenium: "selenium",
+  Selenium: "selenium", "Tailwind CSS": "tailwindcss", "Node.js": "nodedotjs", Python: "python",
+  Django: "django", PostgreSQL: "postgresql", "SQL Server": "microsoftsqlserver",
+  Azure: "microsoftazure", AWS: "amazonwebservices", IIS: "microsoftiis",
 };
