@@ -96,8 +96,10 @@ section[id] { scroll-margin-top: 24px; }
 .toolbox-group li:not(:last-child)::after { content: "/"; padding: 0 10px; color: color-mix(in srgb, var(--tool-accent) 65%, #777); font-weight: 400; }
 :root[data-theme="light"] .toolbox-heading h2 em { color: #4b741f; }:root[data-theme="light"] .toolbox-group { color: #151610; border-color: #c8c7bf; background: linear-gradient(145deg, color-mix(in srgb, var(--tool-accent) 20%, #e5e4dc), #deddd5 62%); }:root[data-theme="light"] .toolbox-group-heading p { color: #55564f; }:root[data-theme="light"] .toolbox-group li { color: #34352f; }
 @media (min-width: 901px) {
-  .toolbox { display: flex; flex-direction: column; }
-  .toolbox-grid { flex: 1; grid-auto-rows: minmax(0, 1fr); }
+  section[id] { scroll-margin-top: 92px; }
+  .hero { height: calc(100svh - 92px); min-height: 0; }
+  .toolbox { height: calc(100svh - 92px); min-height: 0; display: flex; flex-direction: column; overflow: hidden; }
+  .toolbox-grid { min-height: 0; flex: 1; grid-auto-rows: minmax(0, 1fr); }
   .toolbox-group:nth-child(4), .toolbox-group:nth-child(5) { grid-column: span 3; }
 }
 .work { padding: 140px 0 160px; }
