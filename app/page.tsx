@@ -58,7 +58,7 @@ export default function Home() {
         <h1>
           Modern full-stack development.
           <br />
-          <em>Accelerated.</em>
+          <em className="speed-word" data-text="Accelerated.">Accelerated.</em>
         </h1>
         <div className="hero-bottom">
           <p>
