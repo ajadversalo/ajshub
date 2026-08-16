@@ -62,7 +62,7 @@ export default function Home() {
         </h1>
         <div className="hero-bottom">
           <p>
-            Hey, I'm AJ—a product-minded full-stack developer bringing useful products from idea to production, with AI woven into how I rapidly iterate, build, and ship.
+            Hey, I'm AJ—a product-minded full-stack developer bringing useful products from idea to production, with <strong>AI woven into how I rapidly iterate, build, and ship</strong>.
           </p>
           <a
             className="round-link"
