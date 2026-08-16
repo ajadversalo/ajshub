@@ -2,6 +2,7 @@ import { experience, techIcons } from "./data/experience";
 import { projects } from "./data/portfolio";
 import ThemeToggle from "./theme-toggle";
 import ToolboxSection from "./toolbox-section";
+import HeroSpotlight from "./hero-spotlight";
 
 const hasPublishedProjects = projects.some((project) => Boolean(project.href));
 
@@ -49,20 +50,19 @@ export default function Home() {
       </header>
 
       <section className="hero shell" id="top">
+        <HeroSpotlight />
         <div className="rain" aria-hidden="true">
           <i /><i /><i /><i /><i />
         </div>
         <p className="eyebrow">Full-stack developer · Vancouver, BC</p>
         <h1>
-          Useful by design.
+          Modern full-stack development.
           <br />
-          <em>Reliable by default.</em>
+          <em>Accelerated.</em>
         </h1>
         <div className="hero-bottom">
           <p>
-            Hey, I’m AJ—a product-minded full-stack developer bringing useful
-            products from idea to production, with AI woven into how I explore,
-            build, and ship.
+            Hey, I'm AJ—a product-minded full-stack developer bringing useful products from idea to production, with AI woven into how I rapidly iterate, build, and ship.
           </p>
           <a
             className="round-link"

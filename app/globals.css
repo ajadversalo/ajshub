@@ -40,6 +40,20 @@ section[id] { scroll-margin-top: 24px; }
 .availability { justify-self: end; font-size: 12px; text-transform: uppercase; letter-spacing: .09em; display: flex; align-items: center; gap: 9px; }
 .availability span { width: 7px; height: 7px; border-radius: 50%; background: #a7ef56; box-shadow: 0 0 0 4px #a7ef5620; }
 .hero { min-height: calc(100vh - 92px); padding: clamp(80px, 12vh, 145px) 0 52px; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; }
+.hero-spotlight { --spot-x: 50%; --spot-y: 45%; position: absolute; inset: 0; z-index: 0; pointer-events: none; opacity: 0; transition: opacity .35s ease; mask-image: radial-gradient(circle 190px at var(--spot-x) var(--spot-y), #000 0 52%, #000b 70%, transparent 100%); -webkit-mask-image: radial-gradient(circle 190px at var(--spot-x) var(--spot-y), #000 0 52%, #000b 70%, transparent 100%); }
+.hero-spotlight.is-active { opacity: 1; }
+.hero-blueprint { position: absolute; inset: 0; background-image: linear-gradient(#a7ef5622 1px, transparent 1px), linear-gradient(90deg, #a7ef5622 1px, transparent 1px), linear-gradient(#a7ef5609 1px, transparent 1px), linear-gradient(90deg, #a7ef5609 1px, transparent 1px); background-size: 64px 64px, 64px 64px, 16px 16px, 16px 16px; }
+.hero-blueprint::before { content: ""; position: absolute; inset: 13% 7% 18%; border: 1px solid #a7ef5638; }
+.hero-blueprint::after { content: ""; position: absolute; left: 7%; right: 7%; top: 52%; border-top: 1px dashed #a7ef5645; }
+.blueprint-note { position: absolute; color: #a7ef56; font: 600 9px/1 var(--font-mono), monospace; letter-spacing: .1em; text-transform: uppercase; text-shadow: 0 0 10px #a7ef5688; }
+.note-one { top: 17%; right: 10%; }.note-two { left: 9%; bottom: 21%; }.note-three { right: 12%; bottom: 14%; }
+.blueprint-cross { position: absolute; width: 17px; height: 17px; }
+.blueprint-cross::before, .blueprint-cross::after { content: ""; position: absolute; background: #a7ef5688; }
+.blueprint-cross::before { width: 17px; height: 1px; top: 8px; }.blueprint-cross::after { width: 1px; height: 17px; left: 8px; }
+.cross-one { left: 25%; top: 23%; }.cross-two { right: 28%; bottom: 25%; }
+:root[data-theme="light"] .hero-spotlight { opacity: 0; }.hero-spotlight.is-active { opacity: 1; }
+:root[data-theme="light"] .hero-blueprint { background-image: linear-gradient(#4b741f2b 1px, transparent 1px), linear-gradient(90deg, #4b741f2b 1px, transparent 1px), linear-gradient(#4b741f0d 1px, transparent 1px), linear-gradient(90deg, #4b741f0d 1px, transparent 1px); }
+:root[data-theme="light"] .blueprint-note { color: #4b741f; text-shadow: none; }
 .eyebrow { margin: 0; font: 500 11px/1 var(--font-mono), monospace; text-transform: uppercase; letter-spacing: .14em; color: var(--muted); }
 .hero h1 { margin: 30px 0 80px; font-size: clamp(64px, 10.5vw, 158px); line-height: .84; letter-spacing: -.075em; font-weight: 600; position: relative; z-index: 1; }
 .hero h1 em, .contact h2 em { font-family: Georgia, serif; font-weight: 400; color: #a7ef56; }
