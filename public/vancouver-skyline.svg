@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 360" fill="none" color="#a7ef56">
+  <defs>
+    <linearGradient id="mountains" x1="0" y1="80" x2="850" y2="230" gradientUnits="userSpaceOnUse"><stop stop-color="#4f7ee8"/><stop offset="1" stop-color="#36c5bd"/></linearGradient>
+    <linearGradient id="city" x1="120" y1="190" x2="1450" y2="310" gradientUnits="userSpaceOnUse"><stop stop-color="#427de8"/><stop offset=".55" stop-color="#39bfc0"/><stop offset="1" stop-color="#a7ef56"/></linearGradient>
+    <linearGradient id="water" x1="260" y1="315" x2="1300" y2="350" gradientUnits="userSpaceOnUse"><stop stop-color="#477fe5"/><stop offset="1" stop-color="#50d7b2"/></linearGradient>
+  </defs>
+  <path d="M0 214 150 112l82 68 105-118 101 116 70-58 105 94H0Z" fill="url(#mountains)" opacity=".38"/>
+  <path d="m300 214 128-86 78 54 96-116 96 116 82-64 120 96H300Z" fill="url(#mountains)" opacity=".22"/>
+  <path d="M0 297h112v-34h26v34h55v-67h42v67h31v-95h56v95h38v-53h42v53h48v-78h62v78h46v-42h35v42h52v-116h19v-42h8v-29h8v29h8v42h19v116h38v-72h58v72h26v-48h39v48h47v-88h62v88h42v-58h39v58h52v-79h53v79h54v-43h35v43h95v63H0v-63Z" fill="url(#city)" opacity=".58"/>
+  <path d="M1125 297v-70h190v70h-190Z" fill="#64d99d" opacity=".7"/>
+  <path d="m1133 228 25-82 29 82h-54Zm43 0 35-106 31 106h-66Zm53 0 38-91 29 91h-67Z" fill="#a7ef56" opacity=".72"/>
+  <path d="M0 316c215-14 333 17 528 0 192-17 358 16 565 0 190-15 318 13 507-2v46H0v-44Z" fill="url(#water)" opacity=".34"/>
+</svg>

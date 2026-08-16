@@ -51,6 +51,14 @@ export default function Home() {
 
       <section className="hero shell" id="top">
         <HeroSpotlight />
+        <Image
+          className="hero-skyline"
+          src="/vancouver-skyline.svg"
+          alt=""
+          width={1600}
+          height={360}
+          priority
+        />
         <div className="rain" aria-hidden="true">
           <i /><i /><i /><i /><i />
         </div>
