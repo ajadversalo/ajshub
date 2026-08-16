@@ -11,12 +11,15 @@ function Arrow() {
 }
 
 export default function Home() {
+  const [activeSection, setActiveSection] = useState<string | null>(null);
+
   const scrollToSection = (event: MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
     const targetId = event.currentTarget.getAttribute("href")?.replace("#", "");
     if (!targetId) return;
     const target = document.getElementById(targetId);
     if (!target) return;
+    setActiveSection(targetId);
     target.scrollIntoView({ behavior: "smooth", block: "start" });
     window.history.replaceState(null, "", `#${targetId}`);
   };
@@ -31,11 +34,11 @@ export default function Home() {
           <ThemeToggle />
         </div>
         <nav aria-label="Primary navigation">
-          {hasPublishedProjects && <a href="#work" onClick={scrollToSection}>Work</a>}
-          <a href="#toolbox" onClick={scrollToSection}>Tools</a>
-          <a href="#experience-archive" onClick={scrollToSection}>Experience</a>
-          <a href="#about" onClick={scrollToSection}>About</a>
-          <a href="#contact" onClick={scrollToSection}>Contact</a>
+          {hasPublishedProjects && <a href="#work" onClick={scrollToSection} aria-current={activeSection === "work" ? "page" : undefined}>Work</a>}
+          <a href="#toolbox" onClick={scrollToSection} aria-current={activeSection === "toolbox" ? "page" : undefined}>Tools</a>
+          <a href="#experience-archive" onClick={scrollToSection} aria-current={activeSection === "experience-archive" ? "page" : undefined}>Experience</a>
+          <a href="#about" onClick={scrollToSection} aria-current={activeSection === "about" ? "page" : undefined}>About</a>
+          <a href="#contact" onClick={scrollToSection} aria-current={activeSection === "contact" ? "page" : undefined}>Contact</a>
         </nav>
         <div className="nav-actions">
           <a
@@ -275,5 +278,5 @@ export default function Home() {
 }
 "use client";
 
-import type { MouseEvent } from "react";
+import { useState, type MouseEvent } from "react";
 import Image from "next/image";
