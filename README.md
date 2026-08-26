@@ -1,8 +1,8 @@
-# vinext-starter
+# Built by AJ portfolio
 
-A clean full-stack starter running on
-[vinext](https://github.com/cloudflare/vinext), with optional Cloudflare D1 and
-Drizzle support.
+AJ Adversalo's portfolio, built with Next.js APIs on
+[vinext](https://github.com/cloudflare/vinext). It can be deployed either as a
+server-rendered Cloudflare Worker or as a static Cloudflare Pages site.
 
 ## Prerequisites
 
@@ -16,7 +16,38 @@ npm run dev
 npm run build
 ```
 
-This starter does not use `wrangler.jsonc`.
+`npm run build` creates both deployment artifacts:
+
+- `dist/` contains the Cloudflare Worker and its static assets.
+- `out/` contains the static Cloudflare Pages export.
+
+## Deploy to Cloudflare
+
+Authenticate once with `npx wrangler login`, or set `CLOUDFLARE_API_TOKEN` and
+`CLOUDFLARE_ACCOUNT_ID` in CI.
+
+Deploy the server-rendered application to Workers:
+
+```bash
+npm run deploy:worker
+```
+
+Deploy the static export to Pages:
+
+```bash
+npm run deploy:pages
+```
+
+For a Git-connected Cloudflare build, use the following settings:
+
+| Target | Build command | Deploy command |
+| --- | --- | --- |
+| Workers | `npm run build:worker` | `npx wrangler deploy --config dist/server/wrangler.json` |
+| Pages | `npm run build` | `npx wrangler pages deploy out --project-name builtbyaj-portfolio` |
+
+The Worker deployment uses Cloudflare Images for the `next/image` optimization
+endpoint. The Pages artifact uses the pre-rendered local image URLs and does not
+require the Images binding.
 
 ## Included Shape
 
@@ -90,8 +121,12 @@ actions tied to the current ChatGPT user. Leave public content anonymous.
 ## Useful Commands
 
 - `npm run dev`: start local development
-- `npm run build`: verify the vinext build output
-- `npm test`: build the starter and verify its rendered loading skeleton
+- `npm run build`: build the Worker and static Pages artifacts
+- `npm run build:worker`: build only the Cloudflare Worker artifact
+- `npm run deploy:worker`: build and deploy to Cloudflare Workers
+- `npm run deploy:pages`: build and deploy to Cloudflare Pages
+- `npm run cf:typegen`: regenerate Cloudflare runtime and binding types
+- `npm test`: build and verify both Cloudflare deployment artifacts
 - `npm run db:generate`: generate Drizzle migrations after schema changes
 
 ## Learn More

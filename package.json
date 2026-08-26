@@ -1,5 +1,5 @@
 {
-  "name": "site-creator-vinext-starter",
+  "name": "builtbyaj-portfolio",
   "version": "0.1.0",
   "private": true,
   "engines": {
@@ -7,9 +7,13 @@
   },
   "scripts": {
     "dev": "vinext dev",
-    "build": "vinext build && node scripts/export-static.mjs",
+    "build": "npm run build:worker && node scripts/export-static.mjs",
+    "build:worker": "vinext build",
     "start": "vinext start",
-    "test": "npm run build && node --test tests/rendered-html.test.mjs",
+    "deploy:worker": "npm run build:worker && wrangler deploy --config dist/server/wrangler.json",
+    "deploy:pages": "npm run build && wrangler pages deploy out --project-name builtbyaj-portfolio",
+    "cf:typegen": "wrangler types --config wrangler.jsonc",
+    "test": "npm run build && node --test tests/cloudflare.test.mjs",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
     "db:generate": "drizzle-kit generate"
   },
