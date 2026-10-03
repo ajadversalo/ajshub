@@ -147,13 +147,13 @@ section[id] { scroll-margin-top: 24px; }
 @media (min-width: 1200px) {
   .company-1 .product-records { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .company-1 .product-record { min-width: 0; min-height: 220px; padding-inline: 14px; }
-  .company-1 .product-record h4 { max-width: 100%; font-size: clamp(18px, 1.35vw, 21px); overflow-wrap: anywhere; }
+  .company-1 .product-record h4 { --title-max: clamp(18px, 1.35vw, 21px); }
   .company-1 .product-record > p { font-size: 11px; line-height: 1.4; }
   .company-1 .product-record li { font-size: 7px; }
   .company-2 .product-records { grid-template-columns: repeat(12, minmax(0, 1fr)); }
   .company-2 .product-record { min-width: 0; min-height: 220px; grid-column: span 3; padding-inline: 14px; }
   .company-2 .product-record:nth-child(n + 5) { grid-column: span 4; }
-  .company-2 .product-record h4 { max-width: 100%; font-size: clamp(18px, 1.35vw, 21px); overflow-wrap: anywhere; }
+  .company-2 .product-record h4 { --title-max: clamp(18px, 1.35vw, 21px); }
   .company-2 .product-record > p { font-size: 11px; line-height: 1.4; }
   .company-2 .product-record li { font-size: 7px; }
 }
@@ -206,7 +206,7 @@ section[id] { scroll-margin-top: 24px; }
 .company-stack li img.tech-icon-light { filter: invert(1); }
 .product-records { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
 .product-record:only-child { grid-column: 1 / -1; }
-.product-record { --accent: #a7ef56; min-height: 220px; padding: 26px 24px 22px; background: linear-gradient(155deg, color-mix(in srgb, var(--accent) 9%, #f4f3ed), #e2e1da); color: #141510; border: 1px solid #c4c3bc; border-radius: 4px; display: flex; flex-direction: column; position: relative; isolation: isolate; overflow: hidden; box-shadow: 0 8px 24px #00000012; transition: border-color .25s ease, transform .35s cubic-bezier(.2,.8,.2,1), box-shadow .35s ease; }
+.product-record { --accent: #a7ef56; min-height: 220px; padding: 26px 24px 22px; background: linear-gradient(155deg, color-mix(in srgb, var(--accent) 9%, #f4f3ed), #e2e1da); color: #141510; border: 1px solid #c4c3bc; border-radius: 4px; display: flex; flex-direction: column; position: relative; isolation: isolate; overflow: hidden; box-shadow: 0 8px 24px #00000012; transition: border-color .25s ease, transform .35s cubic-bezier(.2,.8,.2,1), box-shadow .35s ease; container-type: inline-size; }
 .product-record:before { content: ""; position: absolute; inset: 0 0 auto; height: 6px; background: linear-gradient(90deg, var(--accent), color-mix(in srgb, var(--accent) 18%, transparent)); transition: height .35s ease; }
 .product-record:after { content: ""; position: absolute; width: 190px; height: 190px; right: -105px; top: -110px; z-index: -1; border: 34px solid color-mix(in srgb, var(--accent) 11%, transparent); border-radius: 50%; pointer-events: none; transition: transform .45s cubic-bezier(.2,.8,.2,1); }
 .product-record:hover { border-color: color-mix(in srgb, var(--accent) 65%, #8d8c85); box-shadow: 0 18px 45px color-mix(in srgb, var(--accent) 12%, #0002); transform: translateY(-4px); }
@@ -221,7 +221,7 @@ section[id] { scroll-margin-top: 24px; }
 .record-meta, .product-record > p, .product-record ul { position: relative; z-index: 1; }
 .record-meta span:first-child { min-width: 30px; padding: 6px 7px; color: #fff; background: var(--accent); text-align: center; font-weight: 700; text-shadow: 0 1px 2px #0005; }
 .record-meta span:nth-child(2) { margin-right: auto; }
-.product-record h4 { margin: 22px 0 10px; font-size: clamp(25px, 2.3vw, 36px); line-height: 1; letter-spacing: -.05em; font-weight: 600; position: relative; z-index: 1; }
+.product-record h4 { --title-max: clamp(25px, 2.3vw, 36px); margin: 22px 0 10px; max-width: 100%; font-size: clamp(12px, calc(165cqi / var(--title-chars, 12)), var(--title-max)); line-height: 1; letter-spacing: -.05em; font-weight: 600; position: relative; z-index: 1; white-space: nowrap; }
 .product-record > p { color: #4c4d46; max-width: 570px; margin: 0 0 18px; font-size: 12px; line-height: 1.5; }
 .product-record ul { display: flex; flex-wrap: wrap; gap: 6px; padding: 13px 0 0; margin: auto 0 0; border-top: 1px solid #c7c6bf; list-style: none; }
 .product-record li { padding: 0; border: 0; border-radius: 0; color: #55564f; background: transparent; font: 600 8px var(--font-mono), monospace; text-transform: uppercase; }

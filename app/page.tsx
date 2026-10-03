@@ -10,6 +10,36 @@ function Arrow() {
   return <span aria-hidden="true">↗</span>;
 }
 
+function FitTitle({ children }: { children: string }) {
+  const ref = useRef<HTMLHeadingElement>(null);
+
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const fit = () => {
+      el.style.fontSize = "";
+      const width = el.clientWidth;
+      if (!width) return;
+      if (el.scrollWidth > width + 1) {
+        const size = parseFloat(getComputedStyle(el).fontSize);
+        el.style.fontSize = `${Math.max(12, size * (width / el.scrollWidth))}px`;
+      }
+    };
+
+    const observer = new ResizeObserver(fit);
+    observer.observe(el);
+    void document.fonts?.ready?.then(fit);
+    return () => observer.disconnect();
+  }, [children]);
+
+  return (
+    <h4 ref={ref} style={{ "--title-chars": children.length } as CSSProperties}>
+      {children}
+    </h4>
+  );
+}
+
 export default function Home() {
   const [activeSection, setActiveSection] = useState<string | null>(null);
 
@@ -214,7 +244,7 @@ export default function Home() {
                       <span>0{productIndex + 1}</span>
                       <span>{product.type}</span>
                     </div>
-                    <h4>{product.name}</h4>
+                    <FitTitle>{product.name}</FitTitle>
                     <p>{product.note}</p>
                     <ul aria-label="Areas and technologies">
                       {product.tags.map((tag) => <li key={tag}>{tag}</li>)}
@@ -278,5 +308,5 @@ export default function Home() {
 }
 "use client";
 
-import { useState, type MouseEvent } from "react";
+import { useLayoutEffect, useRef, useState, type CSSProperties, type MouseEvent } from "react";
 import Image from "next/image";
