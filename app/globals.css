@@ -68,7 +68,7 @@ section[id] { scroll-margin-top: 24px; }
 .hero > .eyebrow::before { content: ""; width: 34px; height: 3px; flex: 0 0 auto; background: #a7ef56; box-shadow: 0 0 14px #a7ef5652; }
 .hero h1 { margin: 20px 0 38px; font-size: clamp(52px, 8vw, 112px); line-height: .86; letter-spacing: -.07em; font-weight: 600; position: relative; z-index: 1; transition: transform .55s cubic-bezier(.2,.8,.2,1), letter-spacing .55s ease; }
 .hero h1 em, .contact h2 em { font-family: Georgia, serif; font-weight: 400; color: #a7ef56; }
-.speed-word { display: inline-block; position: relative; isolation: isolate; animation: speed-flash 4s cubic-bezier(.2,.8,.2,1) 1; will-change: transform, filter; }
+.speed-word { display: inline-block; font-size: .56em; line-height: 1; letter-spacing: -.05em; position: relative; isolation: isolate; animation: speed-flash 4s cubic-bezier(.2,.8,.2,1) 1; will-change: transform, filter; }
 .speed-word::before, .speed-word::after { content: attr(data-text); position: absolute; inset: 0; z-index: -1; color: inherit; opacity: 0; pointer-events: none; }
 .speed-word::before { animation: speed-trail-one 4s ease-out 1; }
 .speed-word::after { animation: speed-trail-two 4s ease-out 1; }
@@ -87,14 +87,12 @@ section[id] { scroll-margin-top: 24px; }
 @keyframes fall { to { transform: translateY(130vh); } }
 @media (hover: hover) and (pointer: fine) {
   .hero .hero-blueprint { transition: background-size .7s cubic-bezier(.2,.8,.2,1), filter .45s ease; }
-  .hero:has(h1:hover) .hero-blueprint { background-size: 72px 72px, 72px 72px, 18px 18px, 18px 18px; filter: brightness(1.45); }
-  .hero h1:hover { transform: translateX(10px); letter-spacing: -.068em; }
+  .hero:has(h1:hover) .hero-blueprint { filter: brightness(1.45); }
   .hero:has(h1:hover) .speed-word { text-shadow: 0 0 22px #a7ef565c, 0 0 55px #a7ef5628; }
   .hero:has(h1:hover) .rain { opacity: .68; filter: drop-shadow(0 0 5px #a7ef5680); }
   .hero:has(h1:hover) .rain i { animation-duration: 1.8s; }
   .hero:has(h1:hover) .rain i:nth-child(2), .hero:has(h1:hover) .rain i:nth-child(4) { animation-duration: 1.35s; }
-  .hero:has(h1:hover) .hero-skyline { opacity: .22; filter: saturate(1.35) drop-shadow(0 -2px 3px #55c7d05c) drop-shadow(0 0 20px #a7ef5638); animation: skyline-charge 2.2s ease-in-out infinite alternate; }
-  .hero:has(h1:hover) .blueprint-cross { animation: cross-pulse 1.15s ease-in-out infinite alternate; }
+  .hero:has(h1:hover) .hero-skyline { opacity: .22; filter: saturate(1.35) drop-shadow(0 -2px 3px #55c7d05c) drop-shadow(0 0 20px #a7ef5638); }
   .hero:has(h1:hover) .blueprint-note { text-shadow: 0 0 16px currentColor; }
 }
 @keyframes cross-pulse { to { transform: rotate(45deg) scale(1.2); } }

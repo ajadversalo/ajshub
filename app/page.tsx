@@ -4,7 +4,8 @@ import ThemeToggle from "./theme-toggle";
 import ToolboxSection from "./toolbox-section";
 import HeroSpotlight from "./hero-spotlight";
 
-const hasPublishedProjects = projects.some((project) => Boolean(project.href));
+const visibleProjects = projects.filter((project) => !project.hidden);
+const hasPublishedProjects = visibleProjects.some((project) => Boolean(project.href));
 
 function Arrow() {
   return <span aria-hidden="true">↗</span>;
@@ -97,9 +98,9 @@ export default function Home() {
         </div>
         <p className="eyebrow">Full-stack developer · Vancouver, BC</p>
         <h1>
-          Modern full-stack development.
+          Full-stack developer.
           <br />
-          <em className="speed-word" data-text="Accelerated.">Accelerated.</em>
+          <em className="speed-word" data-text="Plan-first, AI-assisted, production-ready.">Plan-first, AI-assisted, production-ready.</em>
         </h1>
         <div className="hero-bottom">
           <p>
@@ -128,7 +129,7 @@ export default function Home() {
         </div>
 
         <div className="project-list">
-          {projects.map((project) => (
+          {visibleProjects.map((project) => (
             <a
               className={`project ${project.accent} ${!project.href ? "project-template" : ""}`}
               href={project.href || undefined}

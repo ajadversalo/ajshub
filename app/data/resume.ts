@@ -5,8 +5,10 @@ export const roles = [
     period: "Jun 2023 — Present",
     summary: "Modernizing enterprise applications, digitizing operational workflows, and prototyping AI-driven planning tools across five Western Canadian branches.",
     projects: [
-      ["CentraCalendar", "Modular Next.js architecture that improved load performance by 50%."],
+      ["CentraWorks", "Company-wide work order platform for managing, scheduling, and reporting, re-architected into a modular Next.js/.NET design that improved load performance by 50%."],
       ["CentraManufacture", "Mobile-first operations tracking that reduced manual logging by 40%."],
+      ["Text-to-SQL", "LLM-powered natural-language querying of operational data using the OpenAI API."],
+      ["Ant Design baseline", "Unified Ant Design interface that became the design baseline for later internal apps."],
     ],
     stack: ["Next.js", "TypeScript", "C#", ".NET", "Redux", "Ant Design", "Playwright", "OpenAI API"],
   },
@@ -18,12 +20,13 @@ export const roles = [
     projects: [
       ["TreatGx", "Helped transition the flagship prescribing platform into modular React applications."],
       ["Product suite foundations", "Reusable components, user management, reporting, notifications, and shipping automation."],
+      ["Canada Post integration", "Automated test kit shipping through the Canada Post API, cutting manual data entry by 80%."],
     ],
     stack: ["React", "Redux", "C#", ".NET", "Azure DevOps", "Material UI", "SendGrid", "Selenium"],
   },
   {
     company: "Earlier Technical Career",
-    role: "Technical Support & Junior Systems Administration",
+    role: "Application & Systems Administration",
     period: "2010 — 2018",
     summary: "Provided desktop, network, application, and server support across renewable energy, oil and gas, and manufacturing organizations.",
     projects: [["IT operations", "Supported users, business applications, networks, and server infrastructure across diverse technical environments."]],
@@ -35,5 +38,5 @@ export const skills = [
   ["Interface", "HTML, CSS, JavaScript, TypeScript, React, Next.js, Redux, Material UI, Ant Design, Tailwind CSS"],
   ["Backend", "C# / .NET, Node.js, Python, Django, Entity Framework, Express, Dapper"],
   ["Platform", "SQL Server, PostgreSQL, Azure DevOps, AWS, IIS, Apache, Netlify"],
-  ["Practice", "Selenium, Playwright, localization, SendGrid, Google Maps API, OpenAI API"],
+  ["Practice", "Selenium, Playwright, localization, SendGrid, Google Maps API, OpenAI API, Codex, Grok Build, Cost-aware model selection"],
 ];

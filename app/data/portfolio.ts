@@ -8,6 +8,7 @@ export const projects = [
     href: "",
     label: "Project link coming soon",
     accent: "lime",
+    hidden: true,
   },
 ];
 
@@ -35,6 +36,6 @@ export const toolboxGroups = [
   {
     category: "AI & product",
     description: "Tools and methods for exploring ideas, automating work, and finding the useful path.",
-    tools: ["OpenAI API", "AI tools", "Automation", "Prototyping", "Product thinking"],
+    tools: ["OpenAI API", "Codex", "Grok Build", "Cost-aware model selection", "AI tools", "Automation", "Prototyping", "Product thinking"],
   },
 ];

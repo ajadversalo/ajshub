@@ -8,7 +8,7 @@ export const experience = [
     intro: "Modernizing enterprise applications, digitizing shop-floor workflows, and exploring AI-driven planning across five Western Canadian branches.",
     stack: ["Next.js", "TypeScript", "C#", ".NET", "Redux", "Ant Design", "Playwright", "OpenAI API"],
     products: [
-      { name: "CentraCalendar", type: "Scheduling platform", note: "A calendar-based system that coordinates manufacturing, installation, and shipping with real-time tracking and shared workflow visibility across departments.", tags: ["Scheduling", "Operations", "Cross-department"] },
+      { name: "CentraWorks", type: "Work order platform", note: "A company-wide platform for managing, scheduling, and reporting on work orders across all departments, re-architected into a modular Next.js/.NET client-server design that improved load performance by 50% across five Western Canada branches.", tags: ["Work orders", "Scheduling", "Reporting", "Cross-department"] },
       { name: "CentraManufacture", type: "Manufacturing platform", note: "A production application that surfaces live manufacturing insights, supports workflow optimization, and helps teams identify bottlenecks while maintaining quality control.", tags: ["Manufacturing", "Live insights", "Workflow optimization", "Mobile-first"] },
       { name: "CentraMetrics", type: "Performance dashboard", note: "A centralized dashboard for operational metrics across production, scheduling, and service, giving teams clearer data for day-to-day decisions.", tags: ["Analytics", "Data visualization", "Operational metrics"] },
       { name: "CentraService", type: "Service management", note: "A post-installation workflow system for logging, scheduling, and resolving repairs, warranty claims, and ongoing maintenance requests.", tags: ["Service workflows", "Warranty claims", "Scheduling"] },
@@ -38,7 +38,7 @@ export const experience = [
   },
   {
     company: "Earlier Technical Career",
-    discipline: "Technical Support & Junior Systems Administration",
+    discipline: "Application & Systems Administration",
     marker: "2010 — 2018",
     intro: "Supported users, applications, and infrastructure across renewable energy, oil and gas, and manufacturing environments.",
     stack: ["Desktop Support", "Networking", "Application Support", "Server Support", "Systems Administration", "Windows", "Active Directory", "Mail Server"],
