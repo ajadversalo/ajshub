@@ -2,6 +2,20 @@
 
 import { beyondProjects } from "../data/portfolio";
 import SiteNav from "../site-nav";
+import TechIcon from "../tech-icon";
+
+function FactChips({ tools }: { tools: string[] }) {
+  return (
+    <ul>
+      {tools.map((tool) => (
+        <li key={tool}>
+          <TechIcon tool={tool} size={13} />
+          {tool}
+        </li>
+      ))}
+    </ul>
+  );
+}
 
 export default function BeyondWorkPage() {
   return (
@@ -25,6 +39,26 @@ export default function BeyondWorkPage() {
               <span className="beyond-card-kind">{project.kind}</span>
               <h2>{project.title}</h2>
               <p>{project.summary}</p>
+              <dl className="beyond-facts">
+                <div>
+                  <dt>Stack</dt>
+                  <dd>
+                    <FactChips tools={project.stack} />
+                  </dd>
+                </div>
+                <div>
+                  <dt>Hosted</dt>
+                  <dd>
+                    <FactChips tools={[project.hosted]} />
+                  </dd>
+                </div>
+                <div>
+                  <dt>Database</dt>
+                  <dd>
+                    <FactChips tools={[project.database]} />
+                  </dd>
+                </div>
+              </dl>
               <span className="beyond-card-link">{project.host} ↗</span>
             </a>
           ))}

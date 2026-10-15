@@ -83,4 +83,9 @@ export const techIcons: Record<string, TechIcon> = {
   Automation: { src: "/tech/automation.svg" },
   Prototyping: { src: "/tech/figma.svg" },
   "Product thinking": { src: "/tech/product-thinking.svg" },
+  Cloudflare: { src: "/tech/cloudflare.svg" },
+  "Cloudflare Workers": { src: "/tech/cloudflareworkers.svg" },
+  Leaflet: { src: "/tech/leaflet.svg" },
+  SQLite: { src: "/tech/sqlite.svg" },
+  "Cloudflare D1": { src: "/tech/sqlite.svg" },
 };

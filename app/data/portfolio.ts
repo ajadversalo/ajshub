@@ -6,6 +6,9 @@ export const beyondProjects = [
       "Independent places, services, and favourites across Surrey, Langley, Delta, and White Rock.",
     href: "https://southfraserhub.ca",
     host: "southfraserhub.ca",
+    stack: ["Next.js", "TypeScript", "React", "Tailwind CSS", "Leaflet"],
+    hosted: "Cloudflare Workers",
+    database: "Cloudflare D1",
   },
 ];
 

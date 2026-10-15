@@ -132,7 +132,7 @@ section[id] { scroll-margin-top: 24px; }
 .beyond-intro { max-width: 28rem; margin-bottom: 56px; }
 .beyond-intro h1 { margin: 0 0 14px; font-size: clamp(42px, 7vw, 76px); line-height: .95; letter-spacing: -.06em; font-weight: 550; }
 .beyond-intro p { margin: 0; max-width: 34ch; color: var(--muted); font-size: 17px; line-height: 1.5; }
-.beyond-board { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 320px)); gap: 42px 36px; align-items: start; }
+.beyond-board { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 360px)); gap: 42px 36px; align-items: start; }
 .beyond-card { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; min-width: 0; width: 100%; max-width: 100%; min-height: 240px; padding: 36px 22px 24px; overflow: hidden; background: #fff7e6; color: #2a2418; border-radius: 2px 16px 12px 8px; box-shadow: 5px 12px 0 #11120f12, 0 18px 36px #11120f14; transform: rotate(-1.6deg); position: relative; transition: transform .28s ease, box-shadow .28s ease; }
 .beyond-card > * { min-width: 0; max-width: 100%; }
 .beyond-card:before { content: ""; position: absolute; top: 10px; left: 22px; width: 78px; height: 22px; background: #efc85a99; transform: rotate(-5deg); pointer-events: none; }
@@ -142,11 +142,23 @@ section[id] { scroll-margin-top: 24px; }
 .beyond-card h2 { margin: 0; font-size: clamp(24px, 2.6vw, 32px); line-height: 1.05; letter-spacing: -.04em; font-weight: 600; }
 .beyond-card p { margin: 0; min-width: 0; max-width: 100%; color: #4d4638; font-size: 15px; line-height: 1.5; overflow-wrap: break-word; }
 .beyond-card-link { width: fit-content; margin-top: 6px; color: #3b5f1c; border-bottom: 1px dashed #3b5f1c88; font-size: 14px; }
+.beyond-facts { display: grid; gap: 12px; margin: 6px 0 2px; padding-top: 12px; border-top: 1px dashed #cbb894; }
+.beyond-facts > div { display: grid; gap: 7px; min-width: 0; }
+.beyond-facts dt { color: #7a6844; font: 500 9px var(--font-mono), monospace; text-transform: uppercase; letter-spacing: .13em; }
+.beyond-facts dd { margin: 0; }
+.beyond-facts ul { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.beyond-facts li { display: inline-flex; align-items: center; gap: 6px; max-width: 100%; padding: 5px 9px 5px 7px; border: 1px solid #d8c9a4; border-radius: 100px; background: #fffaf0; color: #4d4638; font: 500 10px var(--font-mono), monospace; overflow-wrap: anywhere; }
+.beyond-facts li img { width: 13px; height: 13px; object-fit: contain; flex: 0 0 auto; }
+.beyond-facts li img.tech-icon-light { filter: none; }
 :root[data-theme="dark"] .beyond-card { background: #1c1b16; color: #f3efe4; box-shadow: 0 16px 40px #0007; }
 :root[data-theme="dark"] .beyond-card:before { background: #c9a22766; }
 :root[data-theme="dark"] .beyond-card-kind { color: #c4b48a; }
 :root[data-theme="dark"] .beyond-card p { color: #c5bfb0; }
 :root[data-theme="dark"] .beyond-card-link { color: #b8ea74; border-bottom-color: #b8ea7488; }
+:root[data-theme="dark"] .beyond-facts { border-top-color: #3d3a30; }
+:root[data-theme="dark"] .beyond-facts dt { color: #c4b48a; }
+:root[data-theme="dark"] .beyond-facts li { border-color: #3d3a30; background: #ffffff08; color: #d8d2c4; }
+:root[data-theme="dark"] .beyond-facts li img.tech-icon-light { filter: invert(1); }
 .beyond-empty { margin: 0; padding: 48px 0 80px; border-top: 1px solid var(--line); color: var(--muted); font-size: 16px; line-height: 1.55; max-width: 42ch; }
 .section-note { color: var(--muted); font-size: 14px; line-height: 1.55; margin: 0 0 6px 40px; max-width: 310px; }
 .project-list { border-top: 1px solid var(--line); }
