@@ -78,10 +78,23 @@ export default function Home() {
 
       <section className="hero shell" id="top">
         <p className="eyebrow">Full-stack developer · Vancouver, BC</p>
-        <h1>
-          Hey, I'm AJ—a product-minded full-stack developer bringing useful products from idea to production, with <strong>AI woven into how I rapidly iterate, build, and ship</strong>.
-        </h1>
+        <div className="hero-copy">
+          <h1>
+            Hey, I’m AJ — a product-minded full-stack developer in Vancouver, BC. I bring useful products from idea to production, with <strong>AI integrated into a careful process of iterating, building, and shipping</strong>.
+          </h1>
+          <p>
+            Starting my IT career in systems administration helped me develop a strong operational mindset around reliability, troubleshooting, and owning production systems. That foundation carried into software development, first at GenXys building pharmacogenetic decision support tools, and now at Centra, where I continue building useful, well-built products.
+          </p>
+          <p>
+            This is where I share work I’m proud of. If something resonates, feel free to <a href="#contact" onClick={scrollToSection}>say hello</a>.
+          </p>
+        </div>
         <div className="hero-bottom">
+          <div className="site-credit">
+            <span>© {new Date().getFullYear()} AJ Adversalo</span>
+            <a href="https://github.com/ajadversalo" target="_blank" rel="noreferrer">GitHub</a>
+            <a href="https://www.linkedin.com/in/ajadversalo" target="_blank" rel="noreferrer">LinkedIn</a>
+          </div>
           <a
             className="round-link"
             href={hasPublishedProjects ? "#work" : "#experience-archive"}
@@ -198,10 +211,10 @@ export default function Home() {
                     data-index={String(productIndex + 1).padStart(2, "0")}
                     key={product.name}
                   >
-                    {chapter.logo && (
+                    {(chapter.watermark || chapter.logo) && (
                       <Image
                         className="product-record-watermark"
-                        src={chapter.logo}
+                        src={chapter.watermark || chapter.logo}
                         alt=""
                         width={180}
                         height={180}
@@ -227,7 +240,7 @@ export default function Home() {
 
       <section className="contact" id="contact">
         <div className="shell contact-inner">
-          <h2>Looking for the next thing.<br /><em>Curious about problems worth solving.</em></h2>
+          <h2>Looking for the next thing.<em>Curious about problems worth solving.</em></h2>
           <div className="contact-links">
             <a href="https://www.linkedin.com/in/ajadversalo" target="_blank" rel="noreferrer">
               Start a conversation →
@@ -238,14 +251,6 @@ export default function Home() {
               <a href="/resume">Résumé <Arrow /></a>
             </div>
           </div>
-          <footer>
-            <div className="site-credit">
-              <span>© {new Date().getFullYear()} AJ Adversalo</span>
-              <a href="https://github.com/ajadversalo" target="_blank" rel="noreferrer">GitHub</a>
-              <a href="https://www.linkedin.com/in/ajadversalo" target="_blank" rel="noreferrer">LinkedIn</a>
-            </div>
-            <a href="#top" onClick={scrollToSection}>Back to top ↑</a>
-          </footer>
         </div>
       </section>
     </main>
