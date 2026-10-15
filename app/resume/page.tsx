@@ -16,7 +16,6 @@ export default function ResumePage() {
         <nav aria-label="Primary navigation">
           <a href="/#toolbox">Tools</a>
           <a href="/#experience-archive">Experience</a>
-          <a href="/#about">About</a>
           <a href="/#contact">Contact</a>
         </nav>
         <div className="nav-actions">

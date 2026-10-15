@@ -68,7 +68,6 @@ export default function Home() {
           {hasPublishedProjects && <a href="#work" onClick={scrollToSection} aria-current={activeSection === "work" ? "page" : undefined}>Work</a>}
           <a href="#toolbox" onClick={scrollToSection} aria-current={activeSection === "toolbox" ? "page" : undefined}>Tools</a>
           <a href="#experience-archive" onClick={scrollToSection} aria-current={activeSection === "experience-archive" ? "page" : undefined}>Experience</a>
-          <a href="#about" onClick={scrollToSection} aria-current={activeSection === "about" ? "page" : undefined}>About</a>
           <a href="#contact" onClick={scrollToSection} aria-current={activeSection === "contact" ? "page" : undefined}>Contact</a>
         </nav>
         <div className="nav-actions">
@@ -85,17 +84,6 @@ export default function Home() {
 
       <section className="hero shell" id="top">
         <HeroSpotlight />
-        <Image
-          className="hero-skyline"
-          src="/vancouver-skyline.svg"
-          alt=""
-          width={1600}
-          height={360}
-          priority
-        />
-        <div className="rain" aria-hidden="true">
-          <i /><i /><i /><i /><i />
-        </div>
         <p className="eyebrow">Full-stack developer · Vancouver, BC</p>
         <h1>
           Full-stack developer.
@@ -255,32 +243,6 @@ export default function Home() {
               </div>
             </article>
           ))}
-        </div>
-      </section>
-
-      <section className="about shell" id="about">
-        <div>
-          <p className="eyebrow">A little about me</p>
-          <p className="about-lede">
-            I build best when <span>technical challenges</span>, product decisions,
-            and real human needs overlap.
-          </p>
-        </div>
-        <div className="about-copy">
-          <p>
-            I’m AJ Adversalo, a full-stack developer who enjoys making the hard
-            stuff feel effortless. I care about thoughtful interfaces, resilient
-            systems, and the small details that earn a user’s trust.
-          </p>
-          <p>
-            Away from the editor, I’m usually exploring new AI tools, refining a
-            side project, or looking for a better way to explain a complicated idea.
-          </p>
-          <div className="principles">
-            <div><span>01</span><strong>Solve the right problem.</strong></div>
-            <div><span>02</span><strong>Make complexity feel simple.</strong></div>
-            <div><span>03</span><strong>Build with care.</strong></div>
-          </div>
         </div>
       </section>
 

@@ -54,7 +54,6 @@ test("creates a self-contained Cloudflare Pages export", async () => {
   ]);
 
   assert.match(home, /Modern full-stack development\./);
-  assert.match(home, /src="\/vancouver-skyline\.svg"/);
   assert.doesNotMatch(home, /_vinext\/image/);
   assert.match(resume, /Capabilities \/ 02/);
   assert.match(headers, /Cache-Control: public, max-age=31536000, immutable/);
