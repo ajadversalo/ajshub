@@ -74,14 +74,9 @@ export default function Home() {
       <section className="hero shell" id="top">
         <p className="eyebrow">Full-stack developer · Vancouver, BC</p>
         <h1>
-          Full-stack developer.
-          <br />
-          <em className="speed-word" data-text="Plan-first, AI-assisted, production-ready.">Plan-first, AI-assisted, production-ready.</em>
+          Hey, I'm AJ—a product-minded full-stack developer bringing useful products from idea to production, with <strong>AI woven into how I rapidly iterate, build, and ship</strong>.
         </h1>
         <div className="hero-bottom">
-          <p>
-            Hey, I'm AJ—a product-minded full-stack developer bringing useful products from idea to production, with <strong>AI woven into how I rapidly iterate, build, and ship</strong>.
-          </p>
           <a
             className="round-link"
             href={hasPublishedProjects ? "#work" : "#experience-archive"}
