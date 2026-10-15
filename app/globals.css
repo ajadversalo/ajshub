@@ -51,9 +51,9 @@ section[id] { scroll-margin-top: 24px; }
 .hero > .eyebrow { display: flex; align-items: center; gap: 12px; color: color-mix(in srgb, var(--paper) 78%, var(--muted)); font-size: 12px; font-weight: 700; letter-spacing: .16em; }
 .hero > .eyebrow::before { content: ""; width: 34px; height: 3px; flex: 0 0 auto; background: #a7ef56; box-shadow: 0 0 14px #a7ef5652; }
 .hero-copy { width: min(920px, 100%); margin: auto 0; padding: 22px 24px 24px; border-left: 4px solid #a7ef56; background: linear-gradient(90deg, #a7ef5612, transparent 82%); box-shadow: -10px 0 28px #a7ef5608; position: relative; z-index: 1; }
-.hero-copy h1 { margin: 0; font-size: clamp(16px, 1.45vw, 19px); line-height: 1.5; letter-spacing: -.02em; font-weight: 600; color: #e2e1dc; }
-.hero-copy h1 strong { color: var(--foreground); font-weight: 700; }
-.hero-copy p { margin: 14px 0 0; max-width: 68ch; font-size: clamp(16px, 1.45vw, 19px); line-height: 1.5; letter-spacing: -.02em; color: color-mix(in srgb, var(--paper) 72%, var(--muted)); }
+.hero-copy h1 { margin: 0; font-size: clamp(16px, 1.45vw, 19px); line-height: 1.5; letter-spacing: -.02em; font-weight: 400; color: #e2e1dc; }
+.hero-copy h1 strong { color: inherit; font-weight: 400; }
+.hero-copy p { margin: 14px 0 0; max-width: 68ch; font-size: clamp(16px, 1.45vw, 19px); line-height: 1.5; letter-spacing: -.02em; font-weight: 400; color: color-mix(in srgb, var(--paper) 72%, var(--muted)); }
 .hero-copy p a { color: #a7ef56; text-decoration: underline; text-underline-offset: 3px; }
 .hero-copy p a:hover { color: var(--paper); }
 :root[data-theme="light"] .hero-copy p a { color: #4b741f; }

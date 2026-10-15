@@ -62,7 +62,7 @@ export default function Home() {
             Starting my IT career in systems administration helped me develop a strong operational mindset around reliability, troubleshooting, and owning production systems. That foundation carried into software development, first at GenXys building pharmacogenetic decision support tools, and now at Centra, where I continue building useful, well-built products.
           </p>
           <p>
-            This is where I share work I’m proud of. If something resonates, feel free to <a href="https://www.linkedin.com/in/ajadversalo" target="_blank" rel="noreferrer">say hello</a>.
+            This is where I share work I’m proud of. If something resonates, feel free to <a href="mailto:ajadvers@gmail.com">say hello</a>.
           </p>
         </div>
         <div className="hero-bottom">
