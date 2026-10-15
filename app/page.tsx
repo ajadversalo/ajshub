@@ -2,7 +2,6 @@ import { experience, techIcons } from "./data/experience";
 import { projects } from "./data/portfolio";
 import ThemeToggle from "./theme-toggle";
 import ToolboxSection from "./toolbox-section";
-import HeroSpotlight from "./hero-spotlight";
 
 const visibleProjects = projects.filter((project) => !project.hidden);
 const hasPublishedProjects = visibleProjects.some((project) => Boolean(project.href));
@@ -70,20 +69,9 @@ export default function Home() {
           <a href="#experience-archive" onClick={scrollToSection} aria-current={activeSection === "experience-archive" ? "page" : undefined}>Experience</a>
           <a href="#contact" onClick={scrollToSection} aria-current={activeSection === "contact" ? "page" : undefined}>Contact</a>
         </nav>
-        <div className="nav-actions">
-          <a
-            className="availability"
-            href="https://www.linkedin.com/in/ajadversalo"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <span /> Let’s connect
-          </a>
-        </div>
       </header>
 
       <section className="hero shell" id="top">
-        <HeroSpotlight />
         <p className="eyebrow">Full-stack developer · Vancouver, BC</p>
         <h1>
           Full-stack developer.
@@ -248,11 +236,10 @@ export default function Home() {
 
       <section className="contact" id="contact">
         <div className="shell contact-inner">
-          <p className="eyebrow">Open to the right opportunity.</p>
-          <h2>Let’s make<br /><em>something good.</em></h2>
+          <h2>Looking for the next thing.<br /><em>Curious about problems worth solving.</em></h2>
           <div className="contact-links">
             <a href="https://www.linkedin.com/in/ajadversalo" target="_blank" rel="noreferrer">
-              Start a conversation <Arrow />
+              Start a conversation →
             </a>
             <div>
               <a href="https://github.com/ajadversalo" target="_blank" rel="noreferrer">GitHub <Arrow /></a>

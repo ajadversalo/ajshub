@@ -18,16 +18,6 @@ export default function ResumePage() {
           <a href="/#experience-archive">Experience</a>
           <a href="/#contact">Contact</a>
         </nav>
-        <div className="nav-actions">
-          <a
-            className="availability"
-            href="https://www.linkedin.com/in/ajadversalo"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <span /> Let’s connect
-          </a>
-        </div>
       </header>
 
       <div className="resume-stage">
