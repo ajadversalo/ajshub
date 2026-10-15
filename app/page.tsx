@@ -56,7 +56,7 @@ export default function Home() {
         <p className="eyebrow">Full-stack developer · Vancouver, BC</p>
         <div className="hero-copy">
           <h1>
-            Hey, I’m AJ — a product-minded full-stack developer in Vancouver, BC. I bring useful products from idea to production, with <strong>AI integrated into a careful process of iterating, building, and shipping</strong>.
+            Hey, I’m AJ, a product-minded full-stack developer in Vancouver, BC. I bring useful products from idea to production, with <strong>AI integrated into a careful process of iterating, building, and shipping</strong>.
           </h1>
           <p>
             Starting my IT career in systems administration helped me develop a strong operational mindset around reliability, troubleshooting, and owning production systems. That foundation carried into software development, first at GenXys building pharmacogenetic decision support tools, and now at Centra, where I continue building useful, well-built products.
