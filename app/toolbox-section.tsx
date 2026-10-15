@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { toolboxGroups } from "./data/portfolio";
-import { techIcons } from "./data/experience";
+import TechIcon from "./tech-icon";
 
 export default function ToolboxSection() {
   const [query, setQuery] = useState("");
@@ -50,16 +50,7 @@ export default function ToolboxSection() {
             <ul aria-label={`${group.category} technologies`}>
               {group.tools.map((tool) => (
                 <li key={tool}>
-                  {techIcons[tool] && (
-                    <img
-                      src={`https://cdn.simpleicons.org/${techIcons[tool]}`}
-                      className={tool === "Next.js" || tool === "OpenAI API" ? "tech-icon-light" : undefined}
-                      alt=""
-                      width="15"
-                      height="15"
-                      loading="lazy"
-                    />
-                  )}
+                  <TechIcon tool={tool} />
                   {tool}
                 </li>
               ))}

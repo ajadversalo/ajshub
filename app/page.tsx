@@ -1,5 +1,10 @@
-import { experience, techIcons } from "./data/experience";
+"use client";
+
+import { useLayoutEffect, useRef, useState, type CSSProperties, type MouseEvent } from "react";
+import Image from "next/image";
+import { experience } from "./data/experience";
 import { projects } from "./data/portfolio";
+import TechIcon from "./tech-icon";
 import ThemeToggle from "./theme-toggle";
 import ToolboxSection from "./toolbox-section";
 
@@ -179,16 +184,7 @@ export default function Home() {
                   <ul aria-label={`${chapter.company} tech stack`}>
                     {chapter.stack.map((tool) => (
                       <li key={tool}>
-                        {techIcons[tool] && (
-                          <img
-                            src={`https://cdn.simpleicons.org/${techIcons[tool]}`}
-                            className={tool === "Next.js" || tool === "OpenAI API" ? "tech-icon-light" : undefined}
-                            alt=""
-                            width="13"
-                            height="13"
-                            loading="lazy"
-                          />
-                        )}
+                        <TechIcon tool={tool} size={13} />
                         {tool}
                       </li>
                     ))}
@@ -243,7 +239,11 @@ export default function Home() {
             </div>
           </div>
           <footer>
-            <span>© {new Date().getFullYear()} AJ Adversalo</span>
+            <div className="site-credit">
+              <span>© {new Date().getFullYear()} AJ Adversalo</span>
+              <a href="https://github.com/ajadversalo" target="_blank" rel="noreferrer">GitHub</a>
+              <a href="https://www.linkedin.com/in/ajadversalo" target="_blank" rel="noreferrer">LinkedIn</a>
+            </div>
             <a href="#top" onClick={scrollToSection}>Back to top ↑</a>
           </footer>
         </div>
@@ -251,7 +251,3 @@ export default function Home() {
     </main>
   );
 }
-"use client";
-
-import { useLayoutEffect, useRef, useState, type CSSProperties, type MouseEvent } from "react";
-import Image from "next/image";
