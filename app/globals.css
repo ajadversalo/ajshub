@@ -220,7 +220,7 @@ section[id] { scroll-margin-top: 24px; }
   .nav nav a[aria-current="page"] { background: color-mix(in srgb, var(--nav-signal) 20%, #10120e); color: #a7ef56; opacity: 1; }
   :root[data-theme="light"] .nav nav a[aria-current="page"] { background: color-mix(in srgb, var(--nav-signal) 22%, #eef0e9); color: #2f5417; }
   section[id] { scroll-margin-top: var(--nav-height); }
-  .hero { min-height: calc(100svh - var(--nav-height)); padding: 58px 0 112px; justify-content: space-between; }.hero-copy { width: 100%; }
+  .hero { min-height: calc(100svh - var(--nav-height)); padding: 58px 0 112px; justify-content: space-between; }.hero-copy { width: 100%; }.hero-bio-career { display: none; }
   .section-heading, .experience-heading, .toolbox-heading { grid-template-columns: 1fr; gap: 25px; }.section-note, .experience-heading > p:last-child, .toolbox-heading > p:last-child { margin-left: 0; }.toolbox { min-height: calc(100svh - var(--nav-height)); display: flex; flex-direction: column; padding-bottom: 88px; }.toolbox-filter { grid-template-columns: 1fr; gap: 6px; }.toolbox-grid { flex: 1; grid-template-columns: repeat(2, minmax(0, 1fr)); }.toolbox-group, .toolbox-group:nth-child(2), .toolbox-group:nth-child(3), .toolbox-group:nth-child(4), .toolbox-group:nth-child(5) { grid-column: auto; }.toolbox-grid.is-filtered .toolbox-group { grid-column: 1 / -1; }.project { grid-template-columns: 1fr; }.project-visual { min-height: 380px; }.project-copy { padding-top: 35px; }.experience-chapter { grid-template-columns: 1fr; gap: 34px; }.company-context { position: static; }.about { grid-template-columns: 1fr; gap: 55px; }
   .beyond-work-page { padding-bottom: 120px; }
 }
