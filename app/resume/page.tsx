@@ -1,24 +1,12 @@
 "use client";
 
 import { roles, skills } from "../data/resume";
-import ThemeToggle from "../theme-toggle";
+import SiteNav from "../site-nav";
 
 export default function ResumePage() {
   return (
     <main className="resume-page">
-      <header className="nav shell resume-nav">
-        <div className="brand-actions">
-          <a className="monogram" href="/" aria-label="AJ Adversalo, home">
-            AJ<span>®</span>
-          </a>
-          <ThemeToggle />
-        </div>
-        <nav aria-label="Primary navigation">
-          <a href="/#toolbox">Tools</a>
-          <a href="/#experience-archive">Experience</a>
-          <a href="/#contact">Contact</a>
-        </nav>
-      </header>
+      <SiteNav current="resume" />
 
       <div className="resume-stage">
         <button className="resume-export" type="button" onClick={() => window.print()}>

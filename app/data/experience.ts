@@ -2,7 +2,6 @@ export const experience = [
   {
     company: "Centra Construction Group",
     logo: "/centra-logo.png",
-    watermark: "/centra-watermark.svg",
     website: "https://www.centrawindows.com",
     discipline: "Senior Software Developer · Langley, BC",
     marker: "June 2023 — Present",
@@ -22,7 +21,6 @@ export const experience = [
   {
     company: "GenXys Healthcare Systems",
     logo: "/genxys-logo-square.png",
-    watermark: "/genxys-watermark.svg",
     website: "https://genxys.com",
     discipline: "Full-Stack Developer · Vancouver, BC",
     marker: "July 2019 — June 2023",
