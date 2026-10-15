@@ -1,14 +1,11 @@
-export const projects = [
+export const beyondProjects = [
   {
-    number: "01",
-    type: "Personal project template",
-    title: "Project name",
-    summary: "A concise explanation of what the project does, why it exists, and the problem or curiosity that inspired it.",
-    tags: ["Status", "Your role", "Core stack"],
-    href: "",
-    label: "Project link coming soon",
-    accent: "lime",
-    hidden: true,
+    title: "SouthFraserHUB",
+    kind: "Local directory",
+    summary:
+      "Independent places, services, and favourites across Surrey, Langley, Delta, and White Rock.",
+    href: "https://southfraserhub.ca",
+    host: "southfraserhub.ca",
   },
 ];
 
