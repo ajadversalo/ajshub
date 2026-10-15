@@ -37,7 +37,10 @@ export default function BeyondWorkPage() {
               key={project.title}
             >
               <span className="beyond-card-kind">{project.kind}</span>
-              <h2>{project.title}</h2>
+              <h2>
+                {project.logo ? <img src={project.logo} alt="" width={36} height={36} /> : null}
+                {project.title}
+              </h2>
               <p>{project.summary}</p>
               <dl className="beyond-facts">
                 <div>

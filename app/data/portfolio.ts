@@ -1,9 +1,20 @@
-export const beyondProjects = [
+export const beyondProjects: {
+  title: string;
+  kind: string;
+  logo?: string;
+  summary: string;
+  href: string;
+  host: string;
+  stack: string[];
+  hosted: string;
+  database: string;
+}[] = [
   {
     title: "SouthFraserHUB",
     kind: "Local directory",
+    logo: "/southfraserhub-logo.svg",
     summary:
-      "Independent places, services, and favourites across Surrey, Langley, Delta, and White Rock.",
+      "I wanted a simpler way for small South Fraser businesses to get found which usually get buried under chain results.",
     href: "https://southfraserhub.ca",
     host: "southfraserhub.ca",
     stack: ["Next.js", "TypeScript", "React", "Tailwind CSS", "Leaflet"],

@@ -139,7 +139,8 @@ section[id] { scroll-margin-top: 24px; }
 .beyond-card:hover, .beyond-card:focus-visible { transform: rotate(.5deg) translateY(-6px); box-shadow: 7px 18px 0 #11120f10, 0 24px 48px #11120f18; }
 .beyond-card:focus-visible { outline: 2px solid #4b741f; outline-offset: 8px; }
 .beyond-card-kind { color: #7a6844; font: italic 15px/1 Georgia, serif; }
-.beyond-card h2 { margin: 0; font-size: clamp(24px, 2.6vw, 32px); line-height: 1.05; letter-spacing: -.04em; font-weight: 600; }
+.beyond-card h2 { display: flex; align-items: center; gap: 10px; margin: 0; font-size: clamp(24px, 2.6vw, 32px); line-height: 1.05; letter-spacing: -.04em; font-weight: 600; }
+.beyond-card h2 img { width: 36px; height: 36px; flex: 0 0 auto; border-radius: 10px; }
 .beyond-card p { margin: 0; min-width: 0; max-width: 100%; color: #4d4638; font-size: 15px; line-height: 1.5; overflow-wrap: break-word; }
 .beyond-card-link { width: fit-content; margin-top: 6px; color: #3b5f1c; border-bottom: 1px dashed #3b5f1c88; font-size: 14px; }
 .beyond-facts { display: grid; gap: 12px; margin: 6px 0 2px; padding-top: 12px; border-top: 1px dashed #cbb894; }
