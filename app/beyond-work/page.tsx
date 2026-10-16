@@ -55,12 +55,14 @@ export default function BeyondWorkPage() {
                     <FactChips tools={[project.hosted]} />
                   </dd>
                 </div>
-                <div>
-                  <dt>Database</dt>
-                  <dd>
-                    <FactChips tools={[project.database]} />
-                  </dd>
-                </div>
+                {project.database ? (
+                  <div>
+                    <dt>Database</dt>
+                    <dd>
+                      <FactChips tools={[project.database]} />
+                    </dd>
+                  </div>
+                ) : null}
               </dl>
               <span className="beyond-card-link">{project.host} ↗</span>
             </a>

@@ -7,7 +7,7 @@ export const beyondProjects: {
   host: string;
   stack: string[];
   hosted: string;
-  database: string;
+  database?: string;
 }[] = [
   {
     title: "SouthFraserHUB",
@@ -20,6 +20,17 @@ export const beyondProjects: {
     stack: ["Next.js", "TypeScript", "React", "Tailwind CSS", "Leaflet"],
     hosted: "Cloudflare Workers",
     database: "Cloudflare D1",
+  },
+  {
+    title: "Desk tools",
+    kind: "Windows catalog",
+    logo: "/webtools-logo.svg",
+    summary:
+      "A small catalog of Windows x64 utilities I keep on the desk, starting with Monitor Switch for toggling displays and jumping between layouts.",
+    href: "https://webtools.ajhub.ca",
+    host: "webtools.ajhub.ca",
+    stack: ["Next.js", "TypeScript", "React", "Tailwind CSS", "C#", ".NET"],
+    hosted: "Cloudflare Workers",
   },
 ];
 
