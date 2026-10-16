@@ -145,15 +145,11 @@ export default function Home() {
                     key={product.name}
                   >
                     {chapter.logo && (
-                      <span className="product-record-watermark" aria-hidden="true">
-                        <Image
-                          src={chapter.logo}
-                          alt=""
-                          width={180}
-                          height={180}
-                          unoptimized
-                        />
-                      </span>
+                      <span
+                        className="product-record-watermark"
+                        aria-hidden="true"
+                        style={{ "--watermark-image": `url(${chapter.logo})` } as CSSProperties}
+                      />
                     )}
                     <div className="record-meta">
                       <span>0{productIndex + 1}</span>
