@@ -32,6 +32,17 @@ export const beyondProjects: {
     stack: ["Next.js", "TypeScript", "React", "Tailwind CSS", "C#", ".NET"],
     hosted: "Cloudflare Workers",
   },
+  {
+    title: "STLCraft",
+    kind: "STL export lab",
+    logo: "/stlcraft-logo.svg",
+    summary:
+      "I wanted a quicker way to turn Font Awesome icons, text, and SVGs into print-ready STLs without opening a CAD app.",
+    href: "https://stlcraft.ajhub.ca",
+    host: "stlcraft.ajhub.ca",
+    stack: ["Next.js", "TypeScript", "React", "Three.js", "Font Awesome"],
+    hosted: "Cloudflare Workers",
+  },
 ];
 
 export const toolboxGroups = [

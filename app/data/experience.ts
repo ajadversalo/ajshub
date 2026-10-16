@@ -88,4 +88,6 @@ export const techIcons: Record<string, TechIcon> = {
   Leaflet: { src: "/tech/leaflet.svg" },
   SQLite: { src: "/tech/sqlite.svg" },
   "Cloudflare D1": { src: "/tech/sqlite.svg" },
+  "Three.js": { src: "/tech/threedotjs.svg", invert: true },
+  "Font Awesome": { src: "/tech/fontawesome.svg" },
 };
