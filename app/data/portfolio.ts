@@ -22,7 +22,7 @@ export const beyondProjects: {
     database: "Cloudflare D1",
   },
   {
-    title: "Desk tools",
+    title: "WebTools",
     kind: "Windows catalog",
     logo: "/webtools-logo.svg",
     summary:
