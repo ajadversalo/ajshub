@@ -37,6 +37,6 @@ export const roles = [
 export const skills = [
   ["Interface", "HTML, CSS, JavaScript, TypeScript, React, Next.js, Redux, Material UI, Ant Design, Tailwind CSS"],
   ["Backend", "C# / .NET, Node.js, Python, Django, Entity Framework, Express, Dapper"],
-  ["Platform", "SQL Server, PostgreSQL, Azure DevOps, AWS, IIS, Apache, Netlify"],
+  ["Platform", "SQL Server, PostgreSQL, Azure DevOps, AWS, Docker, IIS, Apache, Netlify"],
   ["Practice", "Selenium, Playwright, localization, SendGrid, Google Maps API, OpenAI API, Codex, Grok Build, Cost-aware model selection"],
 ];

@@ -59,7 +59,7 @@ export const toolboxGroups = [
   {
     category: "Data & platform",
     description: "The data, cloud, and infrastructure foundations that keep products running.",
-    tools: ["PostgreSQL", "SQL Server", "Azure", "AWS", "IIS"],
+    tools: ["PostgreSQL", "SQL Server", "Azure", "AWS", "Docker", "IIS"],
   },
   {
     category: "Quality & delivery",
