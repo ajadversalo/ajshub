@@ -31,7 +31,7 @@ export default function ToolboxSection() {
             type="search"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            placeholder="Try React, Python, Azure…"
+            placeholder="Try ReactJS, Python, Azure…"
             autoComplete="off"
           />
           {query && <button type="button" onClick={() => setQuery("")} aria-label="Clear technology filter">Clear</button>}
@@ -39,10 +39,8 @@ export default function ToolboxSection() {
       </div>
 
       <div className={`toolbox-grid${normalizedQuery ? " is-filtered" : ""}`}>
-        {filteredGroups.map((group) => {
-          const originalIndex = toolboxGroups.findIndex((item) => item.category === group.category);
-          return (
-          <article className="toolbox-group" data-index={`0${originalIndex + 1}`} key={group.category}>
+        {filteredGroups.map((group) => (
+          <article className="toolbox-group" key={group.category}>
             <div className="toolbox-group-heading">
               <h3>{group.category}</h3>
               <p>{group.description}</p>
@@ -56,8 +54,7 @@ export default function ToolboxSection() {
               ))}
             </ul>
           </article>
-          );
-        })}
+        ))}
         {filteredGroups.length === 0 && (
           <p className="toolbox-empty" role="status">No matching technologies. Try a broader search.</p>
         )}

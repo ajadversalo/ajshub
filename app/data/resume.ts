@@ -5,12 +5,11 @@ export const roles = [
     period: "Jun 2023 — Present",
     summary: "Modernizing enterprise applications, digitizing operational workflows, and prototyping AI-driven planning tools across five Western Canadian branches.",
     projects: [
-      ["CentraWorks", "Company-wide work order platform for managing, scheduling, and reporting, re-architected into a modular Next.js/.NET design that improved load performance by 50%."],
+      ["CentraWorks", "Led the modernization of a company-wide platform for managing, scheduling and reporting on work orders across all departments into a modular Next.js/.NET client-server architecture, improving load performance by 50% across five Western Canada branches."],
       ["CentraManufacture", "Mobile-first operations tracking that reduced manual logging by 40%."],
       ["Text-to-SQL", "LLM-powered natural-language querying of operational data using the OpenAI API."],
-      ["Ant Design baseline", "Unified Ant Design interface that became the design baseline for later internal apps."],
     ],
-    stack: ["Next.js", "TypeScript", "C#", ".NET", "Redux", "Ant Design", "Playwright", "OpenAI API"],
+    stack: ["Next.js", "TypeScript", "C#", ".NET", "Redux", "Ant Design", "Playwright", "OpenAI API", "Cursor", "Grok Build"],
   },
   {
     company: "GenXys Healthcare Systems",
@@ -29,14 +28,14 @@ export const roles = [
     role: "Application & Systems Administration",
     period: "2010 — 2018",
     summary: "Provided desktop, network, application, and server support across renewable energy, oil and gas, and manufacturing organizations.",
-    projects: [["IT operations", "Supported users, business applications, networks, and server infrastructure across diverse technical environments."]],
+    projects: [["IT operations", "Handled system, network and application administration across multi-site environments, and wrote automation scripts to streamline routine operations."]],
     stack: ["Desktop Support", "Networking", "Application Support", "Server Support", "Systems Administration", "Windows", "Active Directory", "Mail Server"],
   },
 ];
 
 export const skills = [
-  ["Interface", "HTML, CSS, JavaScript, TypeScript, React, Next.js, Redux, Material UI, Ant Design, Tailwind CSS"],
-  ["Backend", "C# / .NET, Node.js, Python, Django, Entity Framework, Express, Dapper"],
-  ["Platform", "SQL Server, PostgreSQL, Azure DevOps, AWS, Docker, IIS, Apache, Netlify"],
-  ["Practice", "Selenium, Playwright, localization, SendGrid, Google Maps API, OpenAI API, Codex, Grok Build, Cost-aware model selection"],
+  ["Interface", "TypeScript, JavaScript, React, Next.js, Redux, React Query, HTML, CSS, Ant Design, Material UI, Tailwind CSS"],
+  ["Backend", "Node.js, Express.js, Python, Django, C#, .NET, EF, REST APIs"],
+  ["Platform", "SQL Server, PostgreSQL, Supabase, Turso, Azure DevOps, AWS, Docker, Nginx, Load balancing, Cloudflare, Render, IIS, Apache, Netlify"],
+  ["Practice", "Selenium, Playwright, localization, SendGrid, Google Maps API, OpenAI API, Codex, Cursor, Grok Build, Cost-aware model selection"],
 ];

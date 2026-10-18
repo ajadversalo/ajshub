@@ -47,28 +47,38 @@ export const beyondProjects: {
 
 export const toolboxGroups = [
   {
-    category: "Interface engineering",
-    description: "Accessible, responsive interfaces built to stay coherent as products grow.",
-    tools: ["TypeScript", "React", "Next.js", "Redux", "Ant Design", "Material UI", "Tailwind CSS"],
+    category: "UI / Front-End",
+    description: "Client-side languages, frameworks, and UI libraries used to design and ship interfaces.",
+    tools: ["TypeScript", "JavaScript", "ReactJS", "NextJS", "Redux", "React Query", "HTML", "CSS", "Ant Design", "MUI", "Tailwind CSS"],
   },
   {
-    category: "Backend systems",
-    description: "Reliable application logic, integrations, and APIs behind the interface.",
-    tools: ["C#", ".NET", "Node.js", "Python", "Django", "REST APIs"],
+    category: "API & Back-End",
+    description: "Server-side frameworks, data access, and APIs behind the interface.",
+    tools: ["Node.js", "Express.js", "Python", "Django", "C#", ".NET", "EF", "REST APIs"],
   },
   {
-    category: "Data & platform",
-    description: "The data, cloud, and infrastructure foundations that keep products running.",
-    tools: ["PostgreSQL", "SQL Server", "Azure", "AWS", "Docker", "IIS"],
+    category: "Database",
+    description: "Relational and hosted data stores used across product work.",
+    tools: ["SQL Server", "PostgreSQL", "Supabase", "Turso"],
   },
   {
-    category: "Quality & delivery",
-    description: "Practical safeguards for shipping confidently and improving continuously.",
-    tools: ["Playwright", "Selenium", "Azure DevOps", "CI/CD", "Accessibility"],
+    category: "DevOps & Cloud",
+    description: "Cloud, hosting, and infrastructure used to run and deliver systems.",
+    tools: ["Azure", "Docker", "Nginx", "Load balancing", "Cloudflare", "Render", "Git", "IIS", "Apache"],
   },
   {
-    category: "AI & product",
-    description: "Tools and methods for exploring ideas, automating work, and finding the useful path.",
-    tools: ["OpenAI API", "Codex", "Grok Build", "Cost-aware model selection", "AI tools", "Automation", "Prototyping", "Product thinking"],
+    category: "AI",
+    description: "Model and agent tooling used in a plan, review, and test process.",
+    tools: ["Codex", "Cursor", "OpenAI API", "Grok Build", "Cost-aware model selection"],
+  },
+  {
+    category: "Testing & Automation",
+    description: "End-to-end testing used to ship with confidence.",
+    tools: ["Selenium", "Playwright"],
+  },
+  {
+    category: "Other Tools & Integration",
+    description: "Localization, messaging, maps, and shipping integrations.",
+    tools: ["i18next (localization)", "SendGrid", "Google Maps API", "Canada Post API"],
   },
 ];
