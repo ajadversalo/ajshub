@@ -1,22 +1,27 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
+import { DEFAULT_THEME, THEME_STORAGE_KEY, type Theme } from "../constants";
 
-type Theme = "light" | "dark";
+function getTheme(): Theme {
+  return document.documentElement.dataset.theme === "light" ? "light" : "dark";
+}
 
+function subscribe(onChange: () => void) {
+  const observer = new MutationObserver(onChange);
+  observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+  return () => observer.disconnect();
+}
+
+/** Light/dark control. Reads `data-theme` so it stays in sync with the FOUC script. */
 export default function ThemeToggle() {
-  const [theme, setTheme] = useState<Theme>("light");
-
-  useEffect(() => {
-    setTheme(document.documentElement.dataset.theme === "light" ? "light" : "dark");
-  }, []);
+  const theme = useSyncExternalStore(subscribe, getTheme, () => DEFAULT_THEME);
 
   const toggleTheme = () => {
     const nextTheme: Theme = theme === "dark" ? "light" : "dark";
     document.documentElement.dataset.theme = nextTheme;
     document.documentElement.style.colorScheme = nextTheme;
-    localStorage.setItem("theme", nextTheme);
-    setTheme(nextTheme);
+    localStorage.setItem(THEME_STORAGE_KEY, nextTheme);
   };
 
   return (

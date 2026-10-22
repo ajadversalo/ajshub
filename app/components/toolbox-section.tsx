@@ -1,9 +1,11 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { toolboxGroups } from "./data/portfolio";
-import TechIcon from "./tech-icon";
+import { COPY, SECTIONS } from "../constants";
+import { toolboxGroups } from "../data/portfolio";
+import TechChips from "./tech-chips";
 
+/** Homepage toolkit: filterable skill groups from `toolboxGroups`. */
 export default function ToolboxSection() {
   const [query, setQuery] = useState("");
   const normalizedQuery = query.trim().toLowerCase();
@@ -17,24 +19,24 @@ export default function ToolboxSection() {
     .filter((group) => group.tools.length > 0), [normalizedQuery]);
 
   return (
-    <section className="toolbox shell" id="toolbox">
+    <section className="toolbox shell" id={SECTIONS.toolbox}>
       <header className="toolbox-heading">
-        <h2>My Technical Toolkit</h2>
-        <p>The technologies I use to design, build, and ship products.</p>
+        <h2>{COPY.toolboxHeading}</h2>
+        <p>{COPY.toolboxSub}</p>
       </header>
 
       <div className="toolbox-filter">
-        <label htmlFor="technology-filter">Find a technology</label>
+        <label htmlFor="technology-filter">{COPY.toolboxFilterLabel}</label>
         <div className="toolbox-filter-field">
           <input
             id="technology-filter"
             type="search"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            placeholder="Try ReactJS, Python, Azure…"
+            placeholder={COPY.toolboxPlaceholder}
             autoComplete="off"
           />
-          {query && <button type="button" onClick={() => setQuery("")} aria-label="Clear technology filter">Clear</button>}
+          {query && <button type="button" onClick={() => setQuery("")} aria-label={COPY.toolboxClear}>Clear</button>}
         </div>
       </div>
 
@@ -45,18 +47,11 @@ export default function ToolboxSection() {
               <h3>{group.category}</h3>
               <p>{group.description}</p>
             </div>
-            <ul aria-label={`${group.category} technologies`}>
-              {group.tools.map((tool) => (
-                <li key={tool}>
-                  <TechIcon tool={tool} />
-                  {tool}
-                </li>
-              ))}
-            </ul>
+            <TechChips tools={group.tools} label={`${group.category} technologies`} />
           </article>
         ))}
         {filteredGroups.length === 0 && (
-          <p className="toolbox-empty" role="status">No matching technologies. Try a broader search.</p>
+          <p className="toolbox-empty" role="status">{COPY.toolboxEmpty}</p>
         )}
       </div>
     </section>

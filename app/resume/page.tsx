@@ -1,16 +1,26 @@
 "use client";
 
+import SiteNav from "../components/site-nav";
+import {
+  AI_JABBER_URL,
+  COPY,
+  GITHUB_URL,
+  LINKEDIN_URL,
+  PERSON_NAME,
+  ROLE_LINE,
+} from "../constants";
 import { roles, skills } from "../data/resume";
-import SiteNav from "../site-nav";
 
 export default function ResumePage() {
+  const [firstName, lastName] = PERSON_NAME.split(" ");
+
   return (
     <main className="resume-page">
       <SiteNav current="resume" />
 
       <div className="resume-stage">
         <button className="resume-export" type="button" onClick={() => window.print()}>
-          Export PDF ↗
+          {COPY.resumeExport}
         </button>
         <aside className="resume-rail" aria-hidden="true">
           <span>01</span><i /><span>Résumé</span>
@@ -19,19 +29,19 @@ export default function ResumePage() {
         <article className="resume-sheet">
           <header className="resume-hero">
             <div className="resume-name">
-              <p>Full-stack developer · Vancouver, BC</p>
-              <h1>AJ<br />Adversalo<span>.</span></h1>
+              <p>{ROLE_LINE}</p>
+              <h1>{firstName}<br />{lastName}<span>.</span></h1>
             </div>
             <div className="resume-contact">
-              <p>Full-stack developer focused on designing reliable, high-performance systems that improve efficiency and scale across teams. Experienced in modernizing enterprise applications, automating workflows, and integrating agentic AI into a disciplined plan, review and test process.</p>
-              <a href="https://www.linkedin.com/in/ajadversalo">LinkedIn ↗</a>
-              <a href="https://github.com/ajadversalo">GitHub ↗</a>
-              <a href="https://aijabber.ca">AI Jabber ↗</a>
+              <p>{COPY.resumeSummary}</p>
+              <a href={LINKEDIN_URL}>LinkedIn ↗</a>
+              <a href={GITHUB_URL}>GitHub ↗</a>
+              <a href={AI_JABBER_URL}>AI Jabber ↗</a>
             </div>
           </header>
 
           <section className="resume-block">
-            <span className="resume-label">Experience / 01</span>
+            <span className="resume-label">{COPY.resumeExperienceLabel}</span>
             <div className="resume-roles">
               {roles.map((item, index) => (
                 <article className="resume-role" key={item.company}>
@@ -53,15 +63,15 @@ export default function ResumePage() {
           </section>
 
           <section className="resume-block">
-            <span className="resume-label">Capabilities / 02</span>
+            <span className="resume-label">{COPY.resumeCapabilitiesLabel}</span>
             <div className="resume-skills">
               {skills.map(([category, items]) => <div key={category}><strong>{category}</strong><p>{items}</p></div>)}
             </div>
           </section>
 
           <footer className="resume-footer">
-            <span>AJ Adversalo</span>
-            <span>Built with intent.</span>
+            <span>{PERSON_NAME}</span>
+            <span>{COPY.resumeFooterNote}</span>
             <span>{new Date().getFullYear()}</span>
           </footer>
         </article>

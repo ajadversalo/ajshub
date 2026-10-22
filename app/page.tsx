@@ -1,97 +1,59 @@
 "use client";
 
-import { useLayoutEffect, useRef, type CSSProperties, type MouseEvent } from "react";
+import type { CSSProperties } from "react";
 import Image from "next/image";
+import FitTitle from "./components/fit-title";
+import { scrollToSection } from "./components/scroll-to-section";
+import SiteNav from "./components/site-nav";
+import TechChips from "./components/tech-chips";
+import ToolboxSection from "./components/toolbox-section";
+import {
+  COPY,
+  GITHUB_URL,
+  HASH,
+  LINKEDIN_URL,
+  MAILTO,
+  PERSON_NAME,
+  ROLE_LINE,
+  SECTIONS,
+} from "./constants";
 import { experience } from "./data/experience";
-import TechIcon from "./tech-icon";
-import SiteNav from "./site-nav";
-import ToolboxSection from "./toolbox-section";
-
-function FitTitle({ children }: { children: string }) {
-  const ref = useRef<HTMLHeadingElement>(null);
-
-  useLayoutEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-
-    const fit = () => {
-      el.style.fontSize = "";
-      const width = el.clientWidth;
-      if (!width) return;
-      if (el.scrollWidth > width + 1) {
-        const size = parseFloat(getComputedStyle(el).fontSize);
-        el.style.fontSize = `${Math.max(12, size * (width / el.scrollWidth))}px`;
-      }
-    };
-
-    const observer = new ResizeObserver(fit);
-    observer.observe(el);
-    void document.fonts?.ready?.then(fit);
-    return () => observer.disconnect();
-  }, [children]);
-
-  return (
-    <h4 ref={ref} style={{ "--title-chars": children.length } as CSSProperties}>
-      {children}
-    </h4>
-  );
-}
 
 export default function Home() {
-  const scrollToSection = (event: MouseEvent<HTMLAnchorElement>) => {
-    event.preventDefault();
-    const targetId = event.currentTarget.getAttribute("href")?.replace("#", "");
-    if (!targetId) return;
-    const target = document.getElementById(targetId);
-    if (!target) return;
-    target.scrollIntoView({ behavior: "smooth", block: "start" });
-    window.history.replaceState(null, "", `#${targetId}`);
-  };
-
   return (
     <main>
       <SiteNav current="home" />
 
-      <section className="hero shell" id="top">
-        <p className="eyebrow">Full-stack developer · Vancouver, BC</p>
-        <div className="hero-copy">
-          <h1>
-            Hey, I’m AJ, a product-minded full-stack developer in Vancouver, BC. I bring useful products from idea to production, with <strong>AI integrated into a careful process of iterating, building, and shipping</strong>.
-          </h1>
-          <p className="hero-bio-career">
-            Starting my IT career in systems administration helped me develop a strong operational mindset around reliability, troubleshooting, and owning production systems. That foundation carried into software development, first at GenXys building pharmacogenetic decision support tools, and now at Centra, where I continue building useful, well-built products.
-          </p>
-          <p>
-            This is where I share work I’m proud of. If something resonates, feel free to <a href="mailto:ajadvers@gmail.com">say hello</a>.
-          </p>
+      <section className="hero shell" id={SECTIONS.top}>
+        <div className="hero-intro">
+          <div className="hero-copy">
+            <div className="hero-name">
+              <p className="hero-kicker">{COPY.heroKicker}</p>
+              <h1>{PERSON_NAME}</h1>
+            </div>
+            <p className="hero-role">{ROLE_LINE}</p>
+            <p className="hero-bio">{COPY.heroBio}</p>
+            <div className="hero-actions">
+              <a className="hero-btn" href={HASH.toolbox} onClick={scrollToSection}>{COPY.explore}</a>
+              <a className="hero-btn hero-btn-primary" href={MAILTO}>{COPY.contact}</a>
+            </div>
+          </div>
         </div>
         <div className="hero-bottom">
           <div className="site-credit">
-            <span>© {new Date().getFullYear()} AJ Adversalo</span>
-            <a href="https://github.com/ajadversalo" target="_blank" rel="noreferrer">GitHub</a>
-            <a href="https://www.linkedin.com/in/ajadversalo" target="_blank" rel="noreferrer">LinkedIn</a>
+            <span>© {new Date().getFullYear()} {PERSON_NAME}</span>
+            <a href={GITHUB_URL} target="_blank" rel="noreferrer">GitHub</a>
+            <a href={LINKEDIN_URL} target="_blank" rel="noreferrer">LinkedIn</a>
           </div>
-          <a
-            className="round-link"
-            href="#experience-archive"
-            onClick={scrollToSection}
-            aria-label="Explore experience"
-          >
-            <span>Explore</span>
-            <b aria-hidden="true">↓</b>
-          </a>
         </div>
       </section>
 
       <ToolboxSection />
 
-      <section className="experience shell" id="experience-archive">
+      <section className="experience shell" id={SECTIONS.experience}>
         <div className="experience-heading">
-          <h2>What I helped bring to life</h2>
-          <p>
-            Some project details are intentionally kept high-level to respect
-            the confidential nature of the work.
-          </p>
+          <h2>{COPY.experienceHeading}</h2>
+          <p>{COPY.experienceIntro}</p>
         </div>
 
         <div className="experience-list">
@@ -127,14 +89,7 @@ export default function Home() {
                 <p className="company-intro">{chapter.intro}</p>
                 <div className="company-stack">
                   <span>Tech stack</span>
-                  <ul aria-label={`${chapter.company} tech stack`}>
-                    {chapter.stack.map((tool) => (
-                      <li key={tool}>
-                        <TechIcon tool={tool} size={13} />
-                        {tool}
-                      </li>
-                    ))}
-                  </ul>
+                  <TechChips tools={chapter.stack} size={13} label={`${chapter.company} tech stack`} />
                 </div>
               </div>
               <div className="product-records">

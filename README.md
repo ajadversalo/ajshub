@@ -4,6 +4,16 @@ AJ Adversalo's portfolio, built with Next.js APIs on
 [vinext](https://github.com/cloudflare/vinext). It can be deployed either as a
 server-rendered Cloudflare Worker or as a static Cloudflare Pages site.
 
+Docs:
+
+- [Architecture](docs/architecture.md) — routes, folders, theme
+- [Components](docs/components.md) — shared UI and props
+- [Styles](docs/styles.md) — CSS layers and tokens
+- [Images](docs/images.md) — `public/images/` layout
+
+Site copy and URLs live in `app/constants.ts`. Job history, toolkit groups, and
+résumé content live in `app/data/`.
+
 ## Prerequisites
 
 - Node.js `>=22.13.0`
@@ -52,6 +62,8 @@ require the Images binding.
 ## Included Shape
 
 - edit site code under `app/`
+- shared UI in `app/components/`
+- CSS in `app/styles/`, imported from `app/globals.css`
 - `.openai/hosting.json` declares optional Sites D1 and R2 bindings
 - `vite.config.ts` simulates declared bindings for local development
 - `db/schema.ts` starts intentionally empty

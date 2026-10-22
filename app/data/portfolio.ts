@@ -1,4 +1,13 @@
-export const beyondProjects: {
+/**
+ * Side projects and toolbox groups shown on the site.
+ *
+ * @packageDocumentation
+ */
+
+import { IMAGES } from "../constants";
+
+/** Personal project card on `/beyond-work`. */
+export type BeyondProject = {
   title: string;
   kind: string;
   logo?: string;
@@ -8,11 +17,13 @@ export const beyondProjects: {
   stack: string[];
   hosted: string;
   database?: string;
-}[] = [
+};
+
+export const beyondProjects: BeyondProject[] = [
   {
     title: "SouthFraserHUB",
     kind: "Local directory",
-    logo: "/southfraserhub-logo.svg",
+    logo: IMAGES.southfraserhubLogo,
     summary:
       "I wanted a simpler way for small South Fraser businesses to get found which usually get buried under chain results.",
     href: "https://southfraserhub.ca",
@@ -24,7 +35,7 @@ export const beyondProjects: {
   {
     title: "WebTools",
     kind: "Windows catalog",
-    logo: "/webtools-logo.svg",
+    logo: IMAGES.webtoolsLogo,
     summary:
       "A small catalog of Windows x64 utilities I keep on the desk, starting with Monitor Switch for toggling displays and jumping between layouts.",
     href: "https://webtools.ajhub.ca",
@@ -35,7 +46,7 @@ export const beyondProjects: {
   {
     title: "STLCraft",
     kind: "STL export lab",
-    logo: "/stlcraft-logo.svg",
+    logo: IMAGES.stlcraftLogo,
     summary:
       "I wanted a quicker way to turn Font Awesome icons, text, and SVGs into print-ready STLs without opening a CAD app.",
     href: "https://stlcraft.ajhub.ca",
@@ -45,7 +56,14 @@ export const beyondProjects: {
   },
 ];
 
-export const toolboxGroups = [
+/** Filterable skill group in the homepage toolkit. */
+export type ToolboxGroup = {
+  category: string;
+  description: string;
+  tools: string[];
+};
+
+export const toolboxGroups: ToolboxGroup[] = [
   {
     category: "UI / Front-End",
     description: "Client-side languages, frameworks, and UI libraries used to design and ship interfaces.",

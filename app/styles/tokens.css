@@ -1,0 +1,22 @@
+:root {
+  --ink: #0a0a0a;
+  --paper: #f1f0eb;
+  --muted: #a2a29d;
+  --line: #292929;
+  --accent: #a7ef56;
+  --nav-height: 56px;
+  --nav-signal: #a7ef56;
+  --lime: #a7ef56;
+  --brand-ink: #11120f;
+  color-scheme: dark;
+}
+
+:root[data-theme="light"] {
+  --ink: #f2f1eb;
+  --paper: #11120f;
+  --muted: #64655f;
+  --line: #cfcec6;
+  --accent: #3f681c;
+  --nav-signal: #3f681c;
+  color-scheme: light;
+}

@@ -1,21 +1,9 @@
 "use client";
 
+import SiteNav from "../components/site-nav";
+import TechChips from "../components/tech-chips";
+import { COPY } from "../constants";
 import { beyondProjects } from "../data/portfolio";
-import SiteNav from "../site-nav";
-import TechIcon from "../tech-icon";
-
-function FactChips({ tools }: { tools: string[] }) {
-  return (
-    <ul>
-      {tools.map((tool) => (
-        <li key={tool}>
-          <TechIcon tool={tool} size={13} />
-          {tool}
-        </li>
-      ))}
-    </ul>
-  );
-}
 
 export default function BeyondWorkPage() {
   return (
@@ -23,8 +11,8 @@ export default function BeyondWorkPage() {
       <SiteNav current="beyond-work" />
       <section className="beyond shell">
         <header className="beyond-intro">
-          <h1>Beyond Work</h1>
-          <p>Things I tinker with outside the day job.</p>
+          <h1>{COPY.beyondHeading}</h1>
+          <p>{COPY.beyondIntro}</p>
         </header>
 
         <div className="beyond-board">
@@ -46,20 +34,20 @@ export default function BeyondWorkPage() {
                 <div>
                   <dt>Stack</dt>
                   <dd>
-                    <FactChips tools={project.stack} />
+                    <TechChips tools={project.stack} size={13} />
                   </dd>
                 </div>
                 <div>
                   <dt>Hosted</dt>
                   <dd>
-                    <FactChips tools={[project.hosted]} />
+                    <TechChips tools={[project.hosted]} size={13} />
                   </dd>
                 </div>
                 {project.database ? (
                   <div>
                     <dt>Database</dt>
                     <dd>
-                      <FactChips tools={[project.database]} />
+                      <TechChips tools={[project.database]} size={13} />
                     </dd>
                   </div>
                 ) : null}

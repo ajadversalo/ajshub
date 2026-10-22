@@ -1,4 +1,20 @@
-export const roles = [
+/**
+ * Résumé sheet copy. Keep category names aligned with the latest resume PDF.
+ *
+ * @packageDocumentation
+ */
+
+/** One employer block on `/resume`. */
+export type ResumeRole = {
+  company: string;
+  role: string;
+  period: string;
+  summary: string;
+  projects: [name: string, description: string][];
+  stack: string[];
+};
+
+export const roles: ResumeRole[] = [
   {
     company: "Centra Construction Group",
     role: "Senior Software Developer · Langley, BC",
@@ -33,7 +49,10 @@ export const roles = [
   },
 ];
 
-export const skills = [
+/** Capability row: category label plus comma-separated tools. */
+export type ResumeSkillGroup = [category: string, items: string];
+
+export const skills: ResumeSkillGroup[] = [
   ["UI / Front-End", "ReactJS, NextJS, TypeScript, JavaScript, Redux, React Query, HTML, CSS, Ant Design, MUI, Tailwind CSS, Storybook"],
   ["API & Back-End", "C#, .NET, EF, Node.js, Express.js, Python, Django, REST APIs, OAuth"],
   ["Database", "SQL Server, PostgreSQL, Supabase, Turso"],

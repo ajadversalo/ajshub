@@ -40,7 +40,9 @@ test("server-renders the portfolio routes for Cloudflare Workers", async () => {
   ]);
 
   assert.match(home, /<title>AJ Adversalo — Full-Stack Developer<\/title>/i);
-  assert.match(home, /Modern full-stack development\./);
+  assert.match(home, /Hello I’m/);
+  assert.match(home, /AJ Adversalo/);
+  assert.match(home, /Contact/);
   assert.match(home, /My Technical Toolkit/);
   assert.match(resume, /<h1>AJ<br\/>Adversalo/);
   assert.match(resume, /Capabilities \/ 02/);
@@ -53,7 +55,7 @@ test("creates a self-contained Cloudflare Pages export", async () => {
     readFile(new URL("../out/_headers", import.meta.url), "utf8"),
   ]);
 
-  assert.match(home, /Modern full-stack development\./);
+  assert.match(home, /Hello I’m/);
   assert.doesNotMatch(home, /_vinext\/image/);
   assert.match(resume, /Capabilities \/ 02/);
   assert.match(headers, /Cache-Control: public, max-age=31536000, immutable/);

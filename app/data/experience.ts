@@ -1,7 +1,35 @@
-export const experience = [
+/**
+ * Homepage experience chapters and the shared tech-icon lookup.
+ *
+ * @packageDocumentation
+ */
+
+import { IMAGES, techIconSrc } from "../constants";
+
+/** One shipped product inside an experience chapter. */
+export type ProductRecord = {
+  name: string;
+  type: string;
+  note: string;
+  tags: string[];
+};
+
+/** Employer or earlier-career chapter on the homepage. */
+export type ExperienceChapter = {
+  company: string;
+  logo?: string;
+  website?: string;
+  discipline: string;
+  marker: string;
+  intro: string;
+  stack: string[];
+  products: ProductRecord[];
+};
+
+export const experience: ExperienceChapter[] = [
   {
     company: "Centra Construction Group",
-    logo: "/centra-logo.png",
+    logo: IMAGES.centraLogo,
     website: "https://www.centrawindows.com",
     discipline: "Senior Software Developer · Langley, BC",
     marker: "June 2023 — Present",
@@ -20,7 +48,7 @@ export const experience = [
   },
   {
     company: "GenXys Healthcare Systems",
-    logo: "/genxys-logo-square.png",
+    logo: IMAGES.genxysLogo,
     website: "https://genxys.com",
     discipline: "Full-Stack Developer · Vancouver, BC",
     marker: "July 2019 — June 2023",
@@ -48,68 +76,76 @@ export const experience = [
   },
 ];
 
-export type TechIcon = { src: string; invert?: boolean };
+/** SVG asset used by the TechIcon component. */
+export type TechIconSpec = {
+  src: string;
+  /** Invert in dark theme so black Simple Icons read as paper. */
+  invert?: boolean;
+};
 
-export const techIcons: Record<string, TechIcon> = {
-  "Next.js": { src: "/tech/nextdotjs.svg", invert: true },
-  NextJS: { src: "/tech/nextdotjs.svg", invert: true },
-  TypeScript: { src: "/tech/typescript.svg" },
-  JavaScript: { src: "/tech/javascript.svg" },
-  "C#": { src: "/tech/csharp.svg" },
-  ".NET": { src: "/tech/dotnet.svg" },
-  EF: { src: "/tech/dotnet.svg" },
-  Redux: { src: "/tech/redux.svg" },
-  "Ant Design": { src: "/tech/antdesign.svg" },
-  Playwright: { src: "/tech/playwright.svg" },
-  "OpenAI API": { src: "/tech/openai.svg" },
-  React: { src: "/tech/react.svg" },
-  ReactJS: { src: "/tech/react.svg" },
-  "React Query": { src: "/tech/reactquery.svg" },
-  HTML: { src: "/tech/html5.svg" },
-  CSS: { src: "/tech/css.svg" },
-  "Azure DevOps": { src: "/tech/azuredevops.svg" },
-  "Material UI": { src: "/tech/mui.svg" },
-  MUI: { src: "/tech/mui.svg" },
-  SendGrid: { src: "/tech/sendgrid.svg" },
-  "Express.js": { src: "/tech/express.svg", invert: true },
-  Docker: { src: "/tech/docker.svg" },
-  Nginx: { src: "/tech/nginx.svg" },
-  "Load balancing": { src: "/tech/load-balancing.svg" },
-  Render: { src: "/tech/render.svg", invert: true },
-  Git: { src: "/tech/git.svg" },
-  Apache: { src: "/tech/apache.svg" },
-  Cursor: { src: "/tech/cursor.svg", invert: true },
-  Supabase: { src: "/tech/supabase.svg" },
-  Turso: { src: "/tech/turso.svg" },
-  "i18next (localization)": { src: "/tech/i18next.svg" },
-  "Google Maps API": { src: "/tech/googlemaps.svg" },
-  "Canada Post API": { src: "/tech/canada-post.svg" },
-  Selenium: { src: "/tech/selenium.svg" },
-  "Tailwind CSS": { src: "/tech/tailwindcss.svg" },
-  "Node.js": { src: "/tech/nodedotjs.svg" },
-  Python: { src: "/tech/python.svg" },
-  Django: { src: "/tech/django.svg" },
-  PostgreSQL: { src: "/tech/postgresql.svg" },
-  "SQL Server": { src: "/tech/microsoftsqlserver.svg" },
-  Azure: { src: "/tech/azure.svg" },
-  AWS: { src: "/tech/aws.svg" },
-  IIS: { src: "/tech/iis.svg" },
-  "REST APIs": { src: "/tech/swagger.svg" },
-  "CI/CD": { src: "/tech/githubactions.svg" },
-  "GitHub Actions": { src: "/tech/githubactions.svg" },
-  Accessibility: { src: "/tech/accessibility.svg" },
-  Codex: { src: "/tech/codex.svg" },
-  "Grok Build": { src: "/tech/grok-build.svg" },
-  "Cost-aware model selection": { src: "/tech/cost-aware.svg" },
-  "AI tools": { src: "/tech/ai-tools.svg" },
-  Automation: { src: "/tech/automation.svg" },
-  Prototyping: { src: "/tech/figma.svg" },
-  "Product thinking": { src: "/tech/product-thinking.svg" },
-  Cloudflare: { src: "/tech/cloudflare.svg" },
-  "Cloudflare Workers": { src: "/tech/cloudflareworkers.svg" },
-  Leaflet: { src: "/tech/leaflet.svg" },
-  SQLite: { src: "/tech/sqlite.svg" },
-  "Cloudflare D1": { src: "/tech/sqlite.svg" },
-  "Three.js": { src: "/tech/threedotjs.svg", invert: true },
-  "Font Awesome": { src: "/tech/fontawesome.svg" },
+const icon = (file: string, invert?: true): TechIconSpec =>
+  invert ? { src: techIconSrc(file), invert } : { src: techIconSrc(file) };
+
+export const techIcons: Record<string, TechIconSpec> = {
+  "Next.js": icon("nextdotjs.svg", true),
+  NextJS: icon("nextdotjs.svg", true),
+  TypeScript: icon("typescript.svg"),
+  JavaScript: icon("javascript.svg"),
+  "C#": icon("csharp.svg"),
+  ".NET": icon("dotnet.svg"),
+  EF: icon("dotnet.svg"),
+  Redux: icon("redux.svg"),
+  "Ant Design": icon("antdesign.svg"),
+  Playwright: icon("playwright.svg"),
+  "OpenAI API": icon("openai.svg"),
+  React: icon("react.svg"),
+  ReactJS: icon("react.svg"),
+  "React Query": icon("reactquery.svg"),
+  HTML: icon("html5.svg"),
+  CSS: icon("css.svg"),
+  "Azure DevOps": icon("azuredevops.svg"),
+  "Material UI": icon("mui.svg"),
+  MUI: icon("mui.svg"),
+  SendGrid: icon("sendgrid.svg"),
+  "Express.js": icon("express.svg", true),
+  Docker: icon("docker.svg"),
+  Nginx: icon("nginx.svg"),
+  "Load balancing": icon("load-balancing.svg"),
+  Render: icon("render.svg", true),
+  Git: icon("git.svg"),
+  Apache: icon("apache.svg"),
+  Cursor: icon("cursor.svg", true),
+  Supabase: icon("supabase.svg"),
+  Turso: icon("turso.svg"),
+  "i18next (localization)": icon("i18next.svg"),
+  "Google Maps API": icon("googlemaps.svg"),
+  "Canada Post API": icon("canada-post.svg"),
+  Selenium: icon("selenium.svg"),
+  "Tailwind CSS": icon("tailwindcss.svg"),
+  "Node.js": icon("nodedotjs.svg"),
+  Python: icon("python.svg"),
+  Django: icon("django.svg"),
+  PostgreSQL: icon("postgresql.svg"),
+  "SQL Server": icon("microsoftsqlserver.svg"),
+  Azure: icon("azure.svg"),
+  AWS: icon("aws.svg"),
+  IIS: icon("iis.svg"),
+  "REST APIs": icon("swagger.svg"),
+  "CI/CD": icon("githubactions.svg"),
+  "GitHub Actions": icon("githubactions.svg"),
+  Accessibility: icon("accessibility.svg"),
+  Codex: icon("codex.svg"),
+  "Grok Build": icon("grok-build.svg"),
+  "Cost-aware model selection": icon("cost-aware.svg"),
+  "AI tools": icon("ai-tools.svg"),
+  Automation: icon("automation.svg"),
+  Prototyping: icon("figma.svg"),
+  "Product thinking": icon("product-thinking.svg"),
+  Cloudflare: icon("cloudflare.svg"),
+  "Cloudflare Workers": icon("cloudflareworkers.svg"),
+  Leaflet: icon("leaflet.svg"),
+  SQLite: icon("sqlite.svg"),
+  "Cloudflare D1": icon("sqlite.svg"),
+  "Three.js": icon("threedotjs.svg", true),
+  "Font Awesome": icon("fontawesome.svg"),
 };
