@@ -49,12 +49,12 @@ export const toolboxGroups = [
   {
     category: "UI / Front-End",
     description: "Client-side languages, frameworks, and UI libraries used to design and ship interfaces.",
-    tools: ["TypeScript", "JavaScript", "ReactJS", "NextJS", "Redux", "React Query", "HTML", "CSS", "Ant Design", "MUI", "Tailwind CSS"],
+    tools: ["ReactJS", "NextJS", "TypeScript", "JavaScript", "Redux", "React Query", "HTML", "CSS", "Ant Design", "MUI", "Tailwind CSS", "Storybook"],
   },
   {
     category: "API & Back-End",
     description: "Server-side frameworks, data access, and APIs behind the interface.",
-    tools: ["Node.js", "Express.js", "Python", "Django", "C#", ".NET", "EF", "REST APIs"],
+    tools: ["C#", ".NET", "EF", "Node.js", "Express.js", "Python", "Django", "REST APIs", "OAuth"],
   },
   {
     category: "Database",
@@ -64,12 +64,12 @@ export const toolboxGroups = [
   {
     category: "DevOps & Cloud",
     description: "Cloud, hosting, and infrastructure used to run and deliver systems.",
-    tools: ["Azure", "Docker", "Nginx", "Load balancing", "Cloudflare", "Render", "Git", "IIS", "Apache"],
+    tools: ["Apache", "IIS", "Azure", "Docker", "Nginx", "Load balancing", "Cloudflare", "Render", "Git", "GitHub Actions", "Kubernetes (fundamentals)"],
   },
   {
     category: "AI",
     description: "Model and agent tooling used in a plan, review, and test process.",
-    tools: ["Codex", "Cursor", "OpenAI API", "Grok Build", "Cost-aware model selection"],
+    tools: ["Cursor", "Codex", "OpenAI API", "Grok Build", "Cost-aware model selection"],
   },
   {
     category: "Testing & Automation",

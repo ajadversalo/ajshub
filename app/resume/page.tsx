@@ -23,7 +23,7 @@ export default function ResumePage() {
               <h1>AJ<br />Adversalo<span>.</span></h1>
             </div>
             <div className="resume-contact">
-              <p>Full-stack developer bringing useful products from idea to production, using AI to accelerate how I explore, build, and ship.</p>
+              <p>Full-stack developer focused on designing reliable, high-performance systems that improve efficiency and scale across teams. Experienced in modernizing enterprise applications, automating workflows, and integrating agentic AI into a disciplined plan, review and test process.</p>
               <a href="https://www.linkedin.com/in/ajadversalo">LinkedIn ↗</a>
               <a href="https://github.com/ajadversalo">GitHub ↗</a>
               <a href="https://aijabber.ca">AI Jabber ↗</a>

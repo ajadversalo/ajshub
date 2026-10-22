@@ -96,6 +96,7 @@ export const techIcons: Record<string, TechIcon> = {
   IIS: { src: "/tech/iis.svg" },
   "REST APIs": { src: "/tech/swagger.svg" },
   "CI/CD": { src: "/tech/githubactions.svg" },
+  "GitHub Actions": { src: "/tech/githubactions.svg" },
   Accessibility: { src: "/tech/accessibility.svg" },
   Codex: { src: "/tech/codex.svg" },
   "Grok Build": { src: "/tech/grok-build.svg" },

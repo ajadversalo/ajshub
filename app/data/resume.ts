@@ -6,7 +6,7 @@ export const roles = [
     summary: "Modernizing enterprise applications, digitizing operational workflows, and prototyping AI-driven planning tools across five Western Canadian branches.",
     projects: [
       ["CentraWorks", "Led the modernization of a company-wide platform for managing, scheduling and reporting on work orders across all departments into a modular Next.js/.NET client-server architecture, improving load performance by 50% across five Western Canada branches."],
-      ["CentraManufacture", "Mobile-first operations tracking that reduced manual logging by 40%."],
+      ["CentraManufacture", "A mobile-first digital operations tracker that digitized shop-floor workflows and reduced manual logging time by 40% in Langley and Calgary facilities."],
       ["Text-to-SQL", "LLM-powered natural-language querying of operational data using the OpenAI API."],
     ],
     stack: ["Next.js", "TypeScript", "C#", ".NET", "Redux", "Ant Design", "Playwright", "OpenAI API", "Cursor", "Grok Build"],
@@ -34,8 +34,11 @@ export const roles = [
 ];
 
 export const skills = [
-  ["Interface", "TypeScript, JavaScript, React, Next.js, Redux, React Query, HTML, CSS, Ant Design, Material UI, Tailwind CSS"],
-  ["Backend", "Node.js, Express.js, Python, Django, C#, .NET, EF, REST APIs"],
-  ["Platform", "SQL Server, PostgreSQL, Supabase, Turso, Azure DevOps, AWS, Docker, Nginx, Load balancing, Cloudflare, Render, IIS, Apache, Netlify"],
-  ["Practice", "Selenium, Playwright, localization, SendGrid, Google Maps API, OpenAI API, Codex, Cursor, Grok Build, Cost-aware model selection"],
+  ["UI / Front-End", "ReactJS, NextJS, TypeScript, JavaScript, Redux, React Query, HTML, CSS, Ant Design, MUI, Tailwind CSS, Storybook"],
+  ["API & Back-End", "C#, .NET, EF, Node.js, Express.js, Python, Django, REST APIs, OAuth"],
+  ["Database", "SQL Server, PostgreSQL, Supabase, Turso"],
+  ["DevOps & Cloud", "Apache, IIS, Azure, Docker, Nginx, Load balancing, Cloudflare, Render, Git, GitHub Actions, Kubernetes (fundamentals)"],
+  ["AI", "Cursor, Codex, OpenAI API, Grok Build | Cost-aware model selection"],
+  ["Testing & Automation", "Selenium, Playwright"],
+  ["Other Tools & Integration", "i18next (localization), SendGrid, Google Maps API, Canada Post API"],
 ];
