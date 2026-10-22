@@ -13,4 +13,4 @@ Shared UI lives in `app/components/`. Each exported component has TSDoc, a `*Pro
 
 `scrollToSection` is a click helper for in-page hashes (`#toolbox`, `#experience-archive`, `#top`).
 
-Copy, URLs, and section ids come from `app/constants.ts`. Skill names must match keys in `app/data/experience.ts` (`techIcons`) or the icon is omitted.
+Copy, URLs, and section ids come from `app/constants.ts`. Skill names must match keys in `app/data/tech-icons.ts` or the icon is omitted.

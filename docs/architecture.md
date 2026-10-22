@@ -15,7 +15,7 @@ AJ Adversalo portfolio at [builtbyaj.dev](https://builtbyaj.dev). Runtime is [vi
 | Path | Role |
 | --- | --- |
 | `app/constants.ts` | Identity, URLs, routes, section ids, theme keys, UI copy |
-| `app/data/` | Experience chapters, toolbox groups, side projects, résumé content |
+| `app/data/` | Experience chapters, toolbox groups, side projects, résumé content, skill icons |
 | `app/components/` | Shared UI. See [components.md](./components.md) |
 | `app/styles/` | CSS split by surface. See [styles.md](./styles.md) |
 | `app/globals.css` | Tailwind plus style imports |
@@ -30,4 +30,4 @@ Do not put favicon paths on the Next `Metadata` export. `metadataBase` would abs
 
 ## Tests
 
-`npm test` builds Worker + Pages artifacts and runs `tests/cloudflare.test.mjs`.
+`npm test` builds Worker + Pages artifacts and runs `tests/cloudflare.test.mjs` against `/`, `/resume`, and `/beyond-work`. The Pages export writes those three routes into `out/`.

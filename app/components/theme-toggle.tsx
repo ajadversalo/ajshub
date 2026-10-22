@@ -4,7 +4,7 @@ import { useSyncExternalStore } from "react";
 import { DEFAULT_THEME, THEME_STORAGE_KEY, type Theme } from "../constants";
 
 function getTheme(): Theme {
-  return document.documentElement.dataset.theme === "light" ? "light" : "dark";
+  return document.documentElement.dataset.theme === "dark" ? "dark" : DEFAULT_THEME;
 }
 
 function subscribe(onChange: () => void) {

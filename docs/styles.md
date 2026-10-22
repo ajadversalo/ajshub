@@ -14,6 +14,6 @@
 | `resume.css` | Résumé sheet |
 | `media.css` | Breakpoints, reduced motion, print |
 
-Dead rules for removed homepage sections (`.project`, `.about`, `.work`, `.availability`, `.nav-resume`) were dropped. Do not reintroduce jammed multi-selector one-liners; keep one block per selector.
+Do not reintroduce jammed multi-selector one-liners; keep one block per selector.
 
 Light/dark is `html[data-theme]`. Nav mark: dark = lime plate + dark AJ; light = dark plate + lime AJ.

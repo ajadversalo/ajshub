@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { techIcons } from "../data/experience";
+import { techIcons } from "../data/tech-icons";
 
 export type TechIconProps = {
   /** Skill name as it appears in toolbox / stack lists. */

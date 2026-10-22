@@ -20,7 +20,7 @@ await rm(outputDirectory, { recursive: true, force: true });
 await mkdir(outputDirectory, { recursive: true });
 await cp(clientDirectory, outputDirectory, { recursive: true });
 
-for (const route of ["/", "/resume"]) {
+for (const route of ["/", "/resume", "/beyond-work"]) {
   const response = await worker.fetch(
     new Request(`http://localhost${route}`, {
       headers: { accept: "text/html" },

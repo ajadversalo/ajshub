@@ -156,5 +156,4 @@
 
 :root[data-theme="light"] .resume-nav nav a[aria-current="page"] {
   color: #4b741f;
-  border-color: #4b741f;
 }
