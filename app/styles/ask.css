@@ -126,6 +126,25 @@
   font-weight: 550;
 }
 
+.ask-dialog-actions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.ask-clear {
+  padding: 8px 10px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--muted);
+  font: 500 13px inherit;
+  cursor: pointer;
+}
+
+.ask-clear:hover,
+.ask-clear:focus-visible { color: var(--paper); }
+
 .ask-close {
   display: grid;
   place-items: center;

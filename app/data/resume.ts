@@ -14,6 +14,19 @@ export type ResumeRole = {
   stack: string[];
 };
 
+/** First professional C#/.NET role (GenXys). Month is 1-indexed. */
+export const DOTNET_SINCE = { year: 2019, month: 7, label: "July 2019" } as const;
+
+/** Whole years elapsed from an inclusive start month to `now`. */
+export function yearsSince(year: number, month: number, now = new Date()) {
+  const elapsedMonths = (now.getFullYear() - year) * 12 + (now.getMonth() + 1 - month);
+  return Math.max(0, Math.floor(elapsedMonths / 12));
+}
+
+export function yearsWithDotNet(now = new Date()) {
+  return yearsSince(DOTNET_SINCE.year, DOTNET_SINCE.month, now);
+}
+
 export const roles: ResumeRole[] = [
   {
     company: "Centra Construction Group",
@@ -54,7 +67,7 @@ export type ResumeSkillGroup = [category: string, items: string];
 
 export const skills: ResumeSkillGroup[] = [
   ["UI / Front-End", "ReactJS, NextJS, TypeScript, JavaScript, Redux, React Query, HTML, CSS, Ant Design, MUI, Tailwind CSS, Storybook"],
-  ["API & Back-End", "C#, .NET, EF, Node.js, Express.js, Python, Django, REST APIs, OAuth"],
+  ["API & Back-End", `C#, .NET (${yearsWithDotNet()} years professional), EF, Node.js, Express.js, Python, Django, REST APIs, OAuth`],
   ["Database", "SQL Server, PostgreSQL, Supabase, Turso"],
   ["DevOps & Cloud", "Apache, IIS, Azure, Docker, Nginx, Load balancing, Cloudflare, Render, Git, GitHub Actions, Kubernetes (fundamentals)"],
   ["AI", "Cursor, Codex, OpenAI API, Grok Build | Cost-aware model selection"],

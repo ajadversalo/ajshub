@@ -7,14 +7,14 @@ import { scrollToSection } from "./scroll-to-section";
 import ThemeToggle from "./theme-toggle";
 
 /** Page the header is rendered on. Controls hashes vs full paths. */
-export type NavArea = "home" | "beyond-work" | "resume";
+export type NavArea = "home" | "beyond-work" | "resume" | "vectors";
 
 export type SiteNavProps = {
   current: NavArea;
 };
 
 /**
- * Sticky header used on home, resume, and Beyond Work.
+ * Sticky header used on public pages. The unlisted vectors inspector uses it too.
  * Hash links only smooth-scroll when `current` is `"home"`.
  */
 export default function SiteNav({ current }: SiteNavProps) {
@@ -67,5 +67,5 @@ export default function SiteNav({ current }: SiteNavProps) {
 }
 
 SiteNav.propTypes = {
-  current: PropTypes.oneOf(["home", "beyond-work", "resume"] as const).isRequired,
+  current: PropTypes.oneOf(["home", "beyond-work", "resume", "vectors"] as const).isRequired,
 };

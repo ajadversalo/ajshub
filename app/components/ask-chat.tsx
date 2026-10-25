@@ -1,14 +1,7 @@
 "use client";
 
 import { useEffect, useId, useRef, useState, type FormEvent } from "react";
-import { ASK_API_URL, ASK_API_URL_LOCAL, ASK_SAMPLES, COPY } from "../constants";
-
-function askUrl() {
-  if (typeof window === "undefined") return ASK_API_URL;
-  const host = window.location.hostname;
-  if (host === "localhost" || host === "127.0.0.1") return ASK_API_URL_LOCAL;
-  return ASK_API_URL;
-}
+import { ASK_API_PATH, ASK_SAMPLES, COPY } from "../constants";
 
 type ChatSource = {
   id: string;
@@ -57,11 +50,20 @@ export default function AskChat() {
   const [draft, setDraft] = useState("");
   const [pending, setPending] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const turn = useRef(0);
 
   const close = () => {
     setOpen(false);
     setDraft("");
     heroInputRef.current?.blur();
+  };
+
+  const clearChat = () => {
+    turn.current += 1;
+    setMessages([]);
+    setDraft("");
+    setPending(false);
+    composerRef.current?.focus();
   };
 
   const openPanel = () => {
@@ -91,6 +93,7 @@ export default function AskChat() {
   async function send(question: string) {
     const trimmed = question.trim();
     if (!trimmed || pending) return;
+    const id = ++turn.current;
     setOpen(true);
     setDraft("");
     setPending(true);
@@ -100,7 +103,7 @@ export default function AskChat() {
     ]);
 
     try {
-      const response = await fetch(askUrl(), {
+      const response = await fetch(ASK_API_PATH, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ question: trimmed }),
@@ -111,6 +114,7 @@ export default function AskChat() {
         retrieval?: "vectorize" | "lexical";
         error?: string;
       };
+      if (id !== turn.current) return;
       if (!response.ok) throw new Error(payload.error || "Ask failed");
       setMessages((current) => [
         ...current,
@@ -123,12 +127,13 @@ export default function AskChat() {
         },
       ]);
     } catch {
+      if (id !== turn.current) return;
       setMessages((current) => [
         ...current,
         { id: newId(), role: "assistant", content: COPY.askUnavailable },
       ]);
     } finally {
-      setPending(false);
+      if (id === turn.current) setPending(false);
     }
   }
 
@@ -177,9 +182,16 @@ export default function AskChat() {
           >
             <header className="ask-dialog-head">
               <h2 id={titleId}>{COPY.askTitle}</h2>
-              <button type="button" className="ask-close" onClick={close} aria-label={COPY.askClose}>
-                <CloseIcon />
-              </button>
+              <div className="ask-dialog-actions">
+                {messages.length > 0 && (
+                  <button type="button" className="ask-clear" onClick={clearChat}>
+                    {COPY.askClear}
+                  </button>
+                )}
+                <button type="button" className="ask-close" onClick={close} aria-label={COPY.askClose}>
+                  <CloseIcon />
+                </button>
+              </div>
             </header>
 
             <div className="ask-messages" ref={listRef}>

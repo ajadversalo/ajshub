@@ -1,13 +1,12 @@
 /**
  * RAG corpus: one self-contained chunk per fact on the site.
  *
- * Chunks are embedded with Workers AI and upserted into Cloudflare Vectorize.
+ * Chunks are embedded with Gemini and upserted into Cloudflare Vectorize.
  *
  * @packageDocumentation
  */
 
 import {
-  AI_JABBER_URL,
   COPY,
   EMAIL,
   GITHUB_URL,
@@ -22,6 +21,12 @@ import {
 import { experience } from "./experience";
 import { beyondProjects, toolboxGroups } from "./portfolio";
 import { roles, skills } from "./resume";
+import {
+  buildTechRecords,
+  summaryPassage,
+  techPassage,
+  undatedTechPassage,
+} from "./tech-index";
 
 /** One retrievable passage stored in the vector index. */
 export type CorpusChunk = {
@@ -71,8 +76,6 @@ export function buildCorpus(): CorpusChunk[] {
         `Contact ${PERSON_NAME} by email at ${EMAIL}.`,
         `GitHub: ${GITHUB_URL}.`,
         `LinkedIn: ${LINKEDIN_URL}.`,
-        `AI Jabber: ${AI_JABBER_URL}.`,
-        `Portfolio: ${SITE_URL}.`,
       ),
     },
     {
@@ -124,6 +127,7 @@ export function buildCorpus(): CorpusChunk[] {
           `${product.name} is a ${product.type} that ${PERSON_NAME} worked on at ${chapter.company}.`,
           product.note,
           `Areas: ${product.tags.join(", ")}.`,
+          `Built with: ${chapter.stack.join(", ")}.`,
         ),
       });
     }
@@ -153,6 +157,37 @@ export function buildCorpus(): CorpusChunk[] {
       `${PERSON_NAME}'s capabilities:`,
       ...skills.map(([category, items]) => `${category}: ${items}.`),
     ),
+  });
+
+  chunks.push({
+    id: "summary",
+    title: `${PERSON_NAME} — summary`,
+    url: ROUTES.resume,
+    source: "profile",
+    text: summaryPassage(COPY, {
+      email: EMAIL,
+      github: GITHUB_URL,
+      linkedin: LINKEDIN_URL,
+      location: LOCATION,
+    }),
+  });
+
+  for (const tech of buildTechRecords()) {
+    chunks.push({
+      id: `tech-${tech.id}`.slice(0, 64),
+      title: `${tech.name} experience`,
+      url: ROUTES.resume,
+      source: "skills",
+      text: techPassage(tech),
+    });
+  }
+
+  chunks.push({
+    id: "tech-undated",
+    title: "Toolkit technologies without dated projects",
+    url: `${ROUTES.home}${HASH.toolbox}`,
+    source: "skills",
+    text: undatedTechPassage(),
   });
 
   for (const group of toolboxGroups) {

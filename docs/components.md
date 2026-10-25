@@ -4,7 +4,7 @@ Shared UI lives in `app/components/`. Each exported component has TSDoc, a `*Pro
 
 | Component | Props | Used on |
 | --- | --- | --- |
-| `SiteNav` | `current`: `"home"` \| `"beyond-work"` \| `"resume"` | All pages |
+| `SiteNav` | `current`: `"home"` \| `"beyond-work"` \| `"resume"` \| `"vectors"` | All pages. Nav labels are Tools, Work, Side Projects. `vectors` is unlisted (no nav item). |
 | `ThemeToggle` | none | Inside `SiteNav` |
 | `TechIcon` | `tool`, `size?` | Toolbox, experience stack, Beyond Work |
 | `TechChips` | `tools`, `size?`, `label?` | Same as `TechIcon` |

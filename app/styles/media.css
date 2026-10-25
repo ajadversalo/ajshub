@@ -88,6 +88,17 @@
 
   .shell { width: min(100% - 36px, 1400px); }
 
+  .vectors { padding: 56px 0 160px; }
+
+  .vectors-list summary {
+    grid-template-columns: 1fr;
+  }
+
+  .vectors-flag {
+    grid-row: auto;
+    justify-self: start;
+  }
+
   .nav {
     width: 100%;
     max-width: 100%;

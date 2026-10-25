@@ -13,7 +13,8 @@
     "deploy:worker": "npm run build:worker && wrangler deploy --config dist/server/wrangler.json",
     "deploy:pages": "npm run build && wrangler pages deploy out --project-name builtbyaj-portfolio",
     "cf:typegen": "wrangler types --config wrangler.jsonc",
-    "test": "npm run build && node --test tests/cloudflare.test.mjs",
+    "test": "npm run test:ask && npm run build && node --test tests/cloudflare.test.mjs",
+    "test:ask": "tsx --test tests/ask.test.ts",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
     "db:generate": "drizzle-kit generate"
   },
@@ -38,6 +39,7 @@
     "eslint-config-next": "16.2.6",
     "react-server-dom-webpack": "19.2.6",
     "tailwindcss": "4.2.1",
+    "tsx": "^4.21.0",
     "typescript": "5.9.3",
     "vinext": "0.0.50",
     "vite": "8.0.13",

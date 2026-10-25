@@ -13,6 +13,7 @@
 | `experience.css` | Chapters, stacks, product cards |
 | `beyond.css` | Beyond Work cards |
 | `resume.css` | Résumé sheet |
+| `vectors.css` | Unlisted Vectorize inspector |
 | `media.css` | Breakpoints, reduced motion, print |
 
 Do not reintroduce jammed multi-selector one-liners; keep one block per selector.

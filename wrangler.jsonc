@@ -13,6 +13,13 @@
   "images": {
     "binding": "IMAGES"
   },
+  "vectorize": [
+    {
+      "binding": "VECTORIZE",
+      "index_name": "portfolio-rag",
+      "remote": true
+    }
+  ],
   "observability": {
     "enabled": true
   }

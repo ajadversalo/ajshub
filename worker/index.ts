@@ -1,8 +1,11 @@
 /** Cloudflare Worker entry for the portfolio. */
 import { handleImageOptimization, DEFAULT_DEVICE_SIZES, DEFAULT_IMAGE_SIZES } from "vinext/server/image-optimization";
 import handler from "vinext/server/app-router-entry";
+import { handleAsk } from "./ask";
+import { handleVectors } from "./vectors";
+import type { RagEnv } from "./rag";
 
-interface Env {
+interface Env extends RagEnv {
   ASSETS: Fetcher;
   IMAGES: {
     input(stream: ReadableStream): {
@@ -27,6 +30,14 @@ interface ExecutionContext {
 const worker = {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
+
+    if (url.pathname === "/api/ask") {
+      return handleAsk(request, env);
+    }
+
+    if (url.pathname === "/api/vectors") {
+      return handleVectors(request, env);
+    }
 
     if (url.pathname === "/_vinext/image") {
       const allowedWidths = [...DEFAULT_DEVICE_SIZES, ...DEFAULT_IMAGE_SIZES];

@@ -8,10 +8,10 @@
 
 /** Canonical production origin. Used by Next metadata; keep icon hrefs relative. */
 export const SITE_URL = "https://portfolio.ajhub.ca";
-/** RAG Worker in `../backend`, production host. */
-export const ASK_API_URL = "https://portfolioapi.ajhub.ca/api/ask";
-/** Local `wrangler dev` in `../backend`. */
-export const ASK_API_URL_LOCAL = "http://localhost:8787/api/ask";
+/** Same-origin ask route on this Worker. */
+export const ASK_API_PATH = "/api/ask";
+/** Unlisted inspector for the Vectorize index. */
+export const VECTORS_API_PATH = "/api/vectors";
 export const SITE_NAME = "Built by AJ";
 export const PERSON_NAME = "AJ Adversalo";
 export const PERSON_SHORT = "AJ";
@@ -61,6 +61,8 @@ export const ROUTES = {
   home: "/",
   beyondWork: "/beyond-work",
   resume: "/resume",
+  /** Unlisted. Not linked from nav. */
+  vectors: "/vectors",
 } as const;
 
 export const SECTIONS = {
@@ -78,8 +80,8 @@ export const HASH = {
 export const NAV = {
   homeLabel: `${PERSON_NAME}, home`,
   tools: "Tools",
-  experience: "Experience",
-  beyondWork: "Beyond Work",
+  experience: "Work",
+  beyondWork: "Side Projects",
 } as const;
 
 export const METADATA = {
@@ -88,8 +90,10 @@ export const METADATA = {
   ogDescription: "I build digital things that work.",
   ogImage: IMAGES.og,
   ogImageAlt: `${PERSON_NAME} — I build digital things that work.`,
-  beyondWorkTitle: `Beyond Work — ${PERSON_NAME}`,
+  beyondWorkTitle: `Side Projects — ${PERSON_NAME}`,
   beyondWorkDescription: `Side projects and after-hours work by ${PERSON_NAME}.`,
+  vectorsTitle: `Vector index — ${PERSON_NAME}`,
+  vectorsDescription: "Cloudflare Vectorize index for this site’s Ask panel.",
 } as const;
 
 export const COPY = {
@@ -99,10 +103,11 @@ export const COPY = {
   askPlaceholder: "Ask me a question...",
   askSend: "Ask",
   askClose: "Close",
+  askClear: "Clear",
   askTitle: "Ask me",
   askIntro: "Try a sample or type your own. I’ll answer from what’s on this site.",
   askPending: "Retrieving…",
-  askUnavailable: `The ask service is unavailable right now. Browse the toolkit and experience sections, or email ${EMAIL}.`,
+  askUnavailable: `The ask service is unavailable right now. Browse the toolkit and work sections, or email ${EMAIL}.`,
   askVectorize: "Retrieved with Gemini embeddings + Cloudflare Vectorize",
   askLexical: "Retrieved with lexical search over the site corpus",
   toolboxHeading: "My Technical Toolkit",
@@ -114,21 +119,28 @@ export const COPY = {
   experienceHeading: "What I helped bring to life",
   experienceIntro:
     "Some project details are intentionally kept high-level to respect the confidential nature of the work.",
-  beyondHeading: "Beyond Work",
+  beyondHeading: "Side Projects",
   beyondIntro: "Things I tinker with outside the day job.",
   resumeSummary:
     "Full-stack developer focused on designing reliable, high-performance systems that improve efficiency and scale across teams. Experienced in modernizing enterprise applications, automating workflows, and integrating agentic AI into a disciplined plan, review and test process.",
   resumeExport: "Export PDF ↗",
-  resumeExperienceLabel: "Experience / 01",
+  resumeExperienceLabel: "Work / 01",
   resumeCapabilitiesLabel: "Capabilities / 02",
   resumeFooterNote: "Built with intent.",
+  vectorsHeading: "Vector index",
+  vectorsIntro:
+    "Chunks in the site corpus and whether each id is present in Cloudflare Vectorize (portfolio-rag). This page is unlisted.",
+  vectorsFilter: "Filter chunks",
+  vectorsSearch: "Search id, title, or text",
+  vectorsEmpty: "No chunks match that filter.",
+  vectorsUnavailable: "Could not reach the Vectorize inspector. Showing the local corpus only.",
 } as const;
 
 export const ASK_SAMPLES = [
-  "What did you build at Centra?",
-  "Which side projects have you shipped?",
+  "Summarize your background",
+  "How many years have you worked with React?",
+  "What projects have you built with .NET?",
   "How can I contact you?",
-  "How does this chat retrieve answers?",
 ] as const;
 
 /** Inline head script that applies the saved theme before first paint. */
