@@ -44,7 +44,7 @@ test("server-renders the portfolio routes for Cloudflare Workers", async () => {
   assert.match(home, /<title>AJ Adversalo — Full-Stack Developer<\/title>/i);
   assert.match(home, /Hello I’m/);
   assert.match(home, /AJ Adversalo/);
-  assert.match(home, /Contact/);
+  assert.match(home, /Ask me a question\.\.\./);
   assert.match(home, /My Technical Toolkit/);
   assert.match(resume, /<h1>AJ<br\/>Adversalo/);
   assert.match(resume, /Capabilities \/ 02/);

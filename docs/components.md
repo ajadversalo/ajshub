@@ -10,6 +10,7 @@ Shared UI lives in `app/components/`. Each exported component has TSDoc, a `*Pro
 | `TechChips` | `tools`, `size?`, `label?` | Same as `TechIcon` |
 | `ToolboxSection` | none | Home |
 | `FitTitle` | `children: string` | Experience product cards |
+| `AskChat` | none | Home hero |
 
 `scrollToSection` is a click helper for in-page hashes (`#toolbox`, `#experience-archive`, `#top`).
 

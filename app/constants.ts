@@ -7,7 +7,11 @@
  */
 
 /** Canonical production origin. Used by Next metadata; keep icon hrefs relative. */
-export const SITE_URL = "https://builtbyaj.dev";
+export const SITE_URL = "https://portfolio.ajhub.ca";
+/** RAG Worker in `../backend`, production host. */
+export const ASK_API_URL = "https://portfolioapi.ajhub.ca/api/ask";
+/** Local `wrangler dev` in `../backend`. */
+export const ASK_API_URL_LOCAL = "http://localhost:8787/api/ask";
 export const SITE_NAME = "Built by AJ";
 export const PERSON_NAME = "AJ Adversalo";
 export const PERSON_SHORT = "AJ";
@@ -92,8 +96,15 @@ export const COPY = {
   heroKicker: "Hello I’m",
   heroBio:
     "I’m a product-minded full-stack developer in Vancouver, BC. I bring useful products from idea to production, with AI integrated into a careful process of iterating, building, and shipping.",
-  explore: "Explore",
-  contact: "Contact",
+  askPlaceholder: "Ask me a question...",
+  askSend: "Ask",
+  askClose: "Close",
+  askTitle: "Ask me",
+  askIntro: "Try a sample or type your own. I’ll answer from what’s on this site.",
+  askPending: "Retrieving…",
+  askUnavailable: `The ask service is unavailable right now. Browse the toolkit and experience sections, or email ${EMAIL}.`,
+  askVectorize: "Retrieved with Gemini embeddings + Cloudflare Vectorize",
+  askLexical: "Retrieved with lexical search over the site corpus",
   toolboxHeading: "My Technical Toolkit",
   toolboxSub: "The technologies I use to design, build, and ship products.",
   toolboxFilterLabel: "Find a technology",
@@ -112,6 +123,13 @@ export const COPY = {
   resumeCapabilitiesLabel: "Capabilities / 02",
   resumeFooterNote: "Built with intent.",
 } as const;
+
+export const ASK_SAMPLES = [
+  "What did you build at Centra?",
+  "Which side projects have you shipped?",
+  "How can I contact you?",
+  "How does this chat retrieve answers?",
+] as const;
 
 /** Inline head script that applies the saved theme before first paint. */
 export const THEME_BOOTSTRAP_SCRIPT = `(function(){try{var t=localStorage.getItem('${THEME_STORAGE_KEY}');if(t!=='light'&&t!=='dark')t='${DEFAULT_THEME}';document.documentElement.dataset.theme=t;document.documentElement.style.colorScheme=t}catch(e){document.documentElement.dataset.theme='${DEFAULT_THEME}';document.documentElement.style.colorScheme='${DEFAULT_THEME}'}})()`;

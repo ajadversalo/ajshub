@@ -2,17 +2,15 @@
 
 import type { CSSProperties } from "react";
 import Image from "next/image";
+import AskChat from "./components/ask-chat";
 import FitTitle from "./components/fit-title";
-import { scrollToSection } from "./components/scroll-to-section";
 import SiteNav from "./components/site-nav";
 import TechChips from "./components/tech-chips";
 import ToolboxSection from "./components/toolbox-section";
 import {
   COPY,
   GITHUB_URL,
-  HASH,
   LINKEDIN_URL,
-  MAILTO,
   PERSON_NAME,
   ROLE_LINE,
   SECTIONS,
@@ -33,10 +31,7 @@ export default function Home() {
             </div>
             <p className="hero-role">{ROLE_LINE}</p>
             <p className="hero-bio">{COPY.heroBio}</p>
-            <div className="hero-actions">
-              <a className="hero-btn" href={HASH.toolbox} onClick={scrollToSection}>{COPY.explore}</a>
-              <a className="hero-btn hero-btn-primary" href={MAILTO}>{COPY.contact}</a>
-            </div>
+            <AskChat />
           </div>
         </div>
         <div className="hero-bottom">

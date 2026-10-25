@@ -8,5 +8,6 @@ Structured copy that is too large for `app/constants.ts`.
 | `portfolio.ts` | Toolbox groups and Beyond Work cards |
 | `resume.ts` | `/resume` sheet |
 | `tech-icons.ts` | Skill SVGs for `TechIcon` |
+| `corpus.ts` | RAG chunks imported by `../../backend` |
 
 Skill names in toolbox, stacks, and Beyond Work must match keys in `tech-icons.ts`.

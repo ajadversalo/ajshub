@@ -154,11 +154,16 @@
   }
 
   .hero-role { letter-spacing: .1em; }
-  .hero-actions { width: 100%; }
+  .hero-ask { width: 100%; }
 
-  .hero-btn {
-    flex: 1 1 140px;
-    min-width: 0;
+  .ask-backdrop {
+    padding: 12px 12px 88px;
+    align-items: end;
+  }
+
+  .ask-dialog {
+    height: min(560px, calc(100svh - 110px));
+    border-radius: 16px;
   }
 
   .experience-heading,
@@ -234,12 +239,7 @@
   .hero-intro h1 { font-size: clamp(28px, 8.2vw, 40px); }
   .hero-role { letter-spacing: .08em; }
   .hero-bio { max-width: 38ch; }
-  .hero-actions { width: 100%; }
-
-  .hero-btn {
-    flex: 1 1 120px;
-    min-width: 0;
-  }
+  .hero-ask { width: 100%; padding-left: 14px; }
 
   .toolbox {
     min-height: calc(100svh - var(--nav-height));

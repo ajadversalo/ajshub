@@ -7,7 +7,8 @@
 | `tokens.css` | `--ink`, `--paper`, `--muted`, `--line`, `--accent`, `--nav-signal`, `--lime`, `--brand-ink` |
 | `base.css` | Reset, `body`, `.shell` |
 | `nav.css` | Header, monogram, theme toggle |
-| `hero.css` | Home intro and CTAs |
+| `hero.css` | Home intro |
+| `ask.css` | Hero ask field and RAG chat dialog |
 | `toolbox.css` | Toolkit grid and filter |
 | `experience.css` | Chapters, stacks, product cards |
 | `beyond.css` | Beyond Work cards |

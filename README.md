@@ -1,6 +1,6 @@
 # Built by AJ portfolio
 
-AJ Adversalo's site at [builtbyaj.dev](https://builtbyaj.dev). Next.js App Router APIs on [vinext](https://github.com/cloudflare/vinext), deployable as a Cloudflare Worker or a static Pages export.
+AJ Adversalo's site at [portfolio.ajhub.ca](https://portfolio.ajhub.ca). Next.js App Router APIs on [vinext](https://github.com/cloudflare/vinext), deployable as a Cloudflare Worker or a static Pages export.
 
 ## Docs
 
@@ -9,7 +9,7 @@ AJ Adversalo's site at [builtbyaj.dev](https://builtbyaj.dev). Next.js App Route
 - [Styles](docs/styles.md) — CSS layers and tokens
 - [Images](docs/images.md) — `public/images/` layout
 
-Site copy and URLs live in `app/constants.ts`. Job history, toolkit groups, side projects, and résumé content live in `app/data/`. Shared UI lives in `app/components/`. CSS lives in `app/styles/`.
+Site copy and URLs live in `app/constants.ts`. Job history, toolkit groups, side projects, résumé content, and the RAG corpus live in `app/data/`. Shared UI lives in `app/components/`. CSS lives in `app/styles/`. The home ask panel calls the Worker in `../backend`; see [Architecture](docs/architecture.md#ask-panel-rag).
 
 ## Prerequisites
 
@@ -63,6 +63,8 @@ The starter still includes optional Sites pieces that this portfolio does not us
 - `.openai/hosting.json` — D1/R2 bindings (`null` here)
 - `db/` + `drizzle.config.ts` — empty schema until a database is needed
 - `vite.config.ts` — local binding simulation
+
+The RAG Worker lives in `../backend` (Vectorize index `portfolio-rag`, Gemini free-tier embeddings and Flash-Lite).
 
 Favicons stay at the public root with relative, cache-busted hrefs. Do not put them on the Next `Metadata` export.
 
