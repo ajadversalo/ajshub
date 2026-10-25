@@ -11,7 +11,7 @@
 import { PERSON_NAME, ROLE, SITE_URL } from "../constants";
 import { experience } from "./experience";
 import { beyondProjects, toolboxGroups } from "./portfolio";
-import { roles, skills, yearsSince } from "./resume";
+import { roles, skillGroups, yearsSince } from "./resume";
 
 /** Inclusive start; omit `end` when the work is current. Month is 1-indexed. */
 export type TenureSpan = {
@@ -189,11 +189,19 @@ function addProject(row: Accumulator, name: string, place: string) {
   if (!row.projects.has(key)) row.projects.set(key, { name, place });
 }
 
-/** Next.js work is React work; keep employer stacks on the site as authored. */
+/** Skills implied by a dated stack item. Next.js work is React work. */
+const IMPLIED_BY_ID: Record<string, string[]> = {
+  nextjs: ["React", "JavaScript", "HTML", "CSS"],
+  react: ["JavaScript", "HTML", "CSS"],
+  typescript: ["JavaScript"],
+};
+
+/** Expand authored stacks with implied companion skills. */
 function expandStack(stack: string[]) {
   const expanded = [...stack];
   for (const item of stack) {
-    if (canonicalTech(item).id === "nextjs") expanded.push("React");
+    const extras = IMPLIED_BY_ID[canonicalTech(item).id];
+    if (extras) expanded.push(...extras);
   }
   return expanded;
 }
@@ -295,7 +303,7 @@ export function undatedToolkitTools(records = buildTechRecords()) {
     }
   }
 
-  for (const [, items] of skills) {
+  for (const [, items] of skillGroups()) {
     for (const item of splitSkillItems(items)) {
       const canon = canonicalTech(item);
       if (!dated.has(canon.id)) names.add(canon.name);
@@ -305,30 +313,104 @@ export function undatedToolkitTools(records = buildTechRecords()) {
   return [...names].sort((a, b) => a.localeCompare(b));
 }
 
-export function techPassage(record: TechRecord) {
-  const aliasNote = record.aliases
-    .filter((alias) => fold(alias) !== fold(record.name))
-    .slice(0, 6)
-    .join(", ");
-  const projectList = record.projects
-    .map((project) => `${project.name} (${project.place})`)
-    .join("; ");
-  const employerList = record.employers.join("; ");
+function yearsLabel(record: TechRecord) {
+  if (record.years == null) return "years not stated";
+  return record.sinceLabel
+    ? `${record.years} years since ${record.sinceLabel}`
+    : `${record.years} years`;
+}
 
-  const yearsLine = record.years != null
-    ? `${PERSON_NAME} has ${record.years} years of professional experience working with ${record.name}${record.sinceLabel ? `, since ${record.sinceLabel}` : ""}. How many years working on ${record.name}: ${record.years} years.`
-    : `${PERSON_NAME} has used ${record.name} on named work on this site, but the site does not record a professional start date, so it does not state how many years. How many years working on ${record.name}: not stated on this site.`;
+function projectsLabel(record: TechRecord) {
+  if (record.projects.length === 0) return "none listed";
+  return record.projects.map((project) => `${project.name} (${project.place})`).join("; ");
+}
 
+/** One list row: technology | years | projects. */
+export function techLine(record: TechRecord) {
+  return `${record.name} | ${yearsLabel(record)} | ${projectsLabel(record)}`;
+}
+
+function undatedRecords(tools = undatedToolkitTools()): TechRecord[] {
+  return tools.map((name) => {
+    const canon = canonicalTech(name);
+    return {
+      id: canon.id,
+      name: canon.name,
+      aliases: [...new Set([fold(name), ...canon.aliases])],
+      spans: [],
+      years: null,
+      ongoing: false,
+      sinceLabel: null,
+      employers: [],
+      projects: [],
+    };
+  });
+}
+
+/** Dated or shipped-project rows first, then toolkit rows with no dates. */
+export function allTechRows(now = new Date()): { dated: TechRecord[]; undated: TechRecord[] } {
+  const dated = buildTechRecords(now);
+  return { dated, undated: undatedRecords(undatedToolkitTools(dated)) };
+}
+
+function listPassage(title: string, rows: TechRecord[]) {
+  const sorted = [...rows].sort((a, b) => {
+    const years = (b.years ?? -1) - (a.years ?? -1);
+    return years !== 0 ? years : a.name.localeCompare(b.name);
+  });
   return [
-    yearsLine,
-    aliasNote ? `Also referred to as ${aliasNote}.` : "",
-    employerList ? `Employers using ${record.name}: ${employerList}.` : "",
-    `Projects built with ${record.name} / list of projects using ${record.name}: ${projectList || "none named on this site"}.`,
-  ]
-    .filter(Boolean)
-    .join(" ")
-    .replace(/\s+/g, " ")
-    .trim();
+    title,
+    "Each line is technology | years | projects.",
+    ...sorted.map(techLine),
+  ].join("\n");
+}
+
+/** Compact inventory of technologies that have a year count or a shipped project. */
+export function techInventoryPassage(now = new Date()) {
+  const { dated } = allTechRows(now);
+  return listPassage(
+    `${PERSON_NAME}'s technology list (years and projects on this site).`,
+    dated,
+  );
+}
+
+/** Toolkit names with no professional start date and no shipped project on this site. */
+export function undatedTechPassage(tools = undatedToolkitTools()) {
+  return listPassage(
+    `${PERSON_NAME}'s toolkit technologies with no year count and no shipped project on this site.`,
+    undatedRecords(tools),
+  );
+}
+
+export function isTechCatalogQuestion(question: string) {
+  return /\b(technolog(?:y|ies)|tech stack|what (?:tech|tools)|list (?:your )?skills|skills list)\b/i.test(question);
+}
+
+export function recordsForQuestion(question: string, now = new Date()): TechRecord[] {
+  const { dated, undated } = allTechRows(now);
+  return [...dated, ...undated].filter((record) => {
+    const names = [record.name, ...record.aliases];
+    return names.some((name) => mentionedIn(question, name));
+  });
+}
+
+/**
+ * Direct answer from the technology list so Ask does not dump unrelated chunks.
+ * Returns null when the question does not name a technology or ask for the catalog.
+ */
+export function lookupTechAnswer(question: string, now = new Date()): string | null {
+  const matched = recordsForQuestion(question, now);
+  if (matched.length > 0) {
+    return [
+      "Each line is technology | years | projects.",
+      ...matched.map(techLine),
+    ].join("\n");
+  }
+  if (isTechCatalogQuestion(question)) {
+    const { dated, undated } = allTechRows(now);
+    return [techInventoryPassage(now), listPassage("Also in the toolkit:", undated)].join("\n\n");
+  }
+  return null;
 }
 
 export function summaryPassage(copy: { heroBio: string; resumeSummary: string }, extras: {
@@ -396,9 +478,8 @@ export function techChunkIdsForQuestion(question: string, records = buildTechRec
 export function undatedTechPassage(tools = undatedToolkitTools()) {
   const list = tools.join(", ");
   return [
-    `The site lists these toolkit technologies but does not record how many years ${PERSON_NAME} has used them, and it does not name a specific shipped product for them: ${list}.`,
-    `How many years for ${list}: not stated on this site.`,
-    `Projects built with ${list}: none named on this site.`,
-    `List of projects using those tools: none named on this site.`,
+    `These toolkit technologies appear on the site without a professional start date or a named shipped product: ${list}.`,
+    `The site does not state a year count for those tools.`,
+    `No named project on this site lists those tools on its stack.`,
   ].join(" ");
 }

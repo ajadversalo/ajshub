@@ -7,7 +7,7 @@
  */
 
 import { PERSON_NAME } from "../app/constants";
-import { corpus } from "../app/data/corpus";
+import { getCorpus } from "../app/data/corpus";
 import { techChunkIdsForQuestion } from "../app/data/tech-index";
 
 const GEMINI_API = "https://generativelanguage.googleapis.com/v1beta/models";
@@ -103,9 +103,16 @@ const WEAK = new Set([
   "list", "using", "used", "experience", "professional", "many", "specific", "tech",
 ]);
 
-const chunkById = new Map(corpus.map((chunk) => [chunk.id, chunk]));
+function liveCorpus() {
+  return getCorpus();
+}
+
+function chunkById() {
+  return new Map(liveCorpus().map((chunk) => [chunk.id, chunk]));
+}
 
 let ingestOnce: Promise<void> | null = null;
+let ingestMonth: string | null = null;
 
 function geminiKey(env: RagEnv) {
   return env.GEMINI_API_KEY || env.GOOGLE_API_KEY || "";
@@ -148,24 +155,53 @@ export function tokens(value: string) {
     .filter((token) => token.length > 1 && !STOP.has(token));
 }
 
+function escapeToken(token: string) {
+  return token.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+/** Whole-token match so "name" does not hit "named". */
+export function hasToken(haystack: string, token: string) {
+  return new RegExp(`(?:^|[^a-z0-9+#./])${escapeToken(token)}(?:[^a-z0-9+#./]|$)`, "i").test(haystack);
+}
+
+export function isNameQuestion(question: string) {
+  return /\b(?:what(?:'s| is) your name|your name|who are you|who is aj)\b/i.test(question);
+}
+
+export function isSummaryQuestion(question: string) {
+  return /\bsummar|background|about you|who are you|\bprofile\b|\binfo\b/i.test(question);
+}
+
+export function isContactQuestion(question: string) {
+  return /\b(contact|email|reach you|linkedin|github)\b/i.test(question);
+}
+
+export function isAskMetaQuestion(question: string) {
+  return /\b(ask panel|vectorize|retriev|\brag\b|how (?:does|do) (?:this|the) (?:chat|ask))\b/i.test(question);
+}
+
 export function lexicalRetrieve(question: string, topK = TOP_K): RetrievedChunk[] {
   const queryTokens = tokens(question);
-  if (queryTokens.length === 0) return [];
   const namedTechChunks = techChunkIdsForQuestion(question);
+  const nameAsk = isNameQuestion(question);
+  const summaryAsk = isSummaryQuestion(question);
+  const contactAsk = isContactQuestion(question);
 
-  return corpus
+  return liveCorpus()
     .map((chunk) => {
-      const haystack = `${chunk.title} ${chunk.text}`.toLowerCase();
+      const haystack = `${chunk.title} ${chunk.text}`;
       let hits = 0;
       for (const token of queryTokens) {
-        if (!haystack.includes(token)) continue;
+        if (!hasToken(haystack, token)) continue;
         const weight = WEAK.has(token) ? 0.25 : token.length > 3 ? 2 : 1;
         hits += weight;
-        if (chunk.title.toLowerCase().includes(token) && !WEAK.has(token)) hits += 2;
+        if (hasToken(chunk.title, token) && !WEAK.has(token)) hits += 2;
       }
       if (namedTechChunks.has(chunk.id)) hits += 8;
-      if (/\bsummar/i.test(question) && chunk.id === "summary") hits += 8;
-      return { ...chunk, score: hits / (queryTokens.length * 2) };
+      if (summaryAsk && chunk.id === "summary") hits += 8;
+      if (nameAsk && chunk.id === "profile") hits += 8;
+      if (contactAsk && chunk.id === "contact") hits += 8;
+      return { ...chunk, score: queryTokens.length ? hits / (queryTokens.length * 2) : hits };
     })
     .filter((chunk) => chunk.score > 0)
     .sort((a, b) => b.score - a.score)
@@ -203,8 +239,9 @@ async function embed(env: RagEnv, texts: string[], taskType: "RETRIEVAL_DOCUMENT
 
 async function ingest(env: RagEnv) {
   if (!geminiKey(env) || !env.VECTORIZE) return;
-  const vectors = await embed(env, corpus.map((chunk) => chunk.text), "RETRIEVAL_DOCUMENT");
-  const records = corpus.map((chunk, index) => ({
+  const chunks = liveCorpus();
+  const vectors = await embed(env, chunks.map((chunk) => chunk.text), "RETRIEVAL_DOCUMENT");
+  const records = chunks.map((chunk, index) => ({
     id: chunk.id,
     values: vectors[index],
     metadata: {
@@ -217,9 +254,12 @@ async function ingest(env: RagEnv) {
 }
 
 function ensureIngest(env: RagEnv) {
-  if (!ingestOnce) {
+  const month = `${new Date().getFullYear()}-${new Date().getMonth()}`;
+  if (!ingestOnce || ingestMonth !== month) {
+    ingestMonth = month;
     ingestOnce = ingest(env).catch((error) => {
       ingestOnce = null;
+      ingestMonth = null;
       throw error;
     });
   }
@@ -229,7 +269,7 @@ function ensureIngest(env: RagEnv) {
 function chunkFromMatch(
   match: { id: string; score: number; metadata?: Record<string, string> },
 ): RetrievedChunk | null {
-  const fallback = chunkById.get(match.id);
+  const fallback = chunkById().get(match.id);
   const title = fallback?.title ?? match.metadata?.title;
   const url = fallback?.url ?? match.metadata?.url;
   const source = fallback?.source ?? match.metadata?.source;
@@ -250,12 +290,24 @@ async function vectorRetrieve(env: RagEnv, question: string): Promise<RetrievedC
   return result.matches.map(chunkFromMatch).filter((chunk): chunk is RetrievedChunk => chunk !== null);
 }
 
+function geminiText(payload: {
+  candidates?: Array<{ content?: { parts?: Array<{ text?: string; thought?: boolean }> } }>;
+}) {
+  return (payload.candidates?.[0]?.content?.parts ?? [])
+    .filter((part) => !part.thought)
+    .map((part) => part.text ?? "")
+    .join("")
+    .trim();
+}
+
 function extractiveAnswer(question: string, retrieved: RetrievedChunk[]) {
+  if (isNameQuestion(question) && !isSummaryQuestion(question)) {
+    return `My name is ${PERSON_NAME}.`;
+  }
   if (retrieved.length === 0) {
     return `I do not have that on this site yet. Try asking about ${PERSON_NAME}'s work at Centra, GenXys, side projects, or how this chat retrieves answers.`;
   }
-  const notes = retrieved.map((chunk) => `${chunk.title}: ${chunk.text}`).join("\n\n");
-  return `Here is what the site has about “${question.trim()}”:\n\n${notes}`;
+  return retrieved[0].text;
 }
 
 async function generateAnswer(env: RagEnv, question: string, retrieved: RetrievedChunk[]) {
@@ -274,6 +326,7 @@ async function generateAnswer(env: RagEnv, question: string, retrieved: Retrieve
             "Answer only from the retrieved context.",
             "If the context does not contain the answer, say you do not have that on the site and point to a related fact that is in the context.",
             "Speak in first person as AJ when describing work.",
+            "When asked your name, answer with the name only.",
             "When asked how many years with a technology, state the number and the dated roles from context. If the context says the years are not stated, say that.",
             "When asked which projects were built with a technology, or to list projects with a technology, list every matching project in the context.",
             "When asked to summarize background or info, cover role, location, employers, notable products, side projects, and contact details from context.",
@@ -286,15 +339,11 @@ async function generateAnswer(env: RagEnv, question: string, retrieved: Retrieve
         parts: [{ text: `Question: ${question}\n\nRetrieved context:\n${context}` }],
       }],
       generationConfig: {
-        temperature: 0.2,
         maxOutputTokens: 700,
+        thinkingConfig: { thinkingLevel: "minimal" },
       },
     });
-    const answer = payload.candidates?.[0]?.content?.parts
-      ?.map((part) => part.text ?? "")
-      .join("")
-      .trim();
-    return answer || extractiveAnswer(question, retrieved);
+    return geminiText(payload) || extractiveAnswer(question, retrieved);
   } catch (error) {
     console.error("Gemini generation failed", error);
     return extractiveAnswer(question, retrieved);
@@ -312,16 +361,28 @@ function mergeHits(primary: RetrievedChunk[], secondary: RetrievedChunk[]) {
   return merged;
 }
 
+function dropUndatedWhenDatedTechNamed(question: string, retrieved: RetrievedChunk[]) {
+  const ids = techChunkIdsForQuestion(question);
+  const dated = [...ids].filter((id) => id.startsWith("tech-") && id !== "tech-undated");
+  if (dated.length === 0 || ids.has("tech-undated")) return retrieved;
+  return retrieved.filter((chunk) => chunk.id !== "tech-undated");
+}
+
+function dropSiteRagUnlessAsked(question: string, retrieved: RetrievedChunk[]) {
+  if (isAskMetaQuestion(question)) return retrieved;
+  return retrieved.filter((chunk) => chunk.id !== "site-rag");
+}
+
 function withGrounding(question: string, retrieved: RetrievedChunk[]) {
   const required = techChunkIdsForQuestion(question);
-  if (/\bsummar|background|about you|who are you|\bprofile\b|\binfo\b/i.test(question)) {
-    required.add("summary");
-  }
+  if (isSummaryQuestion(question)) required.add("summary");
+  if (isNameQuestion(question)) required.add("profile");
+  if (isContactQuestion(question)) required.add("contact");
   const extras: RetrievedChunk[] = [];
   const have = new Set(retrieved.map((chunk) => chunk.id));
   for (const id of required) {
     if (have.has(id)) continue;
-    const chunk = chunkById.get(id);
+    const chunk = chunkById().get(id);
     if (chunk) extras.push({ ...chunk, score: 1 });
   }
   return mergeHits(extras, retrieved);
@@ -346,7 +407,10 @@ export async function ask(env: RagEnv, question: string): Promise<AskResult> {
     console.error("Vectorize retrieval failed", error);
   }
 
-  retrieved = withGrounding(trimmed, retrieved).slice(0, MERGED_K);
+  retrieved = dropSiteRagUnlessAsked(
+    trimmed,
+    dropUndatedWhenDatedTechNamed(trimmed, withGrounding(trimmed, retrieved)),
+  ).slice(0, MERGED_K);
 
   const answer = await generateAnswer(env, trimmed, retrieved);
   return {
@@ -364,7 +428,7 @@ export async function ask(env: RagEnv, question: string): Promise<AskResult> {
 
 export function askStatus(env: RagEnv) {
   return {
-    chunks: corpus.length,
+    chunks: liveCorpus().length,
     vectorize: Boolean(env.VECTORIZE),
     embeddings: Boolean(geminiKey(env)),
     generator: Boolean(geminiKey(env)),
@@ -379,12 +443,12 @@ function emptyInspect(indexError?: string): VectorInspect {
     embeddingModel: EMBEDDING_MODEL,
     generationModel: GENERATION_MODEL,
     embeddingDimensions: EMBEDDING_DIMENSIONS,
-    corpusCount: corpus.length,
+    corpusCount: liveCorpus().length,
     inIndexCount: 0,
-    missingCount: corpus.length,
+    missingCount: liveCorpus().length,
     index: null,
     indexError,
-    chunks: corpus.map((chunk) => ({
+    chunks: liveCorpus().map((chunk) => ({
       id: chunk.id,
       title: chunk.title,
       source: chunk.source,
@@ -422,8 +486,9 @@ export async function inspectVectors(env: RagEnv): Promise<VectorInspect> {
 
   try {
     const found = new Map<string, { id: string; values?: number[]; metadata?: Record<string, string> }>();
-    for (let offset = 0; offset < corpus.length; offset += GET_BY_IDS_BATCH) {
-      const ids = corpus.slice(offset, offset + GET_BY_IDS_BATCH).map((chunk) => chunk.id);
+    const chunks = liveCorpus();
+    for (let offset = 0; offset < chunks.length; offset += GET_BY_IDS_BATCH) {
+      const ids = chunks.slice(offset, offset + GET_BY_IDS_BATCH).map((chunk) => chunk.id);
       const rows = await index.getByIds(ids);
       for (const row of rows) found.set(row.id, row);
     }

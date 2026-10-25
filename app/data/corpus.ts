@@ -20,13 +20,17 @@ import {
 } from "../constants";
 import { experience } from "./experience";
 import { beyondProjects, toolboxGroups } from "./portfolio";
-import { roles, skills } from "./resume";
+import { roles, skillGroups } from "./resume";
 import {
   buildTechRecords,
   summaryPassage,
   techPassage,
   undatedTechPassage,
 } from "./tech-index";
+
+function monthKey(now: Date) {
+  return `${now.getFullYear()}-${now.getMonth()}`;
+}
 
 /** One retrievable passage stored in the vector index. */
 export type CorpusChunk = {
@@ -53,8 +57,8 @@ function passage(...parts: string[]) {
   return parts.filter(Boolean).join(" ").replace(/\s+/g, " ").trim();
 }
 
-/** All site copy that the Ask panel can retrieve. */
-export function buildCorpus(): CorpusChunk[] {
+/** All site copy that the Ask panel can retrieve. Pass `now` so year counts are not frozen at deploy. */
+export function buildCorpus(now = new Date()): CorpusChunk[] {
   const chunks: CorpusChunk[] = [
     {
       id: "profile",
@@ -86,7 +90,7 @@ export function buildCorpus(): CorpusChunk[] {
       text: passage(
         `The Ask panel on ${SITE_URL} is a retrieval-augmented generation demo built by ${PERSON_NAME}.`,
         "Site copy is split into chunks, embedded with Gemini gemini-embedding-001 at 768 dimensions,",
-        "and stored in a Cloudflare Vectorize index named portfolio-rag with cosine similarity.",
+        "and stored in a Cloudflare Vectorize index (portfolio-rag) with cosine similarity.",
         "A question is embedded the same way, Vectorize returns the nearest chunks, and Gemini 3.5 Flash-Lite answers using only that retrieved context.",
         "If Vectorize or Gemini is unavailable, retrieval falls back to lexical search over the same chunks.",
       ),
@@ -155,7 +159,7 @@ export function buildCorpus(): CorpusChunk[] {
     source: "resume",
     text: passage(
       `${PERSON_NAME}'s capabilities:`,
-      ...skills.map(([category, items]) => `${category}: ${items}.`),
+      ...skillGroups(now).map(([category, items]) => `${category}: ${items}.`),
     ),
   });
 
@@ -169,10 +173,11 @@ export function buildCorpus(): CorpusChunk[] {
       github: GITHUB_URL,
       linkedin: LINKEDIN_URL,
       location: LOCATION,
+      now,
     }),
   });
 
-  for (const tech of buildTechRecords()) {
+  for (const tech of buildTechRecords(now)) {
     chunks.push({
       id: `tech-${tech.id}`.slice(0, 64),
       title: `${tech.name} experience`,
@@ -223,4 +228,42 @@ export function buildCorpus(): CorpusChunk[] {
   return chunks;
 }
 
-export const corpus = buildCorpus();
+let cached: { key: string; chunks: CorpusChunk[] } | null = null;
+
+/**
+ * Corpus for the current calendar month.
+ * Cloudflare isolate snapshots evaluate module scope once (sometimes at epoch),
+ * so this must not run at import time in the Worker.
+ */
+export function getCorpus(now = new Date()): CorpusChunk[] {
+  const key = monthKey(now);
+  if (cached?.key === key) return cached.chunks;
+  const chunks = buildCorpus(now);
+  cached = { key, chunks };
+  return chunks;
+}
+
+function liveCorpus() {
+  return getCorpus();
+}
+
+/** Lazy view of {@link getCorpus}. Safe for tests and the browser; Worker code should call `getCorpus()` inside a request. */
+export const corpus: CorpusChunk[] = new Proxy([] as CorpusChunk[], {
+  get(_target, prop) {
+    const live = liveCorpus();
+    const value = Reflect.get(live, prop);
+    return typeof value === "function" ? (value as (...args: unknown[]) => unknown).bind(live) : value;
+  },
+  ownKeys() {
+    return Reflect.ownKeys(liveCorpus());
+  },
+  getOwnPropertyDescriptor(_target, prop) {
+    return Reflect.getOwnPropertyDescriptor(liveCorpus(), prop);
+  },
+  has(_target, prop) {
+    return Reflect.has(liveCorpus(), prop);
+  },
+  getPrototypeOf() {
+    return Array.prototype;
+  },
+});

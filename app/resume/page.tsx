@@ -9,7 +9,7 @@ import {
   PERSON_NAME,
   ROLE_LINE,
 } from "../constants";
-import { roles, skills } from "../data/resume";
+import { roles, skillGroups } from "../data/resume";
 
 export default function ResumePage() {
   const [firstName, lastName] = PERSON_NAME.split(" ");
@@ -65,7 +65,7 @@ export default function ResumePage() {
           <section className="resume-block">
             <span className="resume-label">{COPY.resumeCapabilitiesLabel}</span>
             <div className="resume-skills">
-              {skills.map(([category, items]) => <div key={category}><strong>{category}</strong><p>{items}</p></div>)}
+              {skillGroups().map(([category, items]) => <div key={category}><strong>{category}</strong><p>{items}</p></div>)}
             </div>
           </section>
 

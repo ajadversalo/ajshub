@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import SiteNav from "../components/site-nav";
 import { COPY, VECTORS_API_PATH } from "../constants";
-import { corpus } from "../data/corpus";
+import { getCorpus } from "../data/corpus";
 
 type VectorRecord = {
   id: string;
@@ -35,17 +35,19 @@ type VectorInspect = {
   orphans: VectorRecord[];
 };
 
-const corpusChunks: VectorRecord[] = corpus.map((chunk) => ({
-  id: chunk.id,
-  title: chunk.title,
-  source: chunk.source,
-  url: chunk.url,
-  text: chunk.text,
-  chars: chunk.text.length,
-  inIndex: false,
-  metadata: null,
-  dimensions: null,
-}));
+function localCorpusChunks(): VectorRecord[] {
+  return getCorpus().map((chunk) => ({
+    id: chunk.id,
+    title: chunk.title,
+    source: chunk.source,
+    url: chunk.url,
+    text: chunk.text,
+    chars: chunk.text.length,
+    inIndex: false,
+    metadata: null,
+    dimensions: null,
+  }));
+}
 
 function formatProcessed(value: number | string | null) {
   if (value == null) return "—";
@@ -81,6 +83,8 @@ export default function VectorsPage() {
       cancelled = true;
     };
   }, []);
+
+  const corpusChunks = useMemo(() => localCorpusChunks(), []);
 
   const report = live ?? {
     indexName: "portfolio-rag",

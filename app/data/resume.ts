@@ -65,12 +65,16 @@ export const roles: ResumeRole[] = [
 /** Capability row: category label plus comma-separated tools. */
 export type ResumeSkillGroup = [category: string, items: string];
 
-export const skills: ResumeSkillGroup[] = [
-  ["UI / Front-End", "ReactJS, NextJS, TypeScript, JavaScript, Redux, React Query, HTML, CSS, Ant Design, MUI, Tailwind CSS, Storybook"],
-  ["API & Back-End", `C#, .NET (${yearsWithDotNet()} years professional), EF, Node.js, Express.js, Python, Django, REST APIs, OAuth`],
-  ["Database", "SQL Server, PostgreSQL, Supabase, Turso"],
-  ["DevOps & Cloud", "Apache, IIS, Azure, Docker, Nginx, Load balancing, Cloudflare, Render, Git, GitHub Actions, Kubernetes (fundamentals)"],
-  ["AI", "Cursor, Codex, OpenAI API, Grok Build | Cost-aware model selection"],
-  ["Testing & Automation", "Selenium, Playwright"],
-  ["Other Tools & Integration", "i18next (localization), SendGrid, Google Maps API, Canada Post API"],
-];
+export function skillGroups(now = new Date()): ResumeSkillGroup[] {
+  return [
+    ["UI / Front-End", "ReactJS, NextJS, TypeScript, JavaScript, Redux, React Query, HTML, CSS, Ant Design, MUI, Tailwind CSS, Storybook"],
+    ["API & Back-End", `C#, .NET (${yearsWithDotNet(now)} years professional), EF, Node.js, Express.js, Python, Django, REST APIs, OAuth`],
+    ["Database", "SQL Server, PostgreSQL, Supabase, Turso"],
+    ["DevOps & Cloud", "Apache, IIS, Azure, Docker, Nginx, Load balancing, Cloudflare, Render, Git, GitHub Actions, Kubernetes (fundamentals)"],
+    ["AI", "Cursor, Codex, OpenAI API, Grok Build | Cost-aware model selection"],
+    ["Testing & Automation", "Selenium, Playwright"],
+    ["Other Tools & Integration", "i18next (localization), SendGrid, Google Maps API, Canada Post API"],
+  ];
+}
+
+export const skills: ResumeSkillGroup[] = skillGroups();
