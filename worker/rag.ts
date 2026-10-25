@@ -6,14 +6,17 @@
  * Generator: Gemini `gemini-3.5-flash-lite` (free tier).
  */
 
-import { PERSON_NAME } from "../app/constants";
+import { PERSON_NAME, ROLE, LOCATION } from "../app/constants";
 import { getCorpus } from "../app/data/corpus";
+import { FACTS_ID, factsPassage, isFactQuestion, think } from "../app/data/facts";
 import {
   lookupTechAnswer,
   retiredTechChunkIds,
   TECH_LIST_ID,
   TECH_LIST_UNDATED_ID,
   techChunkIdsForQuestion,
+  techInventoryPassage,
+  undatedTechPassage,
 } from "../app/data/tech-index";
 
 const GEMINI_API = "https://generativelanguage.googleapis.com/v1beta/models";
@@ -93,9 +96,12 @@ export type RetrievedChunk = {
 export type AskResult = {
   answer: string;
   sources: Array<{ id: string; title: string; url: string; score: number }>;
-  retrieval: "vectorize" | "lexical";
+  retrieval: "gemini" | "vectorize" | "lexical";
   retrievalError?: string;
 };
+
+/** First-pass Gemini replies with this when it needs the site corpus. */
+export const NEED_SITE_CONTEXT = "NEED_SITE_CONTEXT";
 
 const STOP = new Set([
   "the", "a", "an", "and", "or", "to", "of", "in", "on", "for", "with", "is", "are",
@@ -311,44 +317,111 @@ function geminiText(payload: {
     .trim();
 }
 
-function extractiveAnswer(question: string, retrieved: RetrievedChunk[]) {
+function geminiNeedsSite(text: string) {
+  const trimmed = text.trim();
+  if (!trimmed) return true;
+  if (trimmed.includes(NEED_SITE_CONTEXT)) return true;
+  return /i do not have that on this site yet/i.test(trimmed);
+}
+
+function geminiConfig() {
+  return {
+    maxOutputTokens: 700,
+    thinkingConfig: { thinkingLevel: "minimal" },
+  };
+}
+
+/** Shared voice: the visitor is talking to AJ, not about AJ. */
+function ajPersona() {
+  return [
+    `You are ${PERSON_NAME}. People call you AJ. You are a product-minded ${ROLE} in ${LOCATION}.`,
+    "This is your portfolio. Visitors are messaging you.",
+    "Speak in first person (I, me, my). You are not an assistant, narrator, or chatbot describing AJ.",
+    "Never say “AJ’s portfolio assistant”, “as AJ”, “AJ worked”, or “the site says”.",
+    "Never mention being an AI, a language model, Gemini, or RAG unless they ask how this chat works.",
+    "Be concise and natural, like a person answering a message.",
+    "Do not invent employers, dates, products, or metrics.",
+  ].join(" ");
+}
+
+/**
+ * Every message hits Gemini first, with live facts and the tech list.
+ * Returns null when the model needs RAG (or returns empty).
+ */
+async function geminiFirst(env: RagEnv, question: string): Promise<string | null> {
+  const payload = await geminiFetch(env, `${GENERATION_MODEL}:generateContent`, {
+    systemInstruction: {
+      parts: [{
+        text: [
+          ajPersona(),
+          "Greet people who say hi. Small talk is fine.",
+          "Use the facts brief and technology lists for years, counts, employers, side projects, and named-tech tenure. Do the math from those dates and counts.",
+          `If the question needs site details that are not in the brief (project write-ups, how a product works, how this chat retrieves answers), reply with exactly ${NEED_SITE_CONTEXT} and nothing else.`,
+        ].join(" "),
+      }],
+    },
+    contents: [{
+      role: "user",
+      parts: [{
+        text: [
+          factsPassage(),
+          "",
+          techInventoryPassage(),
+          "",
+          undatedTechPassage(),
+          "",
+          `Message: ${question}`,
+        ].join("\n"),
+      }],
+    }],
+    generationConfig: geminiConfig(),
+  });
+  const text = geminiText(payload);
+  if (geminiNeedsSite(text)) return null;
+  return text;
+}
+
+function directAnswer(question: string) {
   if (isNameQuestion(question) && !isSummaryQuestion(question)) {
     return `My name is ${PERSON_NAME}.`;
   }
-  const fromList = lookupTechAnswer(question);
-  if (fromList) return fromList;
+  return lookupTechAnswer(question) ?? think(question);
+}
+
+function extractiveAnswer(question: string, retrieved: RetrievedChunk[]) {
+  const exact = directAnswer(question);
+  if (exact) return exact;
   if (retrieved.length === 0) {
-    return `I do not have that on this site yet. Try asking about ${PERSON_NAME}'s work at Centra, GenXys, side projects, or how this chat retrieves answers.`;
+    return "I do not have that on this site yet. Ask me about my work at Centra, GenXys, side projects, or how this chat retrieves answers.";
   }
   return retrieved[0].text;
 }
 
 async function generateAnswer(env: RagEnv, question: string, retrieved: RetrievedChunk[]) {
-  if (isNameQuestion(question) && !isSummaryQuestion(question)) {
-    return `My name is ${PERSON_NAME}.`;
-  }
-  const fromList = lookupTechAnswer(question);
-  if (fromList) return fromList;
+  const exact = directAnswer(question);
+  if (exact) return exact;
   if (!geminiKey(env) || retrieved.length === 0) return extractiveAnswer(question, retrieved);
 
-  const context = retrieved
-    .map((chunk, index) => `[${index + 1}] ${chunk.title}\nURL: ${chunk.url}\n${chunk.text}`)
-    .join("\n\n");
+  const context = [
+    `Computed facts (do arithmetic from these dates and counts):\n${factsPassage()}`,
+    ...retrieved.map((chunk, index) => `[${index + 1}] ${chunk.title}\nURL: ${chunk.url}\n${chunk.text}`),
+  ].join("\n\n");
 
   try {
     const payload = await geminiFetch(env, `${GENERATION_MODEL}:generateContent`, {
       systemInstruction: {
         parts: [{
           text: [
-            `You are ${PERSON_NAME}'s portfolio assistant.`,
-            "Answer only from the retrieved context.",
-            "If the context does not contain the answer, say you do not have that on the site and point to a related fact that is in the context.",
-            "Speak in first person as AJ when describing work.",
+            ajPersona(),
+            "Notes in the retrieved context may describe you in the third person. Rewrite them as you speaking.",
+            "Answer only from the retrieved context and facts brief.",
+            "If the context does not contain the answer, say you do not have that and point to a related fact you do have.",
             "When asked your name, answer with the name only.",
             "When asked how many years with a technology, answer with only the year count (for example '7 years'). Never list projects, employers, products, or 'since' dates on a years question. If years are not stated, say 'years not stated'.",
+            "When asked how many years as a developer, add software-developer roles from GenXys through the current job. Do the math from the computed facts brief; do not guess a frozen number.",
+            "When asked how many side projects or products, count the lists in the facts brief.",
             "When asked which projects were built with a technology, list the matching projects only.",
             "When asked to summarize background or info, cover role, location, employers, notable products, side projects, and contact details from context.",
-            "Be concise. Do not invent employers, dates, products, or metrics.",
           ].join(" "),
         }],
       },
@@ -356,10 +429,7 @@ async function generateAnswer(env: RagEnv, question: string, retrieved: Retrieve
         role: "user",
         parts: [{ text: `Question: ${question}\n\nRetrieved context:\n${context}` }],
       }],
-      generationConfig: {
-        maxOutputTokens: 700,
-        thinkingConfig: { thinkingLevel: "minimal" },
-      },
+      generationConfig: geminiConfig(),
     });
     return geminiText(payload) || extractiveAnswer(question, retrieved);
   } catch (error) {
@@ -395,6 +465,7 @@ function withGrounding(question: string, retrieved: RetrievedChunk[]) {
   if (isSummaryQuestion(question)) required.add("summary");
   if (isNameQuestion(question)) required.add("profile");
   if (isContactQuestion(question)) required.add("contact");
+  if (isFactQuestion(question)) required.add(FACTS_ID);
   const extras: RetrievedChunk[] = [];
   const have = new Set(retrieved.map((chunk) => chunk.id));
   for (const id of required) {
@@ -407,6 +478,18 @@ function withGrounding(question: string, retrieved: RetrievedChunk[]) {
 
 export async function ask(env: RagEnv, question: string): Promise<AskResult> {
   const trimmed = question.trim();
+
+  if (geminiKey(env)) {
+    try {
+      const first = await geminiFirst(env, trimmed);
+      if (first) {
+        return { answer: first, retrieval: "gemini", sources: [] };
+      }
+    } catch (error) {
+      console.error("Gemini first pass failed", error);
+    }
+  }
+
   let retrieval: AskResult["retrieval"] = "lexical";
   let retrieved = lexicalRetrieve(trimmed);
   let retrievalError: string | undefined;

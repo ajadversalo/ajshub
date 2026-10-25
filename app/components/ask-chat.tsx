@@ -7,6 +7,7 @@ type ChatMessage = {
   id: string;
   role: "user" | "assistant";
   content: string;
+  retrieval?: string;
 };
 
 function newId() {
@@ -103,6 +104,7 @@ export default function AskChat() {
       const payload = await response.json() as {
         answer?: string;
         error?: string;
+        retrieval?: string;
       };
       if (id !== turn.current) return;
       if (!response.ok) throw new Error(payload.error || "Ask failed");
@@ -112,6 +114,7 @@ export default function AskChat() {
           id: newId(),
           role: "assistant",
           content: payload.answer ?? COPY.askUnavailable,
+          retrieval: payload.retrieval,
         },
       ]);
     } catch {
@@ -201,7 +204,7 @@ export default function AskChat() {
               {messages.map((message) => (
                 <article className={`ask-msg ask-msg-${message.role}`} key={message.id}>
                   <p>{message.content}</p>
-                  {message.role === "assistant" && (
+                  {message.role === "assistant" && message.retrieval !== "gemini" && (
                     <p className="ask-disclaimer">{COPY.askDisclaimer}</p>
                   )}
                 </article>

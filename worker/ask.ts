@@ -25,7 +25,7 @@ export async function handleAsk(request: Request, env: RagEnv): Promise<Response
 
   try {
     const result = await ask(env, parsed.question);
-    return Response.json({ answer: result.answer });
+    return Response.json({ answer: result.answer, retrieval: result.retrieval });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Ask failed";
     return Response.json({ error: message }, { status: 500 });

@@ -1,10 +1,12 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { corpus } from "../app/data/corpus.ts";
-import { buildTechRecords } from "../app/data/tech-index.ts";
+import { factSnapshot, think, yearsFromSpans } from "../app/data/facts.ts";
+import { beyondProjects } from "../app/data/portfolio.ts";
 import { yearsSince } from "../app/data/resume.ts";
+import { buildTechRecords, EMPLOYER_TENURE } from "../app/data/tech-index.ts";
 import { handleAsk } from "../worker/ask.ts";
-import { ask, askStatus, inspectVectors } from "../worker/rag.ts";
+import { ask, askStatus, inspectVectors, NEED_SITE_CONTEXT } from "../worker/rag.ts";
 
 test("corpus covers the site copy", () => {
   assert.ok(corpus.length > 10);
@@ -13,6 +15,7 @@ test("corpus covers the site copy", () => {
   assert.ok(corpus.some((chunk) => chunk.id.includes("centra")));
   assert.ok(corpus.some((chunk) => chunk.id === "tech-list"));
   assert.ok(corpus.some((chunk) => chunk.id === "tech-list-undated"));
+  assert.ok(corpus.some((chunk) => chunk.id === "facts"));
   const list = corpus.find((chunk) => chunk.id === "tech-list");
   assert.match(list?.text ?? "", /React \| \d+ years since July 2019 \|/);
   assert.match(list?.text ?? "", /C# and \.NET \| \d+ years/);
@@ -146,5 +149,99 @@ test("ask HTTP payload is the answer only", async () => {
   assert.equal(response.status, 200);
   assert.equal(payload.answer, `${yearsSince(2019, 7)} years`);
   assert.equal(payload.sources, undefined);
-  assert.equal(payload.retrieval, undefined);
+  assert.equal(payload.retrieval, "lexical");
+});
+
+test("developer years are GenXys through now, not a frozen table cell", () => {
+  const now = new Date("2026-10-25");
+  const genxys = EMPLOYER_TENURE["GenXys Healthcare Systems"];
+  const centra = EMPLOYER_TENURE["Centra Construction Group"];
+  const snap = factSnapshot(now);
+  const union = yearsFromSpans([
+    { ...genxys, label: "GenXys" },
+    { ...centra, label: "Centra" },
+  ], now);
+
+  assert.equal(snap.yearsAsDeveloper, yearsSince(2019, 7, now));
+  assert.equal(snap.yearsAsDeveloper, union);
+  assert.equal(snap.yearsAsDeveloper, 7);
+  assert.equal(think("How many years have you been a developer?", now), "7 years");
+  assert.equal(
+    think("how many years as a dev counting genxys till now", now),
+    "7 years",
+  );
+  assert.equal(think("How many years have you been a developer?", new Date(0)), "0 years");
+});
+
+test("side project count is calculated from the live list", () => {
+  const now = new Date("2026-10-25");
+  const snap = factSnapshot(now);
+  assert.equal(snap.sideProjectCount, beyondProjects.length);
+  assert.equal(snap.sideProjectCount, 3);
+  assert.equal(
+    think("How many side projects do you have?", now),
+    "3 side projects: SouthFraserHUB, WebTools, STLCraft",
+  );
+  assert.match(think("Do you have more than 2 side projects?", now) ?? "", /^Yes\./);
+  assert.match(think("Do you have more than 10 side projects?", now) ?? "", /^No\./);
+});
+
+test("Ask calculates developer years and side-project counts", async () => {
+  const years = yearsSince(2019, 7);
+  const developer = await ask({}, "How many years have you been a developer?");
+  assert.equal(developer.answer, `${years} years`);
+  assert.ok(developer.sources.some((source) => source.id === "facts"));
+
+  const counted = await ask({}, "How many side projects do you have?");
+  assert.equal(counted.answer, "3 side projects: SouthFraserHUB, WebTools, STLCraft");
+
+  const compared = await ask({}, "Have you been a developer for more than 5 years?");
+  assert.equal(compared.answer, `Yes. ${years} years`);
+});
+
+function geminiHttp(text: string) {
+  return new Response(JSON.stringify({
+    candidates: [{ content: { parts: [{ text }] } }],
+  }), { headers: { "Content-Type": "application/json" } });
+}
+
+async function withFetch(handler: typeof fetch, run: () => Promise<void>) {
+  const original = globalThis.fetch;
+  globalThis.fetch = handler;
+  try {
+    await run();
+  } finally {
+    globalThis.fetch = original;
+  }
+}
+
+test("every message goes to Gemini first, including hi", async () => {
+  await withFetch(async (input) => {
+    assert.match(String(input), /generateContent/);
+    return geminiHttp("Hi — I’m AJ. What would you like to know?");
+  }, async () => {
+    const result = await ask({ GEMINI_API_KEY: "test-key" }, "Hi");
+    assert.equal(result.retrieval, "gemini");
+    assert.match(result.answer, /Hi/);
+    assert.equal(result.sources.length, 0);
+    assert.doesNotMatch(result.answer, /I do not have that on this site yet/);
+  });
+});
+
+test("RAG runs only after Gemini says it does not know", async () => {
+  let generations = 0;
+  await withFetch(async (input) => {
+    const url = String(input);
+    if (url.includes("generateContent")) {
+      generations += 1;
+      if (generations === 1) return geminiHttp(NEED_SITE_CONTEXT);
+      return geminiHttp("I built CentraWorks at Centra.");
+    }
+    throw new Error(`unexpected fetch ${url}`);
+  }, async () => {
+    const result = await ask({ GEMINI_API_KEY: "test-key" }, "What did you build at Centra?");
+    assert.equal(generations, 2);
+    assert.equal(result.retrieval, "lexical");
+    assert.match(result.answer, /CentraWorks/);
+  });
 });

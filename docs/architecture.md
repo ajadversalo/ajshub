@@ -38,10 +38,11 @@ Home hero is an ask field. Focus or submit opens a chat. The browser posts to sa
 
 Pipeline:
 
-1. Chunk site copy (profile, experience, résumé, toolkit, side projects).
-2. Embed with Gemini `gemini-embedding-001` (768-d, free tier).
-3. Upsert into Cloudflare Vectorize index `portfolio-rag` (cosine).
-4. Embed the question, take top-5 neighbors, generate with Gemini `gemini-3.5-flash-lite` using only those chunks.
+1. Every message goes to Gemini `gemini-3.5-flash-lite` first, with the live facts brief and tech lists (no canned greetings).
+2. If Gemini can answer (including “hi”), that reply is used and RAG is skipped.
+3. If Gemini replies `NEED_SITE_CONTEXT` (it does not know), retrieve site chunks: embed with `gemini-embedding-001`, query Vectorize `portfolio-rag` (cosine), merge with lexical search.
+4. Answer from retrieved chunks. Tenure/count helpers in `facts.ts` / `tech-index.ts` still fill exact numbers on that fallback path.
+5. If `GEMINI_API_KEY` is missing, skip the first pass and use lexical RAG only.
 
 ```bash
 npx wrangler vectorize create portfolio-rag --dimensions=768 --metric=cosine

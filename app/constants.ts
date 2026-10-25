@@ -137,6 +137,8 @@ export const COPY = {
 
 export const ASK_SAMPLES = [
   "Summarize your background",
+  "How many years have you been a developer?",
+  "How many side projects do you have?",
   "How many years have you worked with React?",
   "What projects have you built with .NET?",
   "How can I contact you?",

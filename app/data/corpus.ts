@@ -21,6 +21,7 @@ import {
 import { experience } from "./experience";
 import { beyondProjects, toolboxGroups } from "./portfolio";
 import { roles, skillGroups } from "./resume";
+import { FACTS_ID, factsPassage } from "./facts";
 import {
   TECH_LIST_ID,
   TECH_LIST_UNDATED_ID,
@@ -176,6 +177,14 @@ export function buildCorpus(now = new Date()): CorpusChunk[] {
       location: LOCATION,
       now,
     }),
+  });
+
+  chunks.push({
+    id: FACTS_ID,
+    title: "Computed career facts",
+    url: ROUTES.resume,
+    source: "profile",
+    text: factsPassage(now),
   });
 
   chunks.push({
