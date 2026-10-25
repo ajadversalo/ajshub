@@ -322,7 +322,25 @@ function yearsLabel(record: TechRecord) {
 
 function projectsLabel(record: TechRecord) {
   if (record.projects.length === 0) return "none listed";
-  return record.projects.map((project) => `${project.name} (${project.place})`).join("; ");
+  const groups = new Map<string, string[]>();
+  for (const project of record.projects) {
+    const names = groups.get(project.place) ?? [];
+    if (!names.includes(project.name)) names.push(project.name);
+    groups.set(project.place, names);
+  }
+  const parts: string[] = [];
+  for (const [place, names] of groups) {
+    if (place === "side project" || place === "this site") {
+      parts.push(names.map((name) => `${name} (${place})`).join("; "));
+      continue;
+    }
+    if (names.length <= 2) {
+      parts.push(`${names.join(", ")} (${place})`);
+      continue;
+    }
+    parts.push(`${place} (${names.slice(0, 3).join(", ")})`);
+  }
+  return parts.join("; ");
 }
 
 /** One list row: technology | years | projects. */
@@ -386,12 +404,60 @@ export function isTechCatalogQuestion(question: string) {
   return /\b(technolog(?:y|ies)|tech stack|what (?:tech|tools)|list (?:your )?skills|skills list)\b/i.test(question);
 }
 
+export function isProjectsQuestion(question: string) {
+  return /\b(projects?|built with|built using|what (?:have you|did you) (?:build|ship|make)|apps? (?:with|using)|products? (?:with|using))\b/i.test(question);
+}
+
+export function isYearsQuestion(question: string) {
+  return /\b(how many years|how long|\byears?\b|experience (?:with|in|using))\b/i.test(question);
+}
+
+function yearsAnswer(record: TechRecord) {
+  if (record.years == null) return "years not stated";
+  return record.years === 1 ? "1 year" : `${record.years} years`;
+}
+
+function formatYears(records: TechRecord[]) {
+  if (records.length === 1) return yearsAnswer(records[0]);
+  return records.map((record) => `${record.name}: ${yearsAnswer(record)}`).join("\n");
+}
+
+function formatProjects(records: TechRecord[]) {
+  if (records.length === 1) return projectsLabel(records[0]);
+  return records.map((record) => `${record.name}: ${projectsLabel(record)}`).join("\n");
+}
+
+function namesOf(record: TechRecord) {
+  return [fold(record.name), ...record.aliases.map(fold)];
+}
+
+function longestHit(record: TechRecord, question: string) {
+  let best = 0;
+  for (const name of namesOf(record)) {
+    if (mentionedIn(question, name)) best = Math.max(best, name.length);
+  }
+  return best;
+}
+
+/** Drop "Cloudflare" when "Cloudflare D1" also matched, "React" when "React Query" matched. */
+function preferSpecificRecords(question: string, matched: TechRecord[]) {
+  return matched.filter((row) => {
+    const hit = longestHit(row, question);
+    if (!hit) return false;
+    return !matched.some((other) => {
+      if (other.id === row.id) return false;
+      if (longestHit(other, question) <= hit) return false;
+      return namesOf(other).some((otherName) =>
+        namesOf(row).some((name) => otherName !== name && otherName.includes(name)),
+      );
+    });
+  });
+}
+
 export function recordsForQuestion(question: string, now = new Date()): TechRecord[] {
   const { dated, undated } = allTechRows(now);
-  return [...dated, ...undated].filter((record) => {
-    const names = [record.name, ...record.aliases];
-    return names.some((name) => mentionedIn(question, name));
-  });
+  const matched = [...dated, ...undated].filter((record) => longestHit(record, question) > 0);
+  return preferSpecificRecords(question, matched);
 }
 
 /**
@@ -400,11 +466,16 @@ export function recordsForQuestion(question: string, now = new Date()): TechReco
  */
 export function lookupTechAnswer(question: string, now = new Date()): string | null {
   const matched = recordsForQuestion(question, now);
+  const wantYears = isYearsQuestion(question);
+  const wantProjects = isProjectsQuestion(question);
   if (matched.length > 0) {
-    return [
-      "Each line is technology | years | projects.",
-      ...matched.map(techLine),
-    ].join("\n");
+    if (wantYears && wantProjects) {
+      return matched
+        .map((record) => `${yearsAnswer(record)} | ${projectsLabel(record)}`)
+        .join("\n");
+    }
+    if (wantProjects) return formatProjects(matched);
+    if (wantYears || !isTechCatalogQuestion(question)) return formatYears(matched);
   }
   if (isTechCatalogQuestion(question)) {
     const { dated, undated } = allTechRows(now);
@@ -462,24 +533,32 @@ function mentionedIn(question: string, name: string) {
   return haystack.includes(alias);
 }
 
+export const TECH_LIST_ID = "tech-list";
+export const TECH_LIST_UNDATED_ID = "tech-list-undated";
+
+/** Old per-tech Vectorize ids replaced by the compact list chunks. */
+export function retiredTechChunkIds(now = new Date()) {
+  return [
+    "skill-dotnet",
+    "tech-undated",
+    ...buildTechRecords(now).map((record) => `tech-${record.id}`.slice(0, 64)),
+  ];
+}
+
 /** Corpus chunk ids to prefer when a question names a technology. */
 export function techChunkIdsForQuestion(question: string, records = buildTechRecords()) {
   const ids = new Set<string>();
+  if (isTechCatalogQuestion(question)) {
+    ids.add(TECH_LIST_ID);
+    ids.add(TECH_LIST_UNDATED_ID);
+    return ids;
+  }
   for (const record of records) {
     const names = [record.name, ...record.aliases];
-    if (names.some((name) => mentionedIn(question, name))) ids.add(`tech-${record.id}`.slice(0, 64));
+    if (names.some((name) => mentionedIn(question, name))) ids.add(TECH_LIST_ID);
   }
   for (const tool of undatedToolkitTools(records)) {
-    if (mentionedIn(question, tool)) ids.add("tech-undated");
+    if (mentionedIn(question, tool)) ids.add(TECH_LIST_UNDATED_ID);
   }
   return ids;
-}
-
-export function undatedTechPassage(tools = undatedToolkitTools()) {
-  const list = tools.join(", ");
-  return [
-    `These toolkit technologies appear on the site without a professional start date or a named shipped product: ${list}.`,
-    `The site does not state a year count for those tools.`,
-    `No named project on this site lists those tools on its stack.`,
-  ].join(" ");
 }

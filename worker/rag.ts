@@ -8,7 +8,13 @@
 
 import { PERSON_NAME } from "../app/constants";
 import { getCorpus } from "../app/data/corpus";
-import { techChunkIdsForQuestion } from "../app/data/tech-index";
+import {
+  lookupTechAnswer,
+  retiredTechChunkIds,
+  TECH_LIST_ID,
+  TECH_LIST_UNDATED_ID,
+  techChunkIdsForQuestion,
+} from "../app/data/tech-index";
 
 const GEMINI_API = "https://generativelanguage.googleapis.com/v1beta/models";
 const EMBEDDING_MODEL = "gemini-embedding-001";
@@ -21,8 +27,6 @@ const EMBED_BATCH = 16;
 
 export const VECTORIZE_INDEX = "portfolio-rag";
 const GET_BY_IDS_BATCH = 20;
-/** Ids previously upserted that the current corpus no longer emits. */
-const RETIRED_IDS = ["skill-dotnet"];
 
 export type RagEnv = {
   VECTORIZE?: {
@@ -36,6 +40,7 @@ export type RagEnv = {
     getByIds?(
       ids: string[],
     ): Promise<Array<{ id: string; values?: number[]; metadata?: Record<string, string> }>>;
+    deleteByIds?(ids: string[]): Promise<unknown>;
     describe?(): Promise<{
       vectorCount?: number;
       dimensions?: number;
@@ -251,6 +256,12 @@ async function ingest(env: RagEnv) {
     },
   }));
   await env.VECTORIZE.upsert(records);
+  const retired = retiredTechChunkIds();
+  if (typeof env.VECTORIZE.deleteByIds === "function") {
+    for (let offset = 0; offset < retired.length; offset += GET_BY_IDS_BATCH) {
+      await env.VECTORIZE.deleteByIds(retired.slice(offset, offset + GET_BY_IDS_BATCH));
+    }
+  }
 }
 
 function ensureIngest(env: RagEnv) {
@@ -304,6 +315,8 @@ function extractiveAnswer(question: string, retrieved: RetrievedChunk[]) {
   if (isNameQuestion(question) && !isSummaryQuestion(question)) {
     return `My name is ${PERSON_NAME}.`;
   }
+  const fromList = lookupTechAnswer(question);
+  if (fromList) return fromList;
   if (retrieved.length === 0) {
     return `I do not have that on this site yet. Try asking about ${PERSON_NAME}'s work at Centra, GenXys, side projects, or how this chat retrieves answers.`;
   }
@@ -311,6 +324,11 @@ function extractiveAnswer(question: string, retrieved: RetrievedChunk[]) {
 }
 
 async function generateAnswer(env: RagEnv, question: string, retrieved: RetrievedChunk[]) {
+  if (isNameQuestion(question) && !isSummaryQuestion(question)) {
+    return `My name is ${PERSON_NAME}.`;
+  }
+  const fromList = lookupTechAnswer(question);
+  if (fromList) return fromList;
   if (!geminiKey(env) || retrieved.length === 0) return extractiveAnswer(question, retrieved);
 
   const context = retrieved
@@ -327,8 +345,8 @@ async function generateAnswer(env: RagEnv, question: string, retrieved: Retrieve
             "If the context does not contain the answer, say you do not have that on the site and point to a related fact that is in the context.",
             "Speak in first person as AJ when describing work.",
             "When asked your name, answer with the name only.",
-            "When asked how many years with a technology, state the number and the dated roles from context. If the context says the years are not stated, say that.",
-            "When asked which projects were built with a technology, or to list projects with a technology, list every matching project in the context.",
+            "When asked how many years with a technology, answer with only the year count (for example '7 years'). Never list projects, employers, products, or 'since' dates on a years question. If years are not stated, say 'years not stated'.",
+            "When asked which projects were built with a technology, list the matching projects only.",
             "When asked to summarize background or info, cover role, location, employers, notable products, side projects, and contact details from context.",
             "Be concise. Do not invent employers, dates, products, or metrics.",
           ].join(" "),
@@ -363,9 +381,8 @@ function mergeHits(primary: RetrievedChunk[], secondary: RetrievedChunk[]) {
 
 function dropUndatedWhenDatedTechNamed(question: string, retrieved: RetrievedChunk[]) {
   const ids = techChunkIdsForQuestion(question);
-  const dated = [...ids].filter((id) => id.startsWith("tech-") && id !== "tech-undated");
-  if (dated.length === 0 || ids.has("tech-undated")) return retrieved;
-  return retrieved.filter((chunk) => chunk.id !== "tech-undated");
+  if (!ids.has(TECH_LIST_ID) || ids.has(TECH_LIST_UNDATED_ID)) return retrieved;
+  return retrieved.filter((chunk) => chunk.id !== TECH_LIST_UNDATED_ID);
 }
 
 function dropSiteRagUnlessAsked(question: string, retrieved: RetrievedChunk[]) {
@@ -469,6 +486,12 @@ export async function inspectVectors(env: RagEnv): Promise<VectorInspect> {
   if (!env.VECTORIZE) return report;
 
   try {
+    await ensureIngest(env);
+  } catch (error) {
+    report.indexError = error instanceof Error ? error.message : String(error);
+  }
+
+  try {
     if (env.VECTORIZE.describe) {
       const info = await env.VECTORIZE.describe();
       report.index = {
@@ -502,21 +525,22 @@ export async function inspectVectors(env: RagEnv): Promise<VectorInspect> {
     report.inIndexCount = report.chunks.filter((chunk) => chunk.inIndex).length;
     report.missingCount = report.corpusCount - report.inIndexCount;
 
-    const retired = RETIRED_IDS.filter((id) => !found.has(id));
-    if (retired.length > 0) {
-      const leftover = await index.getByIds(retired);
-      report.orphans = leftover.map((row) => ({
-        id: row.id,
-        title: "Not in the current corpus",
-        source: "stale",
-        url: "",
-        text: "",
-        chars: 0,
-        inIndex: true,
-        metadata: row.metadata ?? null,
-        dimensions: Array.isArray(row.values) ? row.values.length : null,
-      }));
+    const retired = retiredTechChunkIds().filter((id) => !found.has(id));
+    const leftover: Array<{ id: string; values?: number[]; metadata?: Record<string, string> }> = [];
+    for (let offset = 0; offset < retired.length; offset += GET_BY_IDS_BATCH) {
+      leftover.push(...await index.getByIds(retired.slice(offset, offset + GET_BY_IDS_BATCH)));
     }
+    report.orphans = leftover.map((row) => ({
+      id: row.id,
+      title: "Not in the current corpus",
+      source: "stale",
+      url: "",
+      text: "",
+      chars: 0,
+      inIndex: true,
+      metadata: row.metadata ?? null,
+      dimensions: Array.isArray(row.values) ? row.values.length : null,
+    }));
   } catch (error) {
     report.indexError = error instanceof Error ? error.message : String(error);
   }

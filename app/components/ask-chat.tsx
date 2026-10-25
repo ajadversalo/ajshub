@@ -3,18 +3,10 @@
 import { useEffect, useId, useRef, useState, type FormEvent } from "react";
 import { ASK_API_PATH, ASK_SAMPLES, COPY } from "../constants";
 
-type ChatSource = {
-  id: string;
-  title: string;
-  url: string;
-};
-
 type ChatMessage = {
   id: string;
   role: "user" | "assistant";
   content: string;
-  sources?: ChatSource[];
-  retrieval?: "vectorize" | "lexical";
 };
 
 function newId() {
@@ -110,8 +102,6 @@ export default function AskChat() {
       });
       const payload = await response.json() as {
         answer?: string;
-        sources?: ChatSource[];
-        retrieval?: "vectorize" | "lexical";
         error?: string;
       };
       if (id !== turn.current) return;
@@ -122,8 +112,6 @@ export default function AskChat() {
           id: newId(),
           role: "assistant",
           content: payload.answer ?? COPY.askUnavailable,
-          sources: payload.sources,
-          retrieval: payload.retrieval,
         },
       ]);
     } catch {
@@ -213,19 +201,8 @@ export default function AskChat() {
               {messages.map((message) => (
                 <article className={`ask-msg ask-msg-${message.role}`} key={message.id}>
                   <p>{message.content}</p>
-                  {message.role === "assistant" && message.sources && message.sources.length > 0 && (
-                    <ul className="ask-sources" aria-label="Retrieved sources">
-                      {message.sources.map((source) => (
-                        <li key={source.id}>
-                          <a href={source.url}>{source.title}</a>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                  {message.retrieval && (
-                    <p className="ask-retrieval">
-                      {message.retrieval === "vectorize" ? COPY.askVectorize : COPY.askLexical}
-                    </p>
+                  {message.role === "assistant" && (
+                    <p className="ask-disclaimer">{COPY.askDisclaimer}</p>
                   )}
                 </article>
               ))}

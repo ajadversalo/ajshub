@@ -1,6 +1,10 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "builtbyaj-portfolio",
+  "workers_dev": true,
+  "routes": [
+    { "pattern": "portfolio.ajhub.ca", "custom_domain": true }
+  ],
   // Local miniflare/workerd from wrangler 4.92 / vite-plugin 1.37 supports through 2026-05-22.
   "compatibility_date": "2026-05-22",
   "compatibility_flags": ["nodejs_compat"],

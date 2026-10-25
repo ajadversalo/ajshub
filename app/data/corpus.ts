@@ -22,9 +22,10 @@ import { experience } from "./experience";
 import { beyondProjects, toolboxGroups } from "./portfolio";
 import { roles, skillGroups } from "./resume";
 import {
-  buildTechRecords,
+  TECH_LIST_ID,
+  TECH_LIST_UNDATED_ID,
   summaryPassage,
-  techPassage,
+  techInventoryPassage,
   undatedTechPassage,
 } from "./tech-index";
 
@@ -177,19 +178,17 @@ export function buildCorpus(now = new Date()): CorpusChunk[] {
     }),
   });
 
-  for (const tech of buildTechRecords(now)) {
-    chunks.push({
-      id: `tech-${tech.id}`.slice(0, 64),
-      title: `${tech.name} experience`,
-      url: ROUTES.resume,
-      source: "skills",
-      text: techPassage(tech),
-    });
-  }
+  chunks.push({
+    id: TECH_LIST_ID,
+    title: "Technology list — years and projects",
+    url: ROUTES.resume,
+    source: "skills",
+    text: techInventoryPassage(now),
+  });
 
   chunks.push({
-    id: "tech-undated",
-    title: "Toolkit technologies without dated projects",
+    id: TECH_LIST_UNDATED_ID,
+    title: "Toolkit list — no year count",
     url: `${ROUTES.home}${HASH.toolbox}`,
     source: "skills",
     text: undatedTechPassage(),

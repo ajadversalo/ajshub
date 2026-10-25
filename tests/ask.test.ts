@@ -3,6 +3,7 @@ import test from "node:test";
 import { corpus } from "../app/data/corpus.ts";
 import { buildTechRecords } from "../app/data/tech-index.ts";
 import { yearsSince } from "../app/data/resume.ts";
+import { handleAsk } from "../worker/ask.ts";
 import { ask, askStatus, inspectVectors } from "../worker/rag.ts";
 
 test("corpus covers the site copy", () => {
@@ -10,8 +11,11 @@ test("corpus covers the site copy", () => {
   assert.ok(corpus.some((chunk) => chunk.id === "profile"));
   assert.ok(corpus.some((chunk) => chunk.id === "summary"));
   assert.ok(corpus.some((chunk) => chunk.id.includes("centra")));
-  assert.ok(corpus.some((chunk) => chunk.id === "tech-csharp-net"));
-  assert.ok(corpus.some((chunk) => chunk.id === "tech-react"));
+  assert.ok(corpus.some((chunk) => chunk.id === "tech-list"));
+  assert.ok(corpus.some((chunk) => chunk.id === "tech-list-undated"));
+  const list = corpus.find((chunk) => chunk.id === "tech-list");
+  assert.match(list?.text ?? "", /React \| \d+ years since July 2019 \|/);
+  assert.match(list?.text ?? "", /C# and \.NET \| \d+ years/);
 });
 
 test("status reports corpus size without bindings", () => {
@@ -63,17 +67,23 @@ test("lexical retrieval answers Centra questions from the corpus", async () => {
 
 test("lexical retrieval answers how many years of a specific tech", async () => {
   const dotnet = await ask({}, "how many years do you have working on .net");
+  const dotnetYears = yearsSince(2019, 7);
   assert.equal(dotnet.retrieval, "lexical");
-  assert.match(dotnet.answer, /\d+ years of professional experience working with C# and \.NET/i);
-  assert.ok(dotnet.sources.some((source) => source.id === "tech-csharp-net"));
+  assert.equal(dotnet.answer, `${dotnetYears} years`);
+  assert.doesNotMatch(dotnet.answer, /CentraWorks|since /);
+  assert.ok(dotnet.sources.some((source) => source.id === "tech-list"));
 
   const react = await ask({}, "How many years have you worked with React?");
   const reactYears = yearsSince(2019, 7);
   assert.equal(react.retrieval, "lexical");
-  assert.match(react.answer, new RegExp(`${reactYears} years of professional experience working with React`));
-  assert.doesNotMatch(react.answer, /0 years of professional experience working with React/);
-  assert.ok(react.sources.some((source) => source.id === "tech-react"));
-  assert.ok(react.sources.every((source) => source.id !== "tech-undated"));
+  assert.equal(react.answer, `${reactYears} years`);
+  assert.doesNotMatch(react.answer, /React \||CentraWorks|SouthFraserHUB|since July/);
+  assert.ok(react.sources.some((source) => source.id === "tech-list"));
+  assert.ok(react.sources.every((source) => source.id !== "tech-list-undated"));
+
+  const short = await ask({}, "years of React");
+  assert.equal(short.answer, `${reactYears} years`);
+  assert.doesNotMatch(short.answer, /CentraWorks|GenXys|SouthFraserHUB|WebTools|STLCraft/);
 });
 
 test("lexical retrieval lists projects built with a tech", async () => {
@@ -81,20 +91,27 @@ test("lexical retrieval lists projects built with a tech", async () => {
   assert.equal(next.retrieval, "lexical");
   assert.match(next.answer, /CentraWorks/i);
   assert.match(next.answer, /SouthFraserHUB/i);
-  assert.ok(next.sources.some((source) => source.id === "tech-nextjs"));
+  assert.doesNotMatch(next.answer, /years since/);
+  assert.ok(next.sources.some((source) => source.id === "tech-list"));
 
   const listed = await ask({}, "List projects with .NET");
   assert.equal(listed.retrieval, "lexical");
   assert.match(listed.answer, /CentraWorks/i);
   assert.match(listed.answer, /WebTools/i);
-  assert.ok(listed.sources.some((source) => source.id === "tech-csharp-net"));
+  assert.ok(listed.sources.some((source) => source.id === "tech-list"));
 });
 
 test("lexical retrieval says undated toolkit techs have no year count", async () => {
   const payload = await ask({}, "how many years do you have working on Python");
   assert.equal(payload.retrieval, "lexical");
-  assert.match(payload.answer, /does not state a year count/i);
-  assert.ok(payload.sources.some((source) => source.id === "tech-undated"));
+  assert.equal(payload.answer, "years not stated");
+  assert.ok(payload.sources.some((source) => source.id === "tech-list-undated"));
+});
+
+test("Cloudflare D1 answers the D1 row, not the generic Cloudflare toolkit row", async () => {
+  const payload = await ask({}, "how many years working on Cloudflare D1");
+  assert.equal(payload.answer, "years not stated");
+  assert.doesNotMatch(payload.answer, /none listed|SouthFraserHUB/);
 });
 
 test("lexical retrieval summarizes profile info", async () => {
@@ -114,4 +131,20 @@ test("lexical retrieval answers the name without dumping unrelated chunks", asyn
   assert.doesNotMatch(payload.answer, /Font Awesome|Leaflet|Cloudflare D1/i);
   assert.ok(payload.sources.some((source) => source.id === "profile"));
   assert.ok(payload.sources.every((source) => source.id !== "site-rag"));
+});
+
+test("ask HTTP payload is the answer only", async () => {
+  const response = await handleAsk(
+    new Request("https://portfolio.ajhub.ca/api/ask", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ question: "How many years have you worked with React?" }),
+    }),
+    {},
+  );
+  const payload = await response.json() as Record<string, unknown>;
+  assert.equal(response.status, 200);
+  assert.equal(payload.answer, `${yearsSince(2019, 7)} years`);
+  assert.equal(payload.sources, undefined);
+  assert.equal(payload.retrieval, undefined);
 });
