@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Ask flow — Centra example</title>
+  <style>
+    :root {
+      --ink: #1c1c1c;
+      --stroke: #2a2a2a;
+      --board: #7f91a8;
+      --panel: #ffffff;
+      --api: #e6edf4;
+      --peach: #f4d6b0;
+      --green-bg: #e4f0e2;
+      --green: #cfe6cc;
+      --green-hit: #d9eed6;
+      --purple: #ddd4ee;
+      --yellow: #f6f1c4;
+      --orange: #f0b05a;
+      --muted: #3d3d3d;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      background: var(--board);
+      color: var(--ink);
+      font-family: Arial, Helvetica, "Segoe UI", sans-serif;
+    }
+    #capture {
+      width: 1580px;
+      padding: 16px 16px 18px;
+      background: var(--board);
+    }
+    .board {
+      display: grid;
+      grid-template-columns: 430px 1fr;
+      gap: 14px;
+    }
+    .panel {
+      background: var(--panel);
+      border-radius: 10px;
+      border: 1.5px solid #5c6d82;
+      padding: 12px 14px 14px;
+      min-height: 0;
+    }
+    .panel h2 {
+      margin: 0 0 10px;
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+    .note {
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.35;
+      margin: 0 0 10px;
+    }
+    .box {
+      border: 1.6px solid var(--stroke);
+      border-radius: 8px;
+      background: #fff;
+      padding: 8px 10px;
+    }
+    .box.api { background: var(--api); }
+    .box.peach { background: var(--peach); }
+    .box.green { background: var(--green); }
+    .box.green-hit { background: var(--green-hit); }
+    .box.purple { background: var(--purple); }
+    .box.yellow { background: var(--yellow); }
+    .box.orange { background: var(--orange); }
+    .box.amber { background: #f7e3c4; }
+    .t {
+      font-size: 12.5px;
+      font-weight: 700;
+      line-height: 1.25;
+    }
+    .s {
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.3;
+      margin-top: 3px;
+    }
+    .mono { font-family: "Consolas", "Courier New", monospace; }
+    .flow-h {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .flow-h > .box { flex: 1; min-width: 0; }
+    .arr {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-width: 54px;
+      color: #111;
+      font-size: 18px;
+      line-height: 1;
+      flex: 0 0 auto;
+    }
+    .arr span {
+      font-size: 9.5px;
+      font-weight: 700;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.2;
+      margin-bottom: 2px;
+      max-width: 78px;
+    }
+    .arr-v {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 16px;
+      line-height: 1;
+      padding: 4px 0;
+      color: #111;
+    }
+    .arr-v span {
+      font-size: 9.5px;
+      font-weight: 700;
+      color: var(--muted);
+      text-align: center;
+    }
+    .stack {
+      position: relative;
+      width: 132px;
+      height: 118px;
+      flex: 0 0 auto;
+    }
+    .page {
+      position: absolute;
+      inset: 0;
+      background: #fff;
+      border: 1.6px solid var(--stroke);
+      border-radius: 4px;
+      padding: 8px 8px 6px;
+    }
+    .page.p3 { transform: translate(8px, -8px); background: #f7f7f7; }
+    .page.p2 { transform: translate(4px, -4px); background: #fafafa; }
+    .page.p1 { background: #fff; }
+    .page .t { font-size: 12px; }
+    .page .id {
+      font-family: "Consolas", "Courier New", monospace;
+      font-size: 10.5px;
+      margin-top: 4px;
+      line-height: 1.35;
+    }
+    .cyl {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      min-width: 108px;
+    }
+    .cyl svg { display: block; }
+    .cyl .t { text-align: center; font-size: 12px; margin-top: 2px; }
+    .cyl .s { text-align: center; max-width: 120px; }
+    .ingest {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .shoebox {
+      display: flex;
+      gap: 10px;
+      align-items: stretch;
+      padding: 10px;
+      background: #f3f6f9;
+      border: 1.5px dashed #6a7c90;
+      border-radius: 8px;
+    }
+    .basket {
+      width: 118px;
+      flex: 0 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 4px;
+    }
+    .basket-box {
+      width: 92px;
+      height: 48px;
+      border: 1.6px solid var(--stroke);
+      border-radius: 0 0 8px 8px;
+      background: #d9e2ec;
+      position: relative;
+    }
+    .basket-box::before {
+      content: "";
+      position: absolute;
+      left: -8px; right: -8px; top: -6px;
+      height: 10px;
+      border: 1.6px solid var(--stroke);
+      border-radius: 3px;
+      background: #c5d2df;
+    }
+    .cards-mini {
+      position: absolute;
+      left: 14px; right: 14px; top: -22px;
+      height: 28px;
+      background: #fff;
+      border: 1.4px solid var(--stroke);
+      box-shadow: 3px -3px 0 #fff, 3px -3px 0 1.4px var(--stroke),
+                  6px -6px 0 #fff, 6px -6px 0 1.4px var(--stroke);
+    }
+    .step {
+      border: 1.5px solid #c5c5c5;
+      border-radius: 8px;
+      padding: 10px 12px;
+      margin-bottom: 10px;
+      position: relative;
+    }
+    .step:last-child { margin-bottom: 0; }
+    .step .num {
+      font-size: 16px;
+      font-weight: 700;
+      margin: 0 0 8px;
+    }
+    .user-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    .user-row .box.peach { width: 250px; flex: 0 0 auto; }
+    .user {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+    .bubble {
+      background: #fff;
+      border: 1.6px solid var(--stroke);
+      border-radius: 12px;
+      padding: 7px 10px;
+      font-size: 11px;
+      line-height: 1.3;
+      position: relative;
+      max-width: 150px;
+    }
+    .bubble::after {
+      content: "";
+      position: absolute;
+      left: 18px;
+      bottom: -7px;
+      width: 12px;
+      height: 12px;
+      background: #fff;
+      border-right: 1.6px solid var(--stroke);
+      border-bottom: 1.6px solid var(--stroke);
+      transform: rotate(45deg);
+    }
+    .device { font-size: 11px; font-weight: 700; margin-top: 6px; }
+    .gemini {
+      display: grid;
+      grid-template-columns: 140px 1fr 250px;
+      gap: 12px;
+      align-items: start;
+    }
+    .g-caption {
+      font-size: 10.5px;
+      font-weight: 700;
+      color: var(--muted);
+      margin: 0 0 6px;
+    }
+    .diamond-wrap {
+      width: 118px;
+      height: 118px;
+      display: grid;
+      place-items: center;
+      position: relative;
+      margin: 0 auto;
+    }
+    .diamond {
+      width: 84px;
+      height: 84px;
+      background: #fff;
+      border: 1.6px solid var(--stroke);
+      transform: rotate(45deg);
+    }
+    .diamond-label {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      font-size: 10.5px;
+      font-weight: 700;
+      line-height: 1.2;
+      padding: 16px;
+    }
+    .yn {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--muted);
+      text-align: center;
+    }
+    .retrieve {
+      background: var(--green-bg);
+      display: grid;
+      grid-template-columns: 0.85fr 1.25fr;
+      gap: 12px;
+      align-items: stretch;
+    }
+    .retrieve-title {
+      grid-column: 1 / -1;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+    .vec {
+      background: #d8ebd6;
+      border: 1.6px solid var(--stroke);
+      border-radius: 8px;
+      padding: 8px;
+      display: grid;
+      grid-template-columns: 128px 1fr;
+      gap: 8px;
+      align-items: center;
+    }
+    .vec-flow {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .join-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .merge-row {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: 0.85fr 250px 1.25fr;
+      gap: 12px;
+      align-items: center;
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1.4px dashed #8aa88a;
+    }
+    .merge-row .from {
+      font-size: 10.5px;
+      font-weight: 700;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.3;
+    }
+    .ground {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr auto 1fr;
+      gap: 8px;
+      align-items: center;
+    }
+    .gen {
+      background: var(--yellow);
+      display: grid;
+      grid-template-columns: 1fr 16px 240px;
+      gap: 8px;
+      align-items: center;
+    }
+    .gen-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .end-col {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .tiny {
+      font-size: 10px;
+      color: var(--muted);
+      line-height: 1.3;
+    }
+    .badge {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      background: #fff3c4;
+      border: 1px solid #c4a43a;
+      border-radius: 4px;
+      padding: 1px 6px;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+    .left-col { display: flex; flex-direction: column; gap: 10px; }
+    .callout {
+      font-size: 10.5px;
+      background: #fff8d6;
+      border: 1.4px solid #c4a43a;
+      border-radius: 6px;
+      padding: 7px 8px;
+      line-height: 1.35;
+    }
+  </style>
+</head>
+<body>
+  <div id="capture">
+    <div class="board">
+      <section class="panel">
+        <h2>Section 0: Index fill (lazy, monthly)</h2>
+        <p class="note">
+          Not a cron. <span class="mono">ensureIngest()</span> inside
+          <span class="mono">vectorRetrieve()</span> embeds once per Worker isolate
+          per calendar month, then <span class="mono">VECTORIZE.upsert</span>.
+        </p>
+
+        <div class="ingest">
+          <div class="stack">
+            <div class="page p3"></div>
+            <div class="page p2"></div>
+            <div class="page p1">
+              <div class="t mono">corpus.ts</div>
+              <div class="id">exp-centra<br />cv-centra<br />p-centra-…<br />…</div>
+            </div>
+          </div>
+          <div class="arr"><span>chunk.text</span>→</div>
+          <div class="box api" style="flex:1">
+            <div class="t">Embedding API</div>
+            <div class="s mono">gemini-embedding-001</div>
+            <div class="s">RETRIEVAL_DOCUMENT<br />768-d · L2 · batch 16</div>
+          </div>
+        </div>
+
+        <div class="arr-v"><span>upsert id + values + metadata(title, url, source)</span>↓</div>
+
+        <div class="flow-h" style="justify-content:center; margin-bottom:12px">
+          <div class="cyl">
+            <svg width="100" height="78" viewBox="0 0 100 78" aria-hidden="true">
+              <path d="M8 16 v40 a42 14 0 0 0 84 0 V16" fill="#e6edf4" stroke="#2a2a2a" stroke-width="1.8"/>
+              <ellipse cx="50" cy="16" rx="42" ry="14" fill="#eef3f8" stroke="#2a2a2a" stroke-width="1.8"/>
+              <ellipse cx="50" cy="56" rx="42" ry="14" fill="#d5e0ec" stroke="#2a2a2a" stroke-width="1.8"/>
+            </svg>
+            <div class="t">Vectorize DB</div>
+            <div class="s"><span class="mono">portfolio-rag</span><br />768-dim cosine<br />no passage text stored</div>
+          </div>
+        </div>
+
+        <div class="shoebox">
+          <div class="basket">
+            <div class="basket-box"><div class="cards-mini"></div></div>
+            <div class="t" style="font-size:11px">corpus.ts</div>
+            <div class="tiny">shoebox of cards</div>
+          </div>
+          <div>
+            <div class="box api">
+              <div class="t mono">getCorpus()</div>
+              <div class="s">Month-cached live chunks. Persistent full card text. Lexical search, JOIN, and grounding all read this — Vectorize only has ids + vectors + title/url/source.</div>
+            </div>
+          </div>
+        </div>
+
+        <p class="callout" style="margin:10px 0 0">
+          For “What did you ship at Centra?” the index already holds vectors for
+          <span class="mono">exp-centra</span>, <span class="mono">cv-centra</span>,
+          and product chunks. Full write-ups stay in this shoebox.
+        </p>
+      </section>
+
+      <section class="panel">
+        <h2>Sections 1–5: User Ask workflow</h2>
+
+        <div class="step">
+          <div class="num">1 &nbsp; Ask + HTTP</div>
+          <div class="user-row">
+            <div class="user">
+              <div class="bubble">User asking “What did you ship at Centra?”</div>
+              <svg width="72" height="48" viewBox="0 0 72 48" aria-hidden="true">
+                <rect x="8" y="4" width="56" height="34" rx="3" fill="#fff" stroke="#2a2a2a" stroke-width="1.8"/>
+                <rect x="12" y="8" width="48" height="22" fill="#e6edf4"/>
+                <path d="M4 42 h64" stroke="#2a2a2a" stroke-width="1.8"/>
+                <path d="M22 38 v4 M50 38 v4" stroke="#2a2a2a" stroke-width="1.8"/>
+              </svg>
+              <div class="device">User Device</div>
+            </div>
+            <div class="arr"><span>POST /api/ask<br />{ question }</span>→</div>
+            <div class="box peach" style="min-width:220px">
+              <div class="t">parseQuestion</div>
+              <div class="s">non-empty, max 500 chars<br />400 if bad · 405 other methods</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="step" style="background:#fff6ea">
+          <div class="num">2 &nbsp; geminiFirst</div>
+          <div class="gemini">
+            <div>
+              <div class="diamond-wrap">
+                <div class="diamond"></div>
+                <div class="diamond-label">GEMINI API KEY bound?</div>
+              </div>
+              <div class="tiny" style="text-align:center;margin-top:4px">no key → skip to 3</div>
+            </div>
+            <div>
+              <div class="g-caption">yes →</div>
+              <div class="box amber">
+                <div class="t">gemini-3.5-flash-lite</div>
+                <div class="s">ajPersona + facts brief + tech lists. Project write-ups are not in the brief, so this Centra question returns <span class="mono">NEED_SITE_CONTEXT</span>.</div>
+              </div>
+            </div>
+            <div class="end-col">
+              <div class="g-caption">usable reply?</div>
+              <div class="box orange">
+                <div class="t">yes → skip RAG</div>
+                <div class="s mono">{ answer, retrieval: "gemini" }</div>
+                <div class="s">UI, no disclaimer</div>
+              </div>
+              <div class="box">
+                <div class="t">NEED_SITE_CONTEXT / empty / fail</div>
+                <div class="s">fall through to retrieval ↓</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="step retrieve">
+          <div class="retrieve-title">3 &nbsp; Retrieval &nbsp; <span class="tiny" style="font-weight:700">lexical always · vector if key + VECTORIZE</span></div>
+
+          <div style="display:flex; flex-direction:column; gap:6px">
+            <div class="box green">
+              <div class="t mono">lexicalRetrieve(topK=5)</div>
+              <div class="s">Token overlap on live <span class="mono">getCorpus()</span>. “Centra” is on the cards, so this already hits.</div>
+            </div>
+            <div class="box green-hit">
+              <div class="t">Lexical hits (full text)</div>
+              <div class="s mono">exp-centra, cv-centra, p-centra-…</div>
+            </div>
+          </div>
+
+          <div class="vec">
+            <div>
+              <div class="t mono" style="margin-bottom:6px">vectorRetrieve()</div>
+              <div class="diamond-wrap" style="width:110px;height:110px">
+                <div class="diamond" style="width:78px;height:78px"></div>
+                <div class="diamond-label">KEY + VECTORIZE bound?</div>
+              </div>
+              <div class="tiny" style="text-align:center;margin-top:2px">no → skip vector<br />(lexical already ran)</div>
+            </div>
+            <div class="vec-flow">
+              <div class="tiny" style="font-weight:700">yes ↓</div>
+              <div class="box api">
+                <div class="t">ensureIngest → Section 0</div>
+                <div class="s">Fill index if this isolate has not ingested this month</div>
+              </div>
+              <div class="box api">
+                <div class="t">Question embedding + cosine search</div>
+                <div class="s mono">gemini-embedding-001 · RETRIEVAL_QUERY · topK=5</div>
+              </div>
+              <div class="join-row">
+                <div class="box green-hit" style="flex:1">
+                  <div class="t">JOIN ids → corpus.ts text</div>
+                  <div class="s"><span class="mono">chunkFromMatch</span> before merge. Vectorize returns ids + scores; body comes from <span class="mono">getCorpus()</span>.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="merge-row">
+            <div class="from">lexical chunks ↓</div>
+            <div class="box purple">
+              <div class="t mono">mergeHits</div>
+              <div class="s">Vector first, then lexical, dedupe by id, cap 8</div>
+            </div>
+            <div class="from">vector chunks + scores ↓</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="num">4 &nbsp; Ground + drop + cap</div>
+          <div class="ground">
+            <div class="box">
+              <div class="t mono">withGrounding()</div>
+              <div class="s">Force-include named tech, summary, profile, contact, facts if the question asked for them. This Centra ship question usually adds none.</div>
+            </div>
+            <div class="arr"><span></span>→</div>
+            <div class="box">
+              <div class="t">drop then slice 8</div>
+              <div class="s">Drop <span class="mono">site-rag</span> unless meta-ask. Drop <span class="mono">tech-undated</span> when a dated tech is named. Cap <span class="mono">MERGED_K = 8</span> (indexes 0–7).</div>
+            </div>
+            <div class="arr"><span></span>→</div>
+            <div class="box green-hit">
+              <div class="t">grounded chunks</div>
+              <div class="s">into generateAnswer</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="step gen">
+          <div>
+            <div class="num" style="margin-bottom:8px">5 &nbsp; generateAnswer → HTTP → UI</div>
+            <div class="gen-steps">
+              <div class="box" style="background:#fff">
+                <div class="t">directAnswer? (name / lookupTechAnswer / think)</div>
+                <div class="s">Centra “what did you ship” misses these helpers.</div>
+              </div>
+              <div class="box" style="background:#fff">
+                <div class="t">Key + chunks &gt; 0? → LLM Generate (Flash-Lite)</div>
+                <div class="s">Answer only from retrieved context + facts, first person as AJ.</div>
+              </div>
+              <div class="box" style="background:#fff">
+                <div class="t">else / fail / empty → Extractive fallback</div>
+                <div class="s">Top chunk text, or “not on this site yet”.</div>
+              </div>
+            </div>
+          </div>
+          <div class="arr"><span></span>→</div>
+          <div class="end-col">
+            <div class="box" style="background:#fff">
+              <div class="t mono">ask.ts JSON</div>
+              <div class="s">{ answer, retrieval }<br />retrieval: gemini | vectorize | lexical<br />sources stay on the Worker</div>
+            </div>
+            <div class="arr-v"><span></span>↓</div>
+            <div class="box orange">
+              <div class="t">UI Show Answer</div>
+              <div class="s">Disclaimer unless retrieval === "gemini"</div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</body>
+</html>

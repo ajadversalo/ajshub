@@ -120,6 +120,7 @@
 
 .ask-dialog-head h2 {
   margin: 0;
+  min-width: 0;
   font-size: 22px;
   line-height: 1.15;
   letter-spacing: -.04em;
@@ -128,6 +129,7 @@
 
 .ask-dialog-actions {
   display: flex;
+  flex: 0 0 auto;
   align-items: center;
   gap: 2px;
 }
@@ -139,6 +141,7 @@
   background: transparent;
   color: var(--muted);
   font: 500 13px inherit;
+  white-space: nowrap;
   cursor: pointer;
 }
 
@@ -170,6 +173,14 @@
 
 .ask-close:hover,
 .ask-close:focus-visible { color: var(--paper); }
+
+.ask-close:disabled,
+.ask-close:disabled:hover,
+.ask-close:disabled:focus-visible {
+  opacity: .35;
+  cursor: default;
+  color: var(--muted);
+}
 
 .ask-messages {
   flex: 1;
@@ -252,6 +263,85 @@
 
 .ask-composer {
   margin: 4px 18px 18px;
+}
+
+.ask-workflow-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: color-mix(in srgb, #050505 78%, transparent);
+}
+
+.ask-workflow-dialog {
+  width: min(920px, 100%);
+  height: min(900px, calc(100svh - 48px));
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  text-align: left;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--ink);
+  color: var(--paper);
+  box-shadow: 0 24px 80px #0008;
+}
+
+.ask-workflow-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 10px 12px 18px;
+  border-bottom: 1px solid var(--line);
+  flex-shrink: 0;
+}
+
+.ask-workflow-head h2 {
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.15;
+  letter-spacing: -.04em;
+  font-weight: 550;
+}
+
+.ask-workflow-tools {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.ask-workflow-zoom {
+  min-width: 3.5em;
+  color: var(--muted);
+  font: 500 12px var(--font-mono), monospace;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+.ask-workflow-stage {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  cursor: grab;
+  background: color-mix(in srgb, var(--paper) 4%, transparent);
+}
+
+.ask-workflow-stage.is-panning {
+  cursor: grabbing;
+}
+
+.ask-workflow-stage img {
+  display: block;
+  height: auto;
+  user-select: none;
+}
+
+:root[data-theme="light"] .ask-workflow-backdrop {
+  background: color-mix(in srgb, #2a2b26 55%, transparent);
 }
 
 :root[data-theme="light"] .ask-backdrop {

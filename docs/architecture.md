@@ -1,6 +1,6 @@
 # Architecture
 
-AJ Adversalo portfolio at [portfolio.ajhub.ca](https://portfolio.ajhub.ca). One vinext app in `f/` (Vite + Next App Router APIs) on Node `>=22.13`, deployed as a Cloudflare Worker. Pages (`/`, `/resume`, `/beyond-work`) and `/api/ask` share that Worker.
+AJ Adversalo portfolio at [portfolio.ajhub.ca](https://portfolio.ajhub.ca). One vinext app at the repo root (Vite + Next App Router APIs) on Node `>=22.13`, deployed as a Cloudflare Worker. Pages (`/`, `/resume`, `/beyond-work`) and `/api/ask` share that Worker.
 
 ## Architecture
 
@@ -95,7 +95,7 @@ Gemini is told to answer years, counts, employers, side projects, and named-tech
 
 Retrieval calls `ensureIngest`. Once per Worker isolate per calendar month it embeds every live corpus chunk with Gemini `gemini-embedding-001` (`RETRIEVAL_DOCUMENT`, 768-d, L2-normalized, batches of 16) and `VECTORIZE.upsert`s them into index `portfolio-rag` (cosine). Metadata stores title, url, and source only; passage text is always read from the live corpus, not from Vectorize. Retired tech chunk ids are deleted when `deleteByIds` exists.
 
-Ingest needs both the Gemini key and the `VECTORIZE` binding. Production index updates after `npm run deploy:worker` from `f/`, then the next ask that runs ingest.
+Ingest needs both the Gemini key and the `VECTORIZE` binding. Production index updates after `npm run deploy:worker` from the repo root, then the next ask that runs ingest.
 
 ### 5. Retrieve
 
@@ -168,7 +168,7 @@ Do not put favicon paths on the Next `Metadata` export. `metadataBase` would abs
 
 ## Ask panel setup
 
-Index and secrets (from `f/`):
+Index and secrets:
 
 ```bash
 npx wrangler vectorize create portfolio-rag --dimensions=768 --metric=cosine

@@ -8,7 +8,7 @@
 | `base.css` | Reset, `body`, `.shell` |
 | `nav.css` | Header, monogram, theme toggle |
 | `hero.css` | Home intro |
-| `ask.css` | Hero ask field and RAG chat dialog |
+| `ask.css` | Hero ask field, RAG chat dialog, and Ask workflow image viewer |
 | `toolbox.css` | Toolkit grid and filter |
 | `experience.css` | Chapters, stacks, product cards |
 | `beyond.css` | Beyond Work cards |

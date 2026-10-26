@@ -39,6 +39,7 @@ export const FAVICON_VERSION = "aj";
 export const ASSETS = {
   brand: "/images/brand",
   companies: "/images/companies",
+  diagrams: "/images/diagrams",
   projects: "/images/projects",
   tech: "/images/tech",
 } as const;
@@ -50,6 +51,7 @@ export const IMAGES = {
   southfraserhubLogo: `${ASSETS.projects}/southfraserhub-logo.svg`,
   webtoolsLogo: `${ASSETS.projects}/webtools-logo.svg`,
   stlcraftLogo: `${ASSETS.projects}/stlcraft-logo.svg`,
+  askWorkflow: `${ASSETS.diagrams}/ask-workflow.jpg`,
 } as const;
 
 /** Skill SVG under `public/images/tech`. */
@@ -105,6 +107,11 @@ export const COPY = {
   askClose: "Close",
   askClear: "Clear",
   askTitle: "Ask me",
+  askWorkflow: "View workflow",
+  askWorkflowTitle: "Ask workflow",
+  askWorkflowAlt: "Diagram of how this chat retrieves answers from the site.",
+  askWorkflowZoomIn: "Zoom in",
+  askWorkflowZoomOut: "Zoom out",
   askIntro: "Try a sample or type your own. I’ll answer from what’s on this site.",
   askPending: "Retrieving…",
   askUnavailable: `The ask service is unavailable right now. Browse the toolkit and work sections, or email ${EMAIL}.`,
