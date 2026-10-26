@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Ask workflow</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #0a0a0a;
+      --paper: #f1f0eb;
+      --muted: #64655f;
+      --line: #d4d2c8;
+      --lime: #a7ef56;
+      --dark: #11120f;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: "Instrument Sans", "Segoe UI", sans-serif;
+    }
+    .sheet {
+      width: 1100px;
+      padding: 48px 56px 56px;
+      background: var(--paper);
+    }
+    .kicker {
+      margin: 0 0 8px;
+      font-family: "IBM Plex Mono", ui-monospace, monospace;
+      font-size: 12px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    h1 {
+      margin: 0 0 8px;
+      font-size: 40px;
+      letter-spacing: -0.04em;
+      line-height: 1;
+    }
+    .lede {
+      margin: 0 0 32px;
+      max-width: 680px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.45;
+    }
+    ol.steps {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 12px;
+    }
+    .step {
+      display: grid;
+      grid-template-columns: 64px 1fr;
+      gap: 16px;
+      padding: 18px 20px;
+      background: #fff;
+      border: 1px solid var(--line);
+    }
+    .step.branch {
+      background: var(--dark);
+      color: var(--paper);
+      border-color: var(--dark);
+    }
+    .step.end {
+      background: var(--lime);
+      border-color: var(--dark);
+    }
+    .num {
+      font-family: "IBM Plex Mono", ui-monospace, monospace;
+      font-size: 22px;
+      font-weight: 500;
+      letter-spacing: -0.04em;
+      padding-top: 2px;
+    }
+    .step h2 {
+      margin: 0 0 6px;
+      font-size: 20px;
+      letter-spacing: -0.03em;
+    }
+    .step p {
+      margin: 0;
+      font-size: 14.5px;
+      line-height: 1.45;
+      opacity: 0.82;
+    }
+    .split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-left: 80px;
+    }
+    .pill {
+      padding: 16px 18px;
+      border: 1px solid var(--ink);
+      background: #fff;
+    }
+    .pill h3 {
+      margin: 0 0 4px;
+      font-size: 15px;
+    }
+    .pill p {
+      margin: 0;
+      font-size: 13px;
+      line-height: 1.4;
+      color: var(--muted);
+    }
+    .join {
+      margin-left: 80px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+      font-family: "IBM Plex Mono", ui-monospace, monospace;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+  <article class="sheet" id="capture">
+    <p class="kicker">POST /api/ask · worker/rag.ts</p>
+    <h1>Ask workflow</h1>
+    <p class="lede">Each question is a fresh retrieve-and-answer. The chat does not send history. Gemini speaks as AJ in first person.</p>
+
+    <ol class="steps">
+      <li class="step">
+        <div class="num">01</div>
+        <div>
+          <h2>Browser</h2>
+          <p>AskChat on / opens on focus or submit. Sample prompts, hero, and composer POST JSON { question } to /api/ask. Clear bumps a turn id so an in-flight reply is dropped.</p>
+        </div>
+      </li>
+      <li class="step">
+        <div class="num">02</div>
+        <div>
+          <h2>HTTP</h2>
+          <p>Worker intercepts /api/ask before vinext. parseQuestion requires a non-empty string, max 500 characters. GET returns status only. Success body is { answer, retrieval }.</p>
+        </div>
+      </li>
+      <li class="step branch">
+        <div class="num">03</div>
+        <div>
+          <h2>Gemini-first</h2>
+          <p>If GEMINI_API_KEY is bound, Flash-Lite sees the AJ persona, live facts brief, and tech lists. Greetings and tenure questions can stop here as retrieval: gemini. Project write-ups, product detail, or “how this chat works” return NEED_SITE_CONTEXT. No key skips this pass.</p>
+        </div>
+      </li>
+    </ol>
+
+    <div class="split" style="margin: 12px 0 12px 80px;">
+      <div class="pill">
+        <h3>Usable Gemini reply</h3>
+        <p>Return { answer, retrieval: gemini, sources: [] }. RAG does not run. UI hides the cosine disclaimer.</p>
+      </div>
+      <div class="pill">
+        <h3>Need site context</h3>
+        <p>Empty reply, NEED_SITE_CONTEXT, “not on this site yet”, thrown error, or missing key → retrieve.</p>
+      </div>
+    </div>
+
+    <ol class="steps">
+      <li class="step">
+        <div class="num">04</div>
+        <div>
+          <h2>Ingest</h2>
+          <p>Once per isolate per calendar month, embed every corpus chunk with gemini-embedding-001 (768-d, L2-normalized) and upsert into Vectorize portfolio-rag. Metadata is title, url, source. Passage text is always read from corpus.ts.</p>
+        </div>
+      </li>
+      <li class="step">
+        <div class="num">05</div>
+        <div>
+          <h2>Retrieve</h2>
+          <p>Lexical search always runs on the live corpus (topK 5). Vector search embeds the question as RETRIEVAL_QUERY and takes cosine topK 5. Merge vector-first, cap at 8. Any vector hit labels retrieval: vectorize; otherwise lexical.</p>
+        </div>
+      </li>
+      <li class="step">
+        <div class="num">06</div>
+        <div>
+          <h2>Ground</h2>
+          <p>Force-include named tech chunks plus summary, profile, contact, or facts when those detectors fire. Drop tech-undated when a dated tech is named. Drop site-rag unless the visitor asked how the chat works.</p>
+        </div>
+      </li>
+      <li class="step">
+        <div class="num">07</div>
+        <div>
+          <h2>Generate</h2>
+          <p>directAnswer first: name, lookupTechAnswer, think() from live spans. Else Gemini answers from facts + numbered chunks. Else extractive: top chunk, or a first-person “not on this site yet”.</p>
+        </div>
+      </li>
+      <li class="step end">
+        <div class="num">08</div>
+        <div>
+          <h2>Reply in the dialog</h2>
+          <p>Assistant message with retrieval. Cosine disclaimer shows unless retrieval is gemini. Failure copy points at toolkit, work, and email.</p>
+        </div>
+      </li>
+    </ol>
+  </article>
+</body>
+</html>

@@ -4,6 +4,8 @@ AJ Adversalo portfolio at [portfolio.ajhub.ca](https://portfolio.ajhub.ca). One 
 
 ## Architecture
 
+Notion images: [architecture.png](./diagrams/architecture.png) · [ask-workflow.png](./diagrams/ask-workflow.png)
+
 ```mermaid
 flowchart LR
   Browser["Browser"]

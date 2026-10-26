@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Architecture</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #0a0a0a;
+      --paper: #f1f0eb;
+      --muted: #64655f;
+      --line: #d4d2c8;
+      --lime: #a7ef56;
+      --dark: #11120f;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: "Instrument Sans", "Segoe UI", sans-serif;
+    }
+    .sheet {
+      width: 1400px;
+      padding: 48px 56px 56px;
+      background: var(--paper);
+    }
+    .kicker {
+      margin: 0 0 8px;
+      font-family: "IBM Plex Mono", ui-monospace, monospace;
+      font-size: 12px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    h1 {
+      margin: 0 0 8px;
+      font-size: 40px;
+      letter-spacing: -0.04em;
+      line-height: 1;
+    }
+    .lede {
+      margin: 0 0 36px;
+      max-width: 720px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.45;
+    }
+    .stack { display: grid; gap: 14px; }
+    .lane {
+      display: grid;
+      gap: 12px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      background: #fff;
+    }
+    .lane header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 16px;
+    }
+    .lane h2 {
+      margin: 0;
+      font-size: 13px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-family: "IBM Plex Mono", ui-monospace, monospace;
+    }
+    .lane .note {
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .cards {
+      display: grid;
+      gap: 10px;
+    }
+    .cards.four { grid-template-columns: repeat(4, 1fr); }
+    .cards.two { grid-template-columns: 1fr 1fr; }
+    .cards.three { grid-template-columns: 1.1fr 1fr 1fr; }
+    .card {
+      padding: 16px 18px;
+      border: 1px solid var(--ink);
+      background: var(--paper);
+      min-height: 92px;
+    }
+    .card.lime {
+      background: var(--lime);
+      border-color: var(--dark);
+    }
+    .card.dark {
+      background: var(--dark);
+      color: var(--paper);
+      border-color: var(--dark);
+    }
+    .card .path {
+      font-family: "IBM Plex Mono", ui-monospace, monospace;
+      font-size: 12px;
+      letter-spacing: 0.04em;
+      margin-bottom: 6px;
+      opacity: 0.72;
+    }
+    .card h3 {
+      margin: 0 0 4px;
+      font-size: 18px;
+      letter-spacing: -0.03em;
+    }
+    .card p {
+      margin: 0;
+      font-size: 13px;
+      line-height: 1.35;
+      opacity: 0.78;
+    }
+    .flow {
+      display: flex;
+      justify-content: center;
+      color: var(--muted);
+      font-size: 22px;
+      line-height: 1;
+      height: 10px;
+    }
+  </style>
+</head>
+<body>
+  <article class="sheet" id="capture">
+    <p class="kicker">portfolio.ajhub.ca · builtbyaj-portfolio</p>
+    <h1>Architecture</h1>
+    <p class="lede">One vinext app on a Cloudflare Worker. Pages and the Ask APIs share the same isolate. Gemini and Vectorize sit outside the Worker.</p>
+
+    <div class="stack">
+      <section class="lane">
+        <header>
+          <h2>Visitor</h2>
+          <span class="note">Browser on /, /resume, /beyond-work, /vectors</span>
+        </header>
+        <div class="cards four">
+          <div class="card lime">
+            <div class="path">Client</div>
+            <h3>Browser</h3>
+            <p>AskChat posts same-origin to /api/ask. Theme lives on html[data-theme].</p>
+          </div>
+          <div class="card">
+            <div class="path">/</div>
+            <h3>Home</h3>
+            <p>Hero ask, toolkit, work chapters.</p>
+          </div>
+          <div class="card">
+            <div class="path">/resume · /beyond-work</div>
+            <h3>Pages</h3>
+            <p>Printable résumé and side projects.</p>
+          </div>
+          <div class="card">
+            <div class="path">/vectors</div>
+            <h3>Inspector</h3>
+            <p>Unlisted Vectorize dump. noindex, no nav.</p>
+          </div>
+        </div>
+      </section>
+
+      <div class="flow">↓</div>
+
+      <section class="lane">
+        <header>
+          <h2>Cloudflare Worker</h2>
+          <span class="note">worker/index.ts intercepts APIs before vinext</span>
+        </header>
+        <div class="cards four">
+          <div class="card dark">
+            <div class="path">worker/ask.ts</div>
+            <h3>/api/ask</h3>
+            <p>Retrieve-and-answer over the site corpus.</p>
+          </div>
+          <div class="card dark">
+            <div class="path">worker/vectors.ts</div>
+            <h3>/api/vectors</h3>
+            <p>Corpus plus Vectorize describe / getByIds.</p>
+          </div>
+          <div class="card">
+            <div class="path">vinext App Router</div>
+            <h3>Pages</h3>
+            <p>/, /resume, /beyond-work, /vectors HTML.</p>
+          </div>
+          <div class="card">
+            <div class="path">/_vinext/image</div>
+            <h3>Images</h3>
+            <p>Cloudflare Images transform. SVG served direct.</p>
+          </div>
+        </div>
+      </section>
+
+      <div class="flow">↓</div>
+
+      <section class="lane">
+        <header>
+          <h2>Data and models</h2>
+          <span class="note">Live corpus is rebuilt each calendar month</span>
+        </header>
+        <div class="cards three">
+          <div class="card">
+            <div class="path">app/data/</div>
+            <h3>Site corpus</h3>
+            <p>corpus.ts, experience, resume, facts, tech-index. Passage text stays here, not in Vectorize metadata.</p>
+          </div>
+          <div class="card lime">
+            <div class="path">Gemini</div>
+            <h3>Flash-Lite + embedding-001</h3>
+            <p>First-pass answers, 768-d embeddings, grounded generation.</p>
+          </div>
+          <div class="card lime">
+            <div class="path">Vectorize · cosine</div>
+            <h3>portfolio-rag</h3>
+            <p>768-d index. Title, url, source in metadata. Bound as VECTORIZE.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="lane">
+        <header>
+          <h2>Static assets</h2>
+          <span class="note">ASSETS binding · dist/client</span>
+        </header>
+        <div class="cards two">
+          <div class="card">
+            <div class="path">Worker deploy</div>
+            <h3>dist/</h3>
+            <p>Serves HTML, CSS, JS, and /api/* on builtbyaj-portfolio.</p>
+          </div>
+          <div class="card">
+            <div class="path">Pages export</div>
+            <h3>out/</h3>
+            <p>Static HTML for /, /resume, /beyond-work. No Ask APIs.</p>
+          </div>
+        </div>
+      </section>
+    </div>
+  </article>
+</body>
+</html>
