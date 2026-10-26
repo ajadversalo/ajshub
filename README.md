@@ -4,12 +4,12 @@ AJ Adversalo's site at [portfolio.ajhub.ca](https://portfolio.ajhub.ca). Next.js
 
 ## Docs
 
-- [Architecture](docs/architecture.md) — routes, folders, theme
+- [Architecture](docs/architecture.md) — routes, folders, ask workflow, theme
 - [Components](docs/components.md) — shared UI and props
 - [Styles](docs/styles.md) — CSS layers and tokens
 - [Images](docs/images.md) — `public/images/` layout
 
-Site copy and URLs live in `app/constants.ts`. Job history, toolkit groups, side projects, résumé content, and the RAG corpus live in `app/data/`. Shared UI lives in `app/components/`. CSS lives in `app/styles/`. The home ask panel posts to `/api/ask` on this Worker; see [Architecture](docs/architecture.md#ask-panel-rag).
+Site copy and URLs live in `app/constants.ts`. Job history, toolkit groups, side projects, résumé content, and the RAG corpus live in `app/data/`. Shared UI lives in `app/components/`. CSS lives in `app/styles/`. The home ask panel posts to `/api/ask` on this Worker; see [Ask workflow](docs/architecture.md#ask-workflow).
 
 ## Prerequisites
 
